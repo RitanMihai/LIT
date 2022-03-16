@@ -9,9 +9,9 @@ application {
     buildTool maven,
     serviceDiscoveryType eureka,
     searchEngine elasticsearch
-    
   }
-  entities Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory
+  entities Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory,
+  Portfolio, Order, Transaction, StockInfo
 }
 
 application {
@@ -28,6 +28,73 @@ application {
   entities Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory
 }
 
+application {
+  config {
+      baseName portfolio,
+      applicationType microservice,
+      packageName com.ritan.lit.portfolio,
+      authenticationType jwt,
+      prodDatabaseType postgresql,
+      serviceDiscoveryType eureka,
+      searchEngine elasticsearch,
+      serverPort 8082
+    }
+    entities Portfolio, Order, Transaction, StockInfo
+}
+
+/* PORTFOLIO  */
+entity Order {
+    quantity Double,
+    sharePrice Double,
+    type OrderType,
+    subbmitedDate LocalDate,
+    filledDate LocalDate,
+    notes String,
+    total Double,
+    taxes Double,
+    stopLoss Double,
+    takeProfit Double,
+    leverage Integer,
+    exchangeRate Double,
+    isDividend Boolean
+}
+
+entity Transaction {
+    type TransactionType,
+    value Double,
+}
+
+entity Portfolio {
+    name String,
+    image ImageBlob
+}
+
+entity StockInfo {
+    ticker String,
+    name String,
+    image ImageBlob,
+    isin String,
+    dividendYield Double,
+    sector String,
+    industry String,
+}
+
+enum OrderType {
+    BUY("buy"),
+    SELL("sell")
+}
+
+enum TransactionType {
+    DEPOSIT("deposit"),
+    WITHDRAW("withdraw")
+}
+
+relationship ManyToOne {
+    StockInfo{order} to Order{stockInfo},
+    Order{portfolio} to Portfolio{order},
+    Transaction{portfolio} to Portfolio{transaction},
+}
+
 /* WATCH LIST */ 
 /* General data */
 entity StockExchange {
@@ -37,19 +104,20 @@ entity StockExchange {
 }
 
 enum StockType {
-	COMMON("common"),
+    COMMON("common"),
     PREFERRED("preferred")
 }
 
 entity Currency {
-	code String, //USD
+    code String, //USD
     name String, //US Dollar
     currencySymbol String, //$
 }
 
 entity Stock {
-	ticker String, //MAIN
+    ticker String, //MAIN
     name String,
+    image ImageBlob,
     marketCap String,
     volume Integer,
     peRation Double,
@@ -57,11 +125,13 @@ entity Stock {
     isin String,
     isDelisted Boolean,
     hasDividend Boolean,
-    type StockType
+    type StockType,
+    dividendYield Double,
 }
 
 entity Company {
-	name String,
+    name String,
+    image ImageBlob,
     description String,
     employees Long,
     sector String,
@@ -73,7 +143,7 @@ entity Company {
 
 /* Historical Data */
 entity PriceHistory {
-	date LocalDate,
+    date LocalDate,
     open Double,
     high Double,
     low Double,
@@ -83,12 +153,12 @@ entity PriceHistory {
 }
 
 entity DividendHistory {
-	date LocalDate,
+    date LocalDate,
     dividend Double,
 }
 
 entity StockSplitHistory{
-	date LocalDate,
+    date LocalDate,
     ratio Double
 }
 
@@ -121,4 +191,5 @@ relationship ManyToOne {
 }
 
 microservice Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory with watchList
+microservice Portfolio, Transaction, StockInfo with portfolio 
 search Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory with elasticsearch
