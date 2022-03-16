@@ -1,0 +1,124 @@
+application {
+  config {
+    baseName litGateway,
+    applicationType gateway,
+    packageName com.ritan.lit.gateway,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    clientFramework react,
+    buildTool maven,
+    serviceDiscoveryType eureka,
+    searchEngine elasticsearch
+    
+  }
+  entities Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory
+}
+
+application {
+  config {
+    baseName watchList,
+    applicationType microservice,
+    packageName com.ritan.lit.watchlist,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    serviceDiscoveryType eureka,
+    searchEngine elasticsearch,
+    serverPort 8081
+  }
+  entities Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory
+}
+
+/* WATCH LIST */ 
+/* General data */
+entity StockExchange {
+    name String, //New York Stock Exchange
+    symbol String, //NYSE
+    country String,
+}
+
+enum StockType {
+	COMMON("common"),
+    PREFERRED("preferred")
+}
+
+entity Currency {
+	code String, //USD
+    name String, //US Dollar
+    currencySymbol String, //$
+}
+
+entity Stock {
+	ticker String, //MAIN
+    name String,
+    marketCap String,
+    volume Integer,
+    peRation Double,
+    ipoDate LocalDate,
+    isin String,
+    isDelisted Boolean,
+    hasDividend Boolean,
+    type StockType
+}
+
+entity Company {
+	name String,
+    description String,
+    employees Long,
+    sector String,
+    industry String,
+    ceo String,
+    site String,
+    dateOfEstablishment LocalDate
+}
+
+/* Historical Data */
+entity PriceHistory {
+	date LocalDate,
+    open Double,
+    high Double,
+    low Double,
+    close Double,
+    adjClose Double,
+    volume Double
+}
+
+entity DividendHistory {
+	date LocalDate,
+    dividend Double,
+}
+
+entity StockSplitHistory{
+	date LocalDate,
+    ratio Double
+}
+
+entity CapitalGainHistory {
+	date LocalDate,
+    capitalGain Double,
+}
+
+/* Financials */
+entity IncomeHistory {
+	date LocalDate,
+    totalRevenue Long,
+    costOfRevenue Long,
+    grossProfit Long,
+    operatingExpense Long,
+    operatingIncome Long,
+}
+
+/* Relationships */
+relationship ManyToOne {
+	Stock{stockExchange} to StockExchange{stock},
+    /* Historical Data */
+    PriceHistory{stock} to Stock{priceHistory},
+    DividendHistory{stock} to Stock{dividendHistory},
+    StockSplitHistory{stock} to Stock{stockSplitHistory},
+    CapitalGainHistory{stock} to Stock{capitalGainHistory},
+    IncomeHistory{stock} to Stock{incomeHistory},
+    Stock{company} to Company{stock},
+    Stock{currency} to Currency{stock}
+}
+
+microservice Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory with watchList
+search Company, Stock, StockExchange, Currency, PriceHistory, DividendHistory, StockSplitHistory, CapitalGainHistory, IncomeHistory with elasticsearch
