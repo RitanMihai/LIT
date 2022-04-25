@@ -1,0 +1,35 @@
+{
+  "applications": ["lit", "watcher"],
+  "changelogDate": "20220328161752",
+  "clientRootFolder": "watcher",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "stock_split_history",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "ratio",
+      "fieldType": "Double"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "watcher",
+  "name": "StockSplitHistory",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "stock",
+      "otherEntityRelationshipName": "stockSplitHistory",
+      "relationshipName": "stock",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

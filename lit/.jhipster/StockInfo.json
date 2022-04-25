@@ -1,0 +1,56 @@
+{
+  "applications": ["lit", "portfolio"],
+  "changelogDate": "20220328162752",
+  "clientRootFolder": "portfolio",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "stock_info",
+  "fields": [
+    {
+      "fieldName": "ticker",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "isin",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dividendYield",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "sector",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "industry",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "portfolio",
+  "name": "StockInfo",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "stockInfo",
+      "relationshipName": "order",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

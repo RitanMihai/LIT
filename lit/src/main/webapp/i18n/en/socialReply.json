@@ -1,0 +1,35 @@
+{
+  "litApp": {
+    "socialReply": {
+      "home": {
+        "title": "Replies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Reply",
+        "createOrEditLabel": "Create or edit a Reply",
+        "search": "Search for Reply",
+        "notFound": "No Replies found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Reply {{ id }}?"
+      },
+      "detail": {
+        "title": "Reply"
+      },
+      "id": "ID",
+      "content": "Content",
+      "date": "Date",
+      "language": "Language",
+      "socialUser": "Social User",
+      "comment": "Comment",
+      "report": "Report",
+      "tag": "Tag"
+    }
+  },
+  "socialApp": {
+    "socialReply": {
+      "created": "A new Reply is created with identifier {{ param }}",
+      "updated": "A Reply is updated with identifier {{ param }}",
+      "deleted": "A Reply is deleted with identifier {{ param }}"
+    }
+  }
+}

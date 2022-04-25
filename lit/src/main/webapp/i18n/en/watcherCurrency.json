@@ -1,0 +1,32 @@
+{
+  "litApp": {
+    "watcherCurrency": {
+      "home": {
+        "title": "Currencies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Currency",
+        "createOrEditLabel": "Create or edit a Currency",
+        "search": "Search for Currency",
+        "notFound": "No Currencies found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Currency {{ id }}?"
+      },
+      "detail": {
+        "title": "Currency"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "currencySymbol": "Currency Symbol",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherCurrency": {
+      "created": "A new Currency is created with identifier {{ param }}",
+      "updated": "A Currency is updated with identifier {{ param }}",
+      "deleted": "A Currency is deleted with identifier {{ param }}"
+    }
+  }
+}

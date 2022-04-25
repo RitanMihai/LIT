@@ -1,0 +1,31 @@
+{
+  "litApp": {
+    "watcherCapitalGainHistory": {
+      "home": {
+        "title": "Capital Gain Histories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Capital Gain History",
+        "createOrEditLabel": "Create or edit a Capital Gain History",
+        "search": "Search for Capital Gain History",
+        "notFound": "No Capital Gain Histories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Capital Gain History {{ id }}?"
+      },
+      "detail": {
+        "title": "Capital Gain History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "capitalGain": "Capital Gain",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherCapitalGainHistory": {
+      "created": "A new Capital Gain History is created with identifier {{ param }}",
+      "updated": "A Capital Gain History is updated with identifier {{ param }}",
+      "deleted": "A Capital Gain History is deleted with identifier {{ param }}"
+    }
+  }
+}

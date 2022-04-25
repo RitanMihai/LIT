@@ -1,0 +1,50 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328162952",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tag",
+  "fields": [
+    {
+      "fieldName": "stockName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ticker",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "Tag",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "post",
+      "otherEntityRelationshipName": "tag",
+      "ownerSide": true,
+      "relationshipName": "post",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "tag",
+      "ownerSide": true,
+      "relationshipName": "comment",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "reply",
+      "otherEntityRelationshipName": "tag",
+      "ownerSide": true,
+      "relationshipName": "reply",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

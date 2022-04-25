@@ -1,0 +1,48 @@
+{
+  "litApp": {
+    "watcherStock": {
+      "home": {
+        "title": "Stocks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Stock",
+        "createOrEditLabel": "Create or edit a Stock",
+        "search": "Search for Stock",
+        "notFound": "No Stocks found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Stock {{ id }}?"
+      },
+      "detail": {
+        "title": "Stock"
+      },
+      "id": "ID",
+      "ticker": "Ticker",
+      "name": "Name",
+      "image": "Image",
+      "marketCap": "Market Cap",
+      "volume": "Volume",
+      "peRation": "Pe Ration",
+      "ipoDate": "Ipo Date",
+      "isin": "Isin",
+      "isDelisted": "Is Delisted",
+      "hasDividend": "Has Dividend",
+      "type": "Type",
+      "dividendYield": "Dividend Yield",
+      "stockExchange": "Stock Exchange",
+      "company": "Company",
+      "currency": "Currency",
+      "priceHistory": "Price History",
+      "dividendHistory": "Dividend History",
+      "stockSplitHistory": "Stock Split History",
+      "capitalGainHistory": "Capital Gain History",
+      "incomeHistory": "Income History"
+    }
+  },
+  "watcherApp": {
+    "watcherStock": {
+      "created": "A new Stock is created with identifier {{ param }}",
+      "updated": "A Stock is updated with identifier {{ param }}",
+      "deleted": "A Stock is deleted with identifier {{ param }}"
+    }
+  }
+}

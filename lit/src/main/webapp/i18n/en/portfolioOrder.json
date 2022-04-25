@@ -1,0 +1,45 @@
+{
+  "litApp": {
+    "portfolioOrder": {
+      "home": {
+        "title": "Orders",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Order",
+        "createOrEditLabel": "Create or edit a Order",
+        "search": "Search for Order",
+        "notFound": "No Orders found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Order {{ id }}?"
+      },
+      "detail": {
+        "title": "Order"
+      },
+      "id": "ID",
+      "quantity": "Quantity",
+      "sharePrice": "Share Price",
+      "type": "Type",
+      "position": "Position",
+      "subbmitedDate": "Subbmited Date",
+      "filledDate": "Filled Date",
+      "notes": "Notes",
+      "total": "Total",
+      "taxes": "Taxes",
+      "stopLoss": "Stop Loss",
+      "takeProfit": "Take Profit",
+      "leverage": "Leverage",
+      "exchangeRate": "Exchange Rate",
+      "isCFD": "Is CFD",
+      "stockInfo": "Stock Info",
+      "portfolio": "Portfolio",
+      "dividend": "Dividend"
+    }
+  },
+  "portfolioApp": {
+    "portfolioOrder": {
+      "created": "A new Order is created with identifier {{ param }}",
+      "updated": "A Order is updated with identifier {{ param }}",
+      "deleted": "A Order is deleted with identifier {{ param }}"
+    }
+  }
+}

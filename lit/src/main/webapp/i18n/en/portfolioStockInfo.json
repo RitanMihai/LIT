@@ -1,0 +1,36 @@
+{
+  "litApp": {
+    "portfolioStockInfo": {
+      "home": {
+        "title": "Stock Infos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Stock Info",
+        "createOrEditLabel": "Create or edit a Stock Info",
+        "search": "Search for Stock Info",
+        "notFound": "No Stock Infos found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Stock Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Stock Info"
+      },
+      "id": "ID",
+      "ticker": "Ticker",
+      "name": "Name",
+      "image": "Image",
+      "isin": "Isin",
+      "dividendYield": "Dividend Yield",
+      "sector": "Sector",
+      "industry": "Industry",
+      "order": "Order"
+    }
+  },
+  "portfolioApp": {
+    "portfolioStockInfo": {
+      "created": "A new Stock Info is created with identifier {{ param }}",
+      "updated": "A Stock Info is updated with identifier {{ param }}",
+      "deleted": "A Stock Info is deleted with identifier {{ param }}"
+    }
+  }
+}

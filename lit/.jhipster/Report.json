@@ -1,0 +1,54 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328162352",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "report",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "RportType",
+      "fieldValues": "SPAM (spam),NUDITY (nudity),DOXING (doxing),VIOLENCE (violence),TERRORISM (terrorism),HATE_SEPACH (hate speach),CHILD_ABUSE (child abuse),ANIMAL_ABUSE (animal abuse),SEXUAL_CONTENT (sexual content),PULBIC_SHAMING (public shaming),FRAUDULENT_SCHEME (fraudulent scheme),FALSE_INFORMATION (false information),PROMOTE_ILLEGAL_DRUGS (promote illegal drugs),OTHER"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "Report",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "post",
+      "otherEntityRelationshipName": "report",
+      "relationshipName": "post",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "report",
+      "relationshipName": "comment",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "reply",
+      "otherEntityRelationshipName": "report",
+      "relationshipName": "reply",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "socialUser",
+      "otherEntityRelationshipName": "report",
+      "relationshipName": "socialUser",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

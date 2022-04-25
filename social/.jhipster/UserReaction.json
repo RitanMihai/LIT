@@ -1,0 +1,38 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328161653",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "user_reaction",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "UserReactionType",
+      "fieldValues": "LIT (lit),LOVE (love),AMUSING (amusing),AMAZING (amazing),ANGER (anger),FEAR (fear),SAD (sad),BORING (boring)"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "UserReaction",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "post",
+      "otherEntityRelationshipName": "userReaction",
+      "relationshipName": "post",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "socialUser",
+      "otherEntityRelationshipName": "userReaction",
+      "relationshipName": "socialUser",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

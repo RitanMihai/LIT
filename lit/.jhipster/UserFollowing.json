@@ -1,0 +1,32 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328163152",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "user_following",
+  "fields": [
+    {
+      "fieldName": "stock",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "UserFollowing",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "socialUser",
+      "otherEntityRelationshipName": "userFollowing",
+      "ownerSide": true,
+      "relationshipName": "socialUser",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

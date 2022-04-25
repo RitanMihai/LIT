@@ -1,0 +1,35 @@
+{
+  "litApp": {
+    "watcherIncomeHistory": {
+      "home": {
+        "title": "Income Histories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Income History",
+        "createOrEditLabel": "Create or edit a Income History",
+        "search": "Search for Income History",
+        "notFound": "No Income Histories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Income History {{ id }}?"
+      },
+      "detail": {
+        "title": "Income History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "totalRevenue": "Total Revenue",
+      "costOfRevenue": "Cost Of Revenue",
+      "grossProfit": "Gross Profit",
+      "operatingExpense": "Operating Expense",
+      "operatingIncome": "Operating Income",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherIncomeHistory": {
+      "created": "A new Income History is created with identifier {{ param }}",
+      "updated": "A Income History is updated with identifier {{ param }}",
+      "deleted": "A Income History is deleted with identifier {{ param }}"
+    }
+  }
+}

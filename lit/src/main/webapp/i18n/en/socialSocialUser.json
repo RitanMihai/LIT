@@ -1,0 +1,35 @@
+{
+  "litApp": {
+    "socialSocialUser": {
+      "home": {
+        "title": "Social Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Social User",
+        "createOrEditLabel": "Create or edit a Social User",
+        "search": "Search for Social User",
+        "notFound": "No Social Users found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Social User {{ id }}?"
+      },
+      "detail": {
+        "title": "Social User"
+      },
+      "id": "ID",
+      "user": "User",
+      "report": "Report",
+      "post": "Post",
+      "comment": "Comment",
+      "reply": "Reply",
+      "userReaction": "User Reaction",
+      "userFollowing": "User Following"
+    }
+  },
+  "socialApp": {
+    "socialSocialUser": {
+      "created": "A new Social User is created with identifier {{ param }}",
+      "updated": "A Social User is updated with identifier {{ param }}",
+      "deleted": "A Social User is deleted with identifier {{ param }}"
+    }
+  }
+}

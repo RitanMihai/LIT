@@ -1,0 +1,9 @@
+{
+  "litApp": {
+    "OrderType": {
+      "null": "",
+      "BUY": "buy",
+      "SELL": "sell"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+id;ticker;name;image;image_content_type;market_cap;volume;pe_ration;ipo_date;isin;is_delisted;has_dividend;type;dividend_yield
+1;infomediaries CSS;drive Cambridgeshire;../fake-data/blob/hipster.png;image/png;fuchsia Saint;62067;69907;2022-03-28;JBOD;true;false;COMMON;49973
+2;Hawaii;Human optical;../fake-data/blob/hipster.png;image/png;connect California Guarani;56106;86720;2022-03-28;Berkshire Berkshire;true;true;PREFERRED;43508
+3;North;solutions;../fake-data/blob/hipster.png;image/png;software Interactions programming;98526;94517;2022-03-28;Colombian generating backing;false;true;PREFERRED;36886
+4;back-end Architect Buckinghamshire;COM;../fake-data/blob/hipster.png;image/png;Baby Implementation payment;38718;23195;2022-03-27;interface Cheese invoice;true;true;PREFERRED;93035
+5;Re-engineered auxiliary;Research orange transmitting;../fake-data/blob/hipster.png;image/png;e-business Car;53614;97611;2022-03-28;Uzbekistan Fiji Specialist;true;false;PREFERRED;66831
+6;open-source Chair;reciprocal;../fake-data/blob/hipster.png;image/png;Card Georgia Maryland;48714;55452;2022-03-28;Frozen;false;false;PREFERRED;7326
+7;Vision-oriented;quantifying Cambridgeshire time-frame;../fake-data/blob/hipster.png;image/png;azure Cambridgeshire Handmade;96281;15449;2022-03-28;Frozen Mariana Metal;false;true;COMMON;57590
+8;teal calculate Agent;SQL standardization;../fake-data/blob/hipster.png;image/png;Profit-focused fuchsia optical;51337;55555;2022-03-28;payment Pants sexy;true;false;COMMON;73368
+9;lavender leverage;Rapid Lead;../fake-data/blob/hipster.png;image/png;encryption transmit Cross-platform;87057;17789;2022-03-28;Global Franc;false;false;PREFERRED;16890
+10;payment background;Market optical;../fake-data/blob/hipster.png;image/png;Shoes New Manor;5151;41557;2022-03-28;complexity Health Pizza;true;true;COMMON;32187

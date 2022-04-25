@@ -1,0 +1,9 @@
+{
+  "litApp": {
+    "PositionType": {
+      "null": "",
+      "OPEN": "open",
+      "CLOSED": "closed"
+    }
+  }
+}

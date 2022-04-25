@@ -1,0 +1,9 @@
+{
+  "litApp": {
+    "DividendType": {
+      "null": "",
+      "PROPERTY_INCOME": "property income",
+      "ORDINARY": "ordinary"
+    }
+  }
+}

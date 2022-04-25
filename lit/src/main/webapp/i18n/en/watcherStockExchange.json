@@ -1,0 +1,32 @@
+{
+  "litApp": {
+    "watcherStockExchange": {
+      "home": {
+        "title": "Stock Exchanges",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Stock Exchange",
+        "createOrEditLabel": "Create or edit a Stock Exchange",
+        "search": "Search for Stock Exchange",
+        "notFound": "No Stock Exchanges found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Stock Exchange {{ id }}?"
+      },
+      "detail": {
+        "title": "Stock Exchange"
+      },
+      "id": "ID",
+      "name": "Name",
+      "symbol": "Symbol",
+      "country": "Country",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherStockExchange": {
+      "created": "A new Stock Exchange is created with identifier {{ param }}",
+      "updated": "A Stock Exchange is updated with identifier {{ param }}",
+      "deleted": "A Stock Exchange is deleted with identifier {{ param }}"
+    }
+  }
+}

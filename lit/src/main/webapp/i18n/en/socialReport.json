@@ -1,0 +1,34 @@
+{
+  "litApp": {
+    "socialReport": {
+      "home": {
+        "title": "Reports",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Report",
+        "createOrEditLabel": "Create or edit a Report",
+        "search": "Search for Report",
+        "notFound": "No Reports found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Report {{ id }}?"
+      },
+      "detail": {
+        "title": "Report"
+      },
+      "id": "ID",
+      "type": "Type",
+      "description": "Description",
+      "post": "Post",
+      "comment": "Comment",
+      "reply": "Reply",
+      "socialUser": "Social User"
+    }
+  },
+  "socialApp": {
+    "socialReport": {
+      "created": "A new Report is created with identifier {{ param }}",
+      "updated": "A Report is updated with identifier {{ param }}",
+      "deleted": "A Report is deleted with identifier {{ param }}"
+    }
+  }
+}

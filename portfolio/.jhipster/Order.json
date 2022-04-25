@@ -1,0 +1,101 @@
+{
+  "applications": ["lit", "portfolio"],
+  "changelogDate": "20220328161052",
+  "clientRootFolder": "portfolio",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "jhi_order",
+  "fields": [
+    {
+      "fieldName": "quantity",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sharePrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "OrderType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "BUY (buy),SELL (sell)"
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "PositionType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "OPEN (open),CLOSED (closed)"
+    },
+    {
+      "fieldName": "subbmitedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "filledDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "taxes",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "stopLoss",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "takeProfit",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "leverage",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "exchangeRate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isCFD",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "portfolio",
+  "name": "Order",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "stockInfo",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "stockInfo",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "portfolio",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "portfolio",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dividend",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "dividend",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

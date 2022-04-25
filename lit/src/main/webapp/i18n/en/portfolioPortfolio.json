@@ -1,0 +1,40 @@
+{
+  "litApp": {
+    "portfolioPortfolio": {
+      "home": {
+        "title": "Portfolios",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Portfolio",
+        "createOrEditLabel": "Create or edit a Portfolio",
+        "search": "Search for Portfolio",
+        "notFound": "No Portfolios found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Portfolio {{ id }}?"
+      },
+      "detail": {
+        "title": "Portfolio"
+      },
+      "id": "ID",
+      "name": "Name",
+      "value": "Value",
+      "image": "Image",
+      "unrealisedValue": "Unrealised Value",
+      "profitOrLoss": "Profit Or Loss",
+      "portfolioUser": "Portfolio User",
+      "portfolioCurrency": "Portfolio Currency",
+      "order": "Order",
+      "transaction": "Transaction",
+      "help": {
+        "profitOrLoss": "Only on closed positions"
+      }
+    }
+  },
+  "portfolioApp": {
+    "portfolioPortfolio": {
+      "created": "A new Portfolio is created with identifier {{ param }}",
+      "updated": "A Portfolio is updated with identifier {{ param }}",
+      "deleted": "A Portfolio is deleted with identifier {{ param }}"
+    }
+  }
+}

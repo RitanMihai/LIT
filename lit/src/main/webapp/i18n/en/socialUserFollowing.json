@@ -1,0 +1,30 @@
+{
+  "litApp": {
+    "socialUserFollowing": {
+      "home": {
+        "title": "User Followings",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new User Following",
+        "createOrEditLabel": "Create or edit a User Following",
+        "search": "Search for User Following",
+        "notFound": "No User Followings found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete User Following {{ id }}?"
+      },
+      "detail": {
+        "title": "User Following"
+      },
+      "id": "ID",
+      "stock": "Stock",
+      "socialUser": "Social User"
+    }
+  },
+  "socialApp": {
+    "socialUserFollowing": {
+      "created": "A new User Following is created with identifier {{ param }}",
+      "updated": "A User Following is updated with identifier {{ param }}",
+      "deleted": "A User Following is deleted with identifier {{ param }}"
+    }
+  }
+}

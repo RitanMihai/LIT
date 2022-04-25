@@ -1,0 +1,33 @@
+{
+  "litApp": {
+    "portfolioDividend": {
+      "home": {
+        "title": "Dividends",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Dividend",
+        "createOrEditLabel": "Create or edit a Dividend",
+        "search": "Search for Dividend",
+        "notFound": "No Dividends found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Dividend {{ id }}?"
+      },
+      "detail": {
+        "title": "Dividend"
+      },
+      "id": "ID",
+      "dateRecived": "Date Recived",
+      "taxRate": "Tax Rate",
+      "totalRecived": "Total Recived",
+      "dividendType": "Dividend Type",
+      "order": "Order"
+    }
+  },
+  "portfolioApp": {
+    "portfolioDividend": {
+      "created": "A new Dividend is created with identifier {{ param }}",
+      "updated": "A Dividend is updated with identifier {{ param }}",
+      "deleted": "A Dividend is deleted with identifier {{ param }}"
+    }
+  }
+}

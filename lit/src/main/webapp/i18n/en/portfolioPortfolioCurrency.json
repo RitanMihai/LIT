@@ -1,0 +1,32 @@
+{
+  "litApp": {
+    "portfolioPortfolioCurrency": {
+      "home": {
+        "title": "Portfolio Currencies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Portfolio Currency",
+        "createOrEditLabel": "Create or edit a Portfolio Currency",
+        "search": "Search for Portfolio Currency",
+        "notFound": "No Portfolio Currencies found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Portfolio Currency {{ id }}?"
+      },
+      "detail": {
+        "title": "Portfolio Currency"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "currencySymbol": "Currency Symbol",
+      "portfolio": "Portfolio"
+    }
+  },
+  "portfolioApp": {
+    "portfolioPortfolioCurrency": {
+      "created": "A new Portfolio Currency is created with identifier {{ param }}",
+      "updated": "A Portfolio Currency is updated with identifier {{ param }}",
+      "deleted": "A Portfolio Currency is deleted with identifier {{ param }}"
+    }
+  }
+}

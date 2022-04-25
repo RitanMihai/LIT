@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Order.
+    -->
+    <changeSet id="20220328161052-1" author="jhipster">
+        <createTable tableName="jhi_order">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="quantity" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="share_price" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subbmited_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="filled_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="total" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="taxes" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="stop_loss" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="take_profit" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="leverage" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="exchange_rate" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_cfd" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="stock_info_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="jhi_order" columnName="subbmited_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="jhi_order" columnName="filled_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20220328161052-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/jhi_order.csv"
+                  separator=";"
+                  tableName="jhi_order"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="quantity" type="numeric"/>
+            <column name="share_price" type="numeric"/>
+            <column name="type" type="string"/>
+            <column name="position" type="string"/>
+            <column name="subbmited_date" type="date"/>
+            <column name="filled_date" type="date"/>
+            <column name="notes" type="string"/>
+            <column name="total" type="numeric"/>
+            <column name="taxes" type="numeric"/>
+            <column name="stop_loss" type="numeric"/>
+            <column name="take_profit" type="numeric"/>
+            <column name="leverage" type="numeric"/>
+            <column name="exchange_rate" type="numeric"/>
+            <column name="is_cfd" type="boolean"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

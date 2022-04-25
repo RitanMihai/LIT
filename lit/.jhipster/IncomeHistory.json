@@ -1,0 +1,51 @@
+{
+  "applications": ["lit", "watcher"],
+  "changelogDate": "20220328161552",
+  "clientRootFolder": "watcher",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "income_history",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "totalRevenue",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "costOfRevenue",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "grossProfit",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "operatingExpense",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "operatingIncome",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "watcher",
+  "name": "IncomeHistory",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "stock",
+      "otherEntityRelationshipName": "incomeHistory",
+      "relationshipName": "stock",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

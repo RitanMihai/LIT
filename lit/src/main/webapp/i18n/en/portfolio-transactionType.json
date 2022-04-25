@@ -1,0 +1,9 @@
+{
+  "litApp": {
+    "TransactionType": {
+      "null": "",
+      "DEPOSIT": "deposit",
+      "WITHDRAW": "withdraw"
+    }
+  }
+}

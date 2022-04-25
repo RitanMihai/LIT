@@ -1,0 +1,67 @@
+{
+  "applications": ["lit", "portfolio"],
+  "changelogDate": "20220328161152",
+  "clientRootFolder": "portfolio",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "portfolio",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "unrealisedValue",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "profitOrLoss",
+      "fieldType": "Double",
+      "javadoc": "Only on closed positions"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "portfolio",
+  "name": "Portfolio",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "portfolioUser",
+      "otherEntityRelationshipName": "portfolio",
+      "relationshipName": "portfolioUser",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "portfolioCurrency",
+      "otherEntityRelationshipName": "portfolio",
+      "relationshipName": "portfolioCurrency",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "portfolio",
+      "relationshipName": "order",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "transaction",
+      "otherEntityRelationshipName": "portfolio",
+      "relationshipName": "transaction",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

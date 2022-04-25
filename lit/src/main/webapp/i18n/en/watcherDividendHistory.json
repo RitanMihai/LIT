@@ -1,0 +1,31 @@
+{
+  "litApp": {
+    "watcherDividendHistory": {
+      "home": {
+        "title": "Dividend Histories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Dividend History",
+        "createOrEditLabel": "Create or edit a Dividend History",
+        "search": "Search for Dividend History",
+        "notFound": "No Dividend Histories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Dividend History {{ id }}?"
+      },
+      "detail": {
+        "title": "Dividend History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "dividend": "Dividend",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherDividendHistory": {
+      "created": "A new Dividend History is created with identifier {{ param }}",
+      "updated": "A Dividend History is updated with identifier {{ param }}",
+      "deleted": "A Dividend History is deleted with identifier {{ param }}"
+    }
+  }
+}

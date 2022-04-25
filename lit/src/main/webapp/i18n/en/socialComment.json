@@ -1,0 +1,36 @@
+{
+  "litApp": {
+    "socialComment": {
+      "home": {
+        "title": "Comments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Comment",
+        "createOrEditLabel": "Create or edit a Comment",
+        "search": "Search for Comment",
+        "notFound": "No Comments found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Comment {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "id": "ID",
+      "content": "Content",
+      "date": "Date",
+      "language": "Language",
+      "socialUser": "Social User",
+      "post": "Post",
+      "report": "Report",
+      "reply": "Reply",
+      "tag": "Tag"
+    }
+  },
+  "socialApp": {
+    "socialComment": {
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}"
+    }
+  }
+}

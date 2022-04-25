@@ -1,0 +1,44 @@
+{
+  "applications": ["lit", "portfolio"],
+  "changelogDate": "20220328160952",
+  "clientRootFolder": "portfolio",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "dividend",
+  "fields": [
+    {
+      "fieldName": "dateRecived",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "taxRate",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "totalRecived",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "dividendType",
+      "fieldType": "DividendType",
+      "fieldValues": "PROPERTY_INCOME (property income),ORDINARY (ordinary)"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "portfolio",
+  "name": "Dividend",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "dividend",
+      "relationshipName": "order",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

@@ -1,0 +1,60 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328162252",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "reply",
+  "fields": [
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "LanguageType",
+      "fieldValues": "ENG (english),RO (romanian)"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "Reply",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "socialUser",
+      "otherEntityRelationshipName": "reply",
+      "relationshipName": "socialUser",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "reply",
+      "relationshipName": "comment",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "report",
+      "otherEntityRelationshipName": "reply",
+      "relationshipName": "report",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "reply",
+      "ownerSide": false,
+      "relationshipName": "tag",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

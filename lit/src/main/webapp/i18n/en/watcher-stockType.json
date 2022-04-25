@@ -1,0 +1,9 @@
+{
+  "litApp": {
+    "StockType": {
+      "null": "",
+      "COMMON": "common",
+      "PREFERRED": "preferred"
+    }
+  }
+}

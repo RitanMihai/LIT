@@ -1,0 +1,31 @@
+{
+  "litApp": {
+    "watcherStockSplitHistory": {
+      "home": {
+        "title": "Stock Split Histories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Stock Split History",
+        "createOrEditLabel": "Create or edit a Stock Split History",
+        "search": "Search for Stock Split History",
+        "notFound": "No Stock Split Histories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Stock Split History {{ id }}?"
+      },
+      "detail": {
+        "title": "Stock Split History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "ratio": "Ratio",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherStockSplitHistory": {
+      "created": "A new Stock Split History is created with identifier {{ param }}",
+      "updated": "A Stock Split History is updated with identifier {{ param }}",
+      "deleted": "A Stock Split History is deleted with identifier {{ param }}"
+    }
+  }
+}

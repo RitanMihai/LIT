@@ -1,0 +1,75 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328162052",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "post",
+  "fields": [
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "LanguageType",
+      "fieldValues": "ENG (english),RO (romanian)"
+    },
+    {
+      "fieldName": "isPayedPromotion",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "Post",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "socialUser",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "socialUser",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "report",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "report",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "comment",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "userReaction",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "userReaction",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "post",
+      "ownerSide": false,
+      "relationshipName": "tag",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

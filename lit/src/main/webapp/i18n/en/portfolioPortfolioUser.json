@@ -1,0 +1,30 @@
+{
+  "litApp": {
+    "portfolioPortfolioUser": {
+      "home": {
+        "title": "Portfolio Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Portfolio User",
+        "createOrEditLabel": "Create or edit a Portfolio User",
+        "search": "Search for Portfolio User",
+        "notFound": "No Portfolio Users found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Portfolio User {{ id }}?"
+      },
+      "detail": {
+        "title": "Portfolio User"
+      },
+      "id": "ID",
+      "user": "User",
+      "portfolio": "Portfolio"
+    }
+  },
+  "portfolioApp": {
+    "portfolioPortfolioUser": {
+      "created": "A new Portfolio User is created with identifier {{ param }}",
+      "updated": "A Portfolio User is updated with identifier {{ param }}",
+      "deleted": "A Portfolio User is deleted with identifier {{ param }}"
+    }
+  }
+}

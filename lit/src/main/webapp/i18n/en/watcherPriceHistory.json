@@ -1,0 +1,36 @@
+{
+  "litApp": {
+    "watcherPriceHistory": {
+      "home": {
+        "title": "Price Histories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Price History",
+        "createOrEditLabel": "Create or edit a Price History",
+        "search": "Search for Price History",
+        "notFound": "No Price Histories found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Price History {{ id }}?"
+      },
+      "detail": {
+        "title": "Price History"
+      },
+      "id": "ID",
+      "date": "Date",
+      "open": "Open",
+      "high": "High",
+      "low": "Low",
+      "close": "Close",
+      "adjClose": "Adj Close",
+      "volume": "Volume",
+      "stock": "Stock"
+    }
+  },
+  "watcherApp": {
+    "watcherPriceHistory": {
+      "created": "A new Price History is created with identifier {{ param }}",
+      "updated": "A Price History is updated with identifier {{ param }}",
+      "deleted": "A Price History is deleted with identifier {{ param }}"
+    }
+  }
+}

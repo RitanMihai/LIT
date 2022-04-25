@@ -1,0 +1,31 @@
+{
+  "litApp": {
+    "socialUserReaction": {
+      "home": {
+        "title": "User Reactions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new User Reaction",
+        "createOrEditLabel": "Create or edit a User Reaction",
+        "search": "Search for User Reaction",
+        "notFound": "No User Reactions found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete User Reaction {{ id }}?"
+      },
+      "detail": {
+        "title": "User Reaction"
+      },
+      "id": "ID",
+      "type": "Type",
+      "post": "Post",
+      "socialUser": "Social User"
+    }
+  },
+  "socialApp": {
+    "socialUserReaction": {
+      "created": "A new User Reaction is created with identifier {{ param }}",
+      "updated": "A User Reaction is updated with identifier {{ param }}",
+      "deleted": "A User Reaction is deleted with identifier {{ param }}"
+    }
+  }
+}

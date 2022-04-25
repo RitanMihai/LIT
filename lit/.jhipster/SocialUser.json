@@ -1,0 +1,63 @@
+{
+  "applications": ["lit", "social"],
+  "changelogDate": "20220328162452",
+  "clientRootFolder": "social",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "social_user",
+  "fields": [
+    {
+      "fieldName": "user",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "social",
+  "name": "SocialUser",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "report",
+      "otherEntityRelationshipName": "socialUser",
+      "relationshipName": "report",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "post",
+      "otherEntityRelationshipName": "socialUser",
+      "relationshipName": "post",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "socialUser",
+      "relationshipName": "comment",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "reply",
+      "otherEntityRelationshipName": "socialUser",
+      "relationshipName": "reply",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "userReaction",
+      "otherEntityRelationshipName": "socialUser",
+      "relationshipName": "userReaction",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "userFollowing",
+      "otherEntityRelationshipName": "socialUser",
+      "ownerSide": false,
+      "relationshipName": "userFollowing",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}

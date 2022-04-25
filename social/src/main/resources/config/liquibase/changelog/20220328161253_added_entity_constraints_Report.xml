@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Report.
+    -->
+    <changeSet id="20220328161253-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="post_id"
+                                 baseTableName="report"
+                                 constraintName="fk_report__post_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="post"/>
+
+        <addForeignKeyConstraint baseColumnNames="comment_id"
+                                 baseTableName="report"
+                                 constraintName="fk_report__comment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comment"/>
+
+        <addForeignKeyConstraint baseColumnNames="reply_id"
+                                 baseTableName="report"
+                                 constraintName="fk_report__reply_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reply"/>
+
+        <addForeignKeyConstraint baseColumnNames="social_user_id"
+                                 baseTableName="report"
+                                 constraintName="fk_report__social_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="social_user"/>
+    </changeSet>
+</databaseChangeLog>

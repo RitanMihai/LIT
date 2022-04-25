@@ -1,0 +1,119 @@
+{
+  "applications": ["lit", "watcher"],
+  "changelogDate": "20220328161552",
+  "clientRootFolder": "watcher",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "stock",
+  "fields": [
+    {
+      "fieldName": "ticker",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "marketCap",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "volume",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "peRation",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "ipoDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "isin",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDelisted",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "hasDividend",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "StockType",
+      "fieldValues": "COMMON (common),PREFERRED (preferred)"
+    },
+    {
+      "fieldName": "dividendYield",
+      "fieldType": "Double"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "watcher",
+  "name": "Stock",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "stockExchange",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "stockExchange",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "company",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "company",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "currency",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "currency",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "priceHistory",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "priceHistory",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "dividendHistory",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "dividendHistory",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "stockSplitHistory",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "stockSplitHistory",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "capitalGainHistory",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "capitalGainHistory",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "incomeHistory",
+      "otherEntityRelationshipName": "stock",
+      "relationshipName": "incomeHistory",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "elasticsearch",
+  "service": "serviceClass"
+}
