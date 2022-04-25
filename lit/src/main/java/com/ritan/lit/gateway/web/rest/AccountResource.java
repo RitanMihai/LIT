@@ -2,22 +2,32 @@ package com.ritan.lit.gateway.web.rest;
 
 import com.ritan.lit.gateway.repository.UserRepository;
 import com.ritan.lit.gateway.security.SecurityUtils;
-import com.ritan.lit.gateway.service.MailService;
+//import com.ritan.lit.gateway.service.MailService;
+import com.ritan.lit.gateway.security.jwt.TokenProvider;
 import com.ritan.lit.gateway.service.UserService;
 import com.ritan.lit.gateway.service.dto.AdminUserDTO;
 import com.ritan.lit.gateway.service.dto.PasswordChangeDTO;
 import com.ritan.lit.gateway.web.rest.errors.*;
 import com.ritan.lit.gateway.web.rest.vm.KeyAndPasswordVM;
 import com.ritan.lit.gateway.web.rest.vm.ManagedUserVM;
+
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.validation.Valid;
+
+import com.ritan.lit.gateway.web.serviceClient.PortfolioClient;
+import com.ritan.lit.gateway.web.serviceClient.ServiceClient;
+import com.ritan.lit.gateway.web.serviceClient.SocialClient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -26,6 +36,8 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private static class AccountResourceException extends RuntimeException {
 
@@ -35,26 +47,26 @@ public class AccountResource {
     }
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
-
     private final UserRepository userRepository;
-
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
-    private final MailService mailService;
+    //private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService,/*, MailService mailService*/TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.userService = userService;
-        this.mailService = mailService;
+        this.tokenProvider = tokenProvider;
+        //this.mailService = mailService;
     }
 
     /**
      * {@code POST  /register} : register the user.
      *
      * @param managedUserVM the managed user View Model.
-     * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
+     * @throws InvalidPasswordException  {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
-     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.aseurl
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,7 +74,25 @@ public class AccountResource {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        return userService.registerUser(managedUserVM, managedUserVM.getPassword()).doOnSuccess(mailService::sendActivationEmail).then();
+
+        System.out.println("Enter register ");
+
+        /* Might change this in flux in the future */
+        return userService.registerUser(managedUserVM, managedUserVM.getPassword())
+            .map(user -> {
+                ServiceClient socialUser = new SocialClient(this.tokenProvider);
+                socialUser.setUser(user);
+                socialUser.post();
+                return user;
+            })
+            .doOnNext(user -> {
+                ServiceClient portfolioClient = new PortfolioClient(this.tokenProvider);
+                portfolioClient.setUser(user);
+                portfolioClient.post();
+            })
+            .then();
+
+        //.doOnSuccess(mailService::sendActivationEmail).then();
     }
 
     /**
@@ -110,7 +140,7 @@ public class AccountResource {
      *
      * @param userDTO the current user information.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
+     * @throws RuntimeException          {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
     public Mono<Void> saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
@@ -166,7 +196,8 @@ public class AccountResource {
             .requestPasswordReset(mail)
             .doOnSuccess(user -> {
                 if (Objects.nonNull(user)) {
-                    mailService.sendPasswordResetMail(user);
+
+                    //mailService.sendPasswordResetMail(user);
                 } else {
                     // Pretend the request has been successful to prevent checking which emails really exist
                     // but log that an invalid attempt has been made
@@ -181,7 +212,7 @@ public class AccountResource {
      *
      * @param keyAndPassword the generated key and the new password.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the password could not be reset.
+     * @throws RuntimeException         {@code 500 (Internal Server Error)} if the password could not be reset.
      */
     @PostMapping(path = "/account/reset-password/finish")
     public Mono<Void> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
@@ -197,8 +228,8 @@ public class AccountResource {
     private static boolean isPasswordLengthInvalid(String password) {
         return (
             StringUtils.isEmpty(password) ||
-            password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
-            password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
+                password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
+                password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
     }
 }
