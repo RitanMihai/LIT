@@ -377,6 +377,12 @@
             <artifactId>r2dbc-postgresql</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- Lombok dependency -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -505,6 +511,15 @@
                                 <groupId>org.glassfish.jaxb</groupId>
                                 <artifactId>jaxb-runtime</artifactId>
                                 <version>${jaxb-runtime.version}</version>
+                            </path>
+
+                            <!--The maven project Jhipster generated uses a annotationProcessorPaths in the maven
+                            compile plugin, that's why it cannot look up the latest lombok unless we specify lombok as
+                            one of the annotation processor. -->
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.16.18</version>
                             </path>
                             <!-- jhipster-needle-maven-add-annotation-processor -->
                         </annotationProcessorPaths>
