@@ -8,24 +8,40 @@ import com.ritan.lit.gateway.repository.UserRepository;
 import com.ritan.lit.gateway.repository.search.UserSearchRepository;
 import com.ritan.lit.gateway.security.AuthoritiesConstants;
 import com.ritan.lit.gateway.security.SecurityUtils;
+import com.ritan.lit.gateway.security.jwt.JWTFilter;
+import com.ritan.lit.gateway.security.jwt.TokenProvider;
 import com.ritan.lit.gateway.service.dto.AdminUserDTO;
 import com.ritan.lit.gateway.service.dto.UserDTO;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import com.ritan.lit.gateway.web.rest.UserJWTController;
+import com.ritan.lit.gateway.web.rest.vm.LoginVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import tech.jhipster.security.RandomUtil;
+import tech.jhipster.web.util.HeaderUtil;
 
 /**
  * Service class for managing users.
@@ -43,16 +59,22 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final ReactiveAuthenticationManager authenticationManager;
+
+    private final TokenProvider tokenProvider;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         UserSearchRepository userSearchRepository,
-        AuthorityRepository authorityRepository
-    ) {
+        AuthorityRepository authorityRepository,
+        ReactiveAuthenticationManager authenticationManager, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
     }
 
     @Transactional
@@ -102,7 +124,6 @@ public class UserService {
 
     @Transactional
     public Mono<User> registerUser(AdminUserDTO userDTO, String password) {
-        log.debug("Created a new USER, INFORMATION SENT BY ME");
         return userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .flatMap(existingUser -> {
@@ -135,10 +156,15 @@ public class UserService {
                     }
                     newUser.setImageUrl(userDTO.getImageUrl());
                     newUser.setLangKey(userDTO.getLangKey());
-                    // new user is not active
+                    /* // new user is not active
                     newUser.setActivated(false);
                     // new user gets registration key
-                    newUser.setActivationKey(RandomUtil.generateActivationKey());
+                    newUser.setActivationKey(RandomUtil.generateActivationKey());*/
+
+                    newUser.setActivated(true);
+                    newUser.setActivationKey(null);
+                    userSearchRepository.save(newUser);
+
                     return newUser;
                 })
             )
@@ -355,6 +381,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)
