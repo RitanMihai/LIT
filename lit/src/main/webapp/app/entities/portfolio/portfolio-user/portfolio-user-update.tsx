@@ -90,7 +90,6 @@ export const PortfolioUserUpdate = (props: RouteComponentProps<{ id: string }>) 
                 type="text"
                 validate={{
                   required: { value: true, message: translate('entity.validation.required') },
-                  validate: v => isNumber(v) || translate('entity.validation.number'),
                 }}
               />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/portfolio-user" replace color="info">

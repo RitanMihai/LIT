@@ -9,7 +9,7 @@
   "fields": [
     {
       "fieldName": "user",
-      "fieldType": "Long",
+      "fieldType": "String",
       "fieldValidateRules": ["required", "unique"]
     }
   ],

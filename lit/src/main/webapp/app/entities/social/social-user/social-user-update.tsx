@@ -95,7 +95,6 @@ export const SocialUserUpdate = (props: RouteComponentProps<{ id: string }>) => 
                 type="text"
                 validate={{
                   required: { value: true, message: translate('entity.validation.required') },
-                  validate: v => isNumber(v) || translate('entity.validation.number'),
                 }}
               />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/social-user" replace color="info">

@@ -16,7 +16,7 @@ public class PortfolioClient extends ServiceClient {
 
     public void post() {
         PortfolioUserRequest portfolioUserRequest = new PortfolioUserRequest();
-        portfolioUserRequest.setUser(super.getUser().getId());
+        portfolioUserRequest.setUser(super.getUser().getLogin());
 
         super.getWebClient().post()
             .uri("/services/portfolio/api/portfolio-users")

@@ -1,13 +1,9 @@
 package com.ritan.lit.gateway.domain.social;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@Data
+/*@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString*/
 public class PostRequest {
 }

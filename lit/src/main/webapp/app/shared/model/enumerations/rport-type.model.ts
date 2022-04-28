@@ -25,5 +25,5 @@ export enum RportType {
 
   PROMOTE_ILLEGAL_DRUGS = 'promote illegal drugs',
 
-  OTHER = 'OTHER',
+  OTHER = 'other',
 }

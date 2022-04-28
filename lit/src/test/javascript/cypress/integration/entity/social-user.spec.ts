@@ -16,7 +16,7 @@ describe('SocialUser e2e test', () => {
   const socialUserPageUrlPattern = new RegExp('/social-user(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const socialUserSample = { user: 46804 };
+  const socialUserSample = { user: 'invoice Towels connecting' };
 
   let socialUser: any;
 
@@ -150,7 +150,7 @@ describe('SocialUser e2e test', () => {
     });
 
     it('should create an instance of SocialUser', () => {
-      cy.get(`[data-cy="user"]`).type('47923').should('have.value', '47923');
+      cy.get(`[data-cy="user"]`).type('Hills Avon').should('have.value', 'Hills Avon');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

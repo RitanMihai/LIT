@@ -3,14 +3,14 @@ package com.ritan.lit.gateway.domain.portfolio;
 import java.util.Set;
 
 public class PortfolioUserRequest {
-    Long user;
+    String user;
     Set<PortfolioRequest> portfolios;
 
-    public Long getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(String user) {
         this.user = user;
     }
 

@@ -16,7 +16,7 @@ describe('PortfolioUser e2e test', () => {
   const portfolioUserPageUrlPattern = new RegExp('/portfolio-user(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const portfolioUserSample = { user: 68033 };
+  const portfolioUserSample = { user: 'asynchronous HDD AI' };
 
   let portfolioUser: any;
 
@@ -150,7 +150,7 @@ describe('PortfolioUser e2e test', () => {
     });
 
     it('should create an instance of PortfolioUser', () => {
-      cy.get(`[data-cy="user"]`).type('95157').should('have.value', '95157');
+      cy.get(`[data-cy="user"]`).type('European Dynamic Pants').should('have.value', 'European Dynamic Pants');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

@@ -37,8 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SocialUserResourceIT {
 
-    private static final Long DEFAULT_USER = 1L;
-    private static final Long UPDATED_USER = 2L;
+    private static final String DEFAULT_USER = "AAAAAAAAAA";
+    private static final String UPDATED_USER = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/social-users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -162,7 +162,7 @@ class SocialUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(socialUser.getId().intValue())))
-            .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER.intValue())));
+            .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER)));
     }
 
     @Test
@@ -177,7 +177,7 @@ class SocialUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(socialUser.getId().intValue()))
-            .andExpect(jsonPath("$.user").value(DEFAULT_USER.intValue()));
+            .andExpect(jsonPath("$.user").value(DEFAULT_USER));
     }
 
     @Test
@@ -444,6 +444,6 @@ class SocialUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(socialUser.getId().intValue())))
-            .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER.intValue())));
+            .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER)));
     }
 }

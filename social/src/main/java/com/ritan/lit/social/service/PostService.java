@@ -1,11 +1,13 @@
 package com.ritan.lit.social.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.ritan.lit.social.domain.Post;
+import com.ritan.lit.social.domain.SocialUser;
 import com.ritan.lit.social.repository.PostRepository;
+import com.ritan.lit.social.repository.SocialUserRepository;
 import com.ritan.lit.social.repository.search.PostSearchRepository;
 import java.util.Optional;
+
+import com.ritan.lit.social.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,12 +25,13 @@ public class PostService {
     private final Logger log = LoggerFactory.getLogger(PostService.class);
 
     private final PostRepository postRepository;
-
     private final PostSearchRepository postSearchRepository;
+    private final SocialUserRepository socialUserRepository;
 
-    public PostService(PostRepository postRepository, PostSearchRepository postSearchRepository) {
+    public PostService(PostRepository postRepository, PostSearchRepository postSearchRepository, SocialUserRepository socialUserRepository) {
         this.postRepository = postRepository;
         this.postSearchRepository = postSearchRepository;
+        this.socialUserRepository = socialUserRepository;
     }
 
     /**
@@ -94,6 +97,10 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<Post> findAll(Pageable pageable) {
         log.debug("Request to get all Posts");
+        //String currentUserName = SecurityUtils.getCurrentUserLogin().get();
+        //SocialUser socialUser = socialUserRepository.findByUserIs(currentUserName);
+
+        //return postRepository.findAllBySocialUser(socialUser, pageable);
         return postRepository.findAll(pageable);
     }
 

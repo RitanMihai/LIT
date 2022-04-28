@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jhi_user" type="bigint">
+            <column name="jhi_user" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_portfolio_user__jhi_user" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -38,7 +38,7 @@
                   tableName="portfolio_user"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="jhi_user" type="numeric"/>
+            <column name="jhi_user" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

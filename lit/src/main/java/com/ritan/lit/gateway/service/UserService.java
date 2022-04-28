@@ -59,22 +59,17 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    private final ReactiveAuthenticationManager authenticationManager;
 
-    private final TokenProvider tokenProvider;
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         UserSearchRepository userSearchRepository,
-        AuthorityRepository authorityRepository,
-        ReactiveAuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+        AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
     }
 
     @Transactional

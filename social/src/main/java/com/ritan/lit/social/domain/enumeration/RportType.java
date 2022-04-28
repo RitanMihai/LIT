@@ -17,11 +17,9 @@ public enum RportType {
     FRAUDULENT_SCHEME("fraudulent scheme"),
     FALSE_INFORMATION("false information"),
     PROMOTE_ILLEGAL_DRUGS("promote illegal drugs"),
-    OTHER;
+    OTHER("other");
 
-    private String value;
-
-    RportType() {}
+    private final String value;
 
     RportType(String value) {
         this.value = value;

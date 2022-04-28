@@ -80,7 +80,7 @@ enum Gender {
 
 /* SOCIAL */
 entity SocialUser {
-  user Long required unique,
+  user String required unique,
 }
 
 entity UserFollowing {
@@ -186,7 +186,7 @@ relationship ManyToMany {
 
 /* PORTFOLIO  */
 entity PortfolioUser {
-  user Long required unique,
+  user String required unique,
 }
 
 entity Order {

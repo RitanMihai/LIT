@@ -15,13 +15,11 @@ import tech.jhipster.config.JHipsterProperties;
 public class SocialClient extends ServiceClient {
     private final String baseURL = "/services/social/api/";
 
-    public SocialClient(TokenProvider tokenProvider) {
-        super(tokenProvider);
-    }
+    public SocialClient(TokenProvider tokenProvider) {super(tokenProvider);}
 
     public void post() {
         SocialUserRequest socialUserRequest = new SocialUserRequest();
-        socialUserRequest.setUser(super.getUser().getId());
+        socialUserRequest.setUser(super.getUser().getLogin());
 
         super.getWebClient().post()
             .uri("/services/social/api/social-users")

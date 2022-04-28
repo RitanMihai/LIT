@@ -28,7 +28,7 @@ public class SocialUser implements Serializable {
 
     @NotNull
     @Column(name = "jhi_user", nullable = false, unique = true)
-    private Long user;
+    private String user;
 
     @OneToMany(mappedBy = "socialUser")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -75,16 +75,16 @@ public class SocialUser implements Serializable {
         this.id = id;
     }
 
-    public Long getUser() {
+    public String getUser() {
         return this.user;
     }
 
-    public SocialUser user(Long user) {
+    public SocialUser user(String user) {
         this.setUser(user);
         return this;
     }
 
-    public void setUser(Long user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -298,7 +298,7 @@ public class SocialUser implements Serializable {
     public String toString() {
         return "SocialUser{" +
             "id=" + getId() +
-            ", user=" + getUser() +
+            ", user='" + getUser() + "'" +
             "}";
     }
 }

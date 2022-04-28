@@ -1,16 +1,14 @@
 package com.ritan.lit.gateway.domain.social;
 
-import lombok.*;
-
 import java.util.Set;
 
-@Data
+/*@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString*/
 public class SocialUserRequest {
     Long id;
-    Long user;
+    String user;
     Set<ReportRequest> reports;
     Set<PostRequest> posts;
     Set<CommentRequest> comments;
@@ -18,11 +16,11 @@ public class SocialUserRequest {
     Set<UserReactionRequest> userReactions;
     Set<UserFollowingsRequest> userFollowings;
 
-    public Long getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(String user) {
         this.user = user;
     }
 

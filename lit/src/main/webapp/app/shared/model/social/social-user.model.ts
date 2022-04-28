@@ -7,7 +7,7 @@ import { IUserFollowing } from 'app/shared/model/social/user-following.model';
 
 export interface ISocialUser {
   id?: number;
-  user?: number;
+  user?: string;
   reports?: IReport[] | null;
   posts?: IPost[] | null;
   comments?: IComment[] | null;

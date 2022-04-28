@@ -1,6 +1,9 @@
 package com.ritan.lit.social.repository;
 
 import com.ritan.lit.social.domain.Post;
+import com.ritan.lit.social.domain.SocialUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {}
+public interface PostRepository extends JpaRepository<Post, Long> {
+    Page<Post> findAllBySocialUser(SocialUser socialUser, Pageable pageable);
+}
