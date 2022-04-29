@@ -22,13 +22,13 @@ a {
 }
 
 .app-container {
-  box-sizing: border-box;
+  display: flex;
+  width: 100%;
   .view-container {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 1rem;
+    
+    flex: 19;
+    padding: 1.5rem;
+    //background-color: rgb(255, 0, 0);
     .card {
       padding: 1rem;
     }
@@ -310,3 +310,4 @@ http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+

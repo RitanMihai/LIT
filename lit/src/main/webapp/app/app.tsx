@@ -3,7 +3,7 @@ import './app.scss';
 import 'app/config/dayjs.ts';
 
 import React, { useEffect } from 'react';
-import { Card } from 'reactstrap';
+import { Card, Col, Row } from 'reactstrap';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -17,6 +17,8 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+
+import SideBar from './shared/layout/sidebar/sidebar';
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
 
@@ -35,29 +37,42 @@ export const App = () => {
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction);
   const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled);
 
-  const paddingTop = '60px';
+  const placement = {
+    /* paddingLeft: '120px', */
+    paddingTop: '60px',
+  }
+
   return (
     <Router basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
+      <div className="app-container" style={placement}>
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-          <Header
+          <SideBar 
             isAuthenticated={isAuthenticated}
             isAdmin={isAdmin}
             currentLocale={currentLocale}
             ribbonEnv={ribbonEnv}
             isInProduction={isInProduction}
-            isOpenAPIEnabled={isOpenAPIEnabled}
-          />
+            isOpenAPIEnabled={isOpenAPIEnabled}/>
         </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
             <ErrorBoundary>
-              <AppRoutes />
+              <Header
+                isAuthenticated={isAuthenticated}
+                isAdmin={isAdmin}
+                currentLocale={currentLocale}
+                ribbonEnv={ribbonEnv}
+                isInProduction={isInProduction}
+                isOpenAPIEnabled={isOpenAPIEnabled}
+              />
             </ErrorBoundary>
-          </Card>
-          <Footer />
-        </div>
+            <div className="container-fluid view-container" id="app-view-container">
+              <Card className="jh-card main-body">
+                <ErrorBoundary>
+                  <AppRoutes />
+                </ErrorBoundary>
+              </Card>
+              <Footer />
+           </div>
       </div>
     </Router>
   );
