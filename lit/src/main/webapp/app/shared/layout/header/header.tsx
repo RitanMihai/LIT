@@ -51,7 +51,7 @@ const Header = (props: IHeaderProps) => {
       <LoadingBar className="loading-bar" />
       <Navbar data-cy="navbar" dark expand="md" fixed="top" className="jh-navbar">
         <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
-        <Brand />
+        
         <Col>
         <Form style = {{marginTop:'15px'}}>
             <FormGroup>

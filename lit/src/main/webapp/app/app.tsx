@@ -38,23 +38,23 @@ export const App = () => {
   const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled);
 
   const placement = {
-    /* paddingLeft: '120px', */
-    paddingTop: '60px',
+     paddingLeft: '90px',
+     paddingTop: '60px', 
   }
 
   return (
     <Router basename={baseHref}>
       <div className="app-container" style={placement}>
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
-        <ErrorBoundary>
-          <SideBar 
-            isAuthenticated={isAuthenticated}
-            isAdmin={isAdmin}
-            currentLocale={currentLocale}
-            ribbonEnv={ribbonEnv}
-            isInProduction={isInProduction}
-            isOpenAPIEnabled={isOpenAPIEnabled}/>
-        </ErrorBoundary>
+            <ErrorBoundary>
+              <SideBar 
+                isAuthenticated={isAuthenticated}
+                isAdmin={isAdmin}
+                currentLocale={currentLocale}
+                ribbonEnv={ribbonEnv}
+                isInProduction={isInProduction}
+                isOpenAPIEnabled={isOpenAPIEnabled}/>
+            </ErrorBoundary>
             <ErrorBoundary>
               <Header
                 isAuthenticated={isAuthenticated}

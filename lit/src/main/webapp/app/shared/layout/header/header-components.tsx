@@ -14,13 +14,12 @@ export const BrandIcon = props => (
 );
 
 export const Brand = () => (
-  <NavbarBrand tag={Link} to="/" className="brand-logo">
+  <NavLink tag={Link} to="/" className="brand-logo text-center">
     <BrandIcon />
     <span className="brand-title">
       <Translate contentKey="global.title">Lit</Translate>
     </span>
-    <span className="navbar-version">{VERSION}</span>
-  </NavbarBrand>
+  </NavLink>
 );
 
 export const Home = () => (

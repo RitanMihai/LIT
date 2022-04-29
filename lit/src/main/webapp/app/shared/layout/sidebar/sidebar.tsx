@@ -50,6 +50,7 @@ return (
         <LoadingBar className="loading-bar" />
         <Navbar data-cy="navbar" dark>
             <Nav id="header-tabs" className="ms-auto" navbar>
+                <Brand/>
                 <Home/>
                 <Portfolio/>
             </Nav>
