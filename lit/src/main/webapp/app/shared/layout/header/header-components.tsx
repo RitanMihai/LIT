@@ -33,7 +33,7 @@ export const Home = () => (
 
 export const Portfolio = () => (
   <NavItem>
-    <NavLink tag={Link} to="/portfolio" className="text-center" style = {{paddingTop}}>
+    <NavLink tag={Link} to="/portfolios" className="text-center" style = {{paddingTop}}>
           <FontAwesomeIcon icon="wallet" size="2x" />
           <Translate contentKey="global.menu.entities.portfolioPortfolio">Portfolio</Translate>
     </NavLink>
@@ -42,7 +42,7 @@ export const Portfolio = () => (
 
 export const Watcher = () => (
   <NavItem>
-    <NavLink tag={Link} to="/portfolio" className="text-center" style = {{paddingTop}}>
+    <NavLink tag={Link} to="/watcher" className="text-center" style = {{paddingTop}}>
           <FontAwesomeIcon icon="compass" size="2x" />
           Watcher
     </NavLink>
