@@ -157,7 +157,7 @@ export const PostUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 {socialUsers
                   ? socialUsers.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
+                        {otherEntity.user}
                       </option>
                     ))
                   : null}

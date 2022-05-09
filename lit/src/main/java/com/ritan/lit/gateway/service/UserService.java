@@ -165,6 +165,7 @@ public class UserService {
             )
             .flatMap(newUser -> {
                 Set<Authority> authorities = new HashSet<>();
+
                 return authorityRepository
                     .findById(AuthoritiesConstants.USER)
                     .map(authorities::add)

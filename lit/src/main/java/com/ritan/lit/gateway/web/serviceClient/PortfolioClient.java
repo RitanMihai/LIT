@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class PortfolioClient extends ServiceClient {
-    private final String baseURL = "/services/portfolio/api/";
+    private final String baseURL = "/services/portfolio/api/portfolio-users";
 
     public PortfolioClient(TokenProvider tokenProvider) {
         super(tokenProvider);

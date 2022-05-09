@@ -5,6 +5,7 @@ import com.ritan.lit.social.domain.SocialUser;
 import com.ritan.lit.social.repository.PostRepository;
 import com.ritan.lit.social.repository.SocialUserRepository;
 import com.ritan.lit.social.repository.search.PostSearchRepository;
+
 import java.util.Optional;
 
 import com.ritan.lit.social.security.SecurityUtils;
@@ -101,7 +102,10 @@ public class PostService {
         //SocialUser socialUser = socialUserRepository.findByUserIs(currentUserName);
 
         //return postRepository.findAllBySocialUser(socialUser, pageable);
-        return postRepository.findAll(pageable);
+        Page<Post> all = postRepository.findAll(pageable);
+        System.out.println("SHOW ALL POSTS GOT : " + all);
+        //return postRepository.findAll(pageable);
+        return all;
     }
 
     /**
@@ -130,7 +134,7 @@ public class PostService {
     /**
      * Search for the post corresponding to the query.
      *
-     * @param query the query of the search.
+     * @param query    the query of the search.
      * @param pageable the pagination information.
      * @return the list of entities.
      */

@@ -20,6 +20,7 @@ import AppRoutes from 'app/routes';
 
 import SideBar from './shared/layout/sidebar/sidebar';
 
+
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
 
 export const App = () => {
@@ -66,13 +67,14 @@ export const App = () => {
               />
             </ErrorBoundary>
             <div className="container-fluid view-container" id="app-view-container">
-              <Card className="jh-card main-body">
+              <div >
                 <ErrorBoundary>
                   <AppRoutes />
                 </ErrorBoundary>
-              </Card>
+              </div>
               <Footer />
            </div>
+   
       </div>
     </Router>
   );

@@ -5,12 +5,12 @@ import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, Collapse, Form, FormGroup, Button, Input, InputGroup, Row, Col } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
-import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../menus';
+import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../../../shared/layout/menus';
 import { useAppDispatch } from 'app/config/store';
 import { setLocale } from 'app/shared/reducers/locale';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Home, Brand, Portfolio } from '../header/header-components';
+import { Home, Brand, Portfolio, Watcher } from '../../../shared/layout/header/header-components';
 
 export interface IHeaderProps {
     isAuthenticated: boolean;
@@ -53,6 +53,8 @@ return (
                 <Brand/>
                 <Home/>
                 <Portfolio/>
+                <Watcher/>
+                
             </Nav>
         </Navbar>
     </div>
