@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  sentiment-app:
+    image: finbert_img
+    container_name: sentimentApp
+    ports:
+      - 127.0.0.1:8087:8087
+
+    #command: python main.py
+
+  sentiment-mongo:
+    container_name: mongoSentiment
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+    networks:
+      - mongodb
+
+    ports:
+      - "27017:27017"
+
+networks:
+  mongodb:
+    driver: bridge
+
+volumes:
+  sentiment-app:
+  sentiment-mongo:
