@@ -11,6 +11,7 @@ import './share.scss';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { Button, Col, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import dayjs, { Dayjs } from 'dayjs';
 
 const Share =(props: RouteComponentProps<{ id: string }>) => {
   /* Current user  */
@@ -63,9 +64,10 @@ const Share =(props: RouteComponentProps<{ id: string }>) => {
 
   const saveEntity = values => {
 
-    values.date = convertDateTimeToServer(values.date);
+    values.date = dayjs(); // Calling dayjs() without parameters returns a fresh Day.js object with the current date and time.
     values.language = 'ENG';
     values.isPayedPromotion = false;
+    
 
     const entity = {
       ...postEntity,
@@ -76,8 +78,6 @@ const Share =(props: RouteComponentProps<{ id: string }>) => {
     dispatch(createEntity(entity));
 
   };
-
-  const defaultValues = () => {return {date: displayDefaultDateTime()}};
 
   return(
     <div className="share">
