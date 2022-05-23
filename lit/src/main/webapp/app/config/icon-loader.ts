@@ -36,6 +36,7 @@ import { faUsersCog } from '@fortawesome/free-solid-svg-icons/faUsersCog';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons/faPhotoFilm';
@@ -48,6 +49,7 @@ export const loadIcons = () => {
     faBell,
     faBook,
     faCloud,
+    faChevronUp,
     faCogs,
     faCompass,
     faDatabase,
