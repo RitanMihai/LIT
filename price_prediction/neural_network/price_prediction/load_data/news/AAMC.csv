@@ -1,0 +1,43 @@
+sentence,prediction,Score,Date,stock
+Market Wrap For February 26: Markets Slightly Higher On Housing Data,positive,0.1777522862,2014-02-26 16:49:00-05:00,AAMC
+Form 8-K from Altisource Asset Mgmt Shows Adam Appleby Named COO,neutral,-0.0011255629,2014-03-17 16:39:00-04:00,AAMC
+Bulls Take A Break As Dow's Winning Streak Ends At 7 Days,negative,-0.3834601939,2014-06-23 16:40:00-04:00,AAMC
+Amended 13D Filing from Luxor Capital on Altisource Asset Mgmt Shows Raised Stake from 13.82% as of Sept. 11 to 15.4%,positive,0.912424624,2014-10-14 17:28:00-04:00,AAMC
+Ocwen Financial Shares Crushed By Regulator Report,negative,-0.8933024406000001,2014-10-22 09:20:00-04:00,AAMC
+"Form 8-K: Altisource Operating Chief Resigns, Ryan Folger Named To VP Of Operations",negative,-0.659594059,2014-12-17 06:07:00-05:00,AAMC
+Top 4 Small-Cap Stocks In The Asset Management Industry With The Highest EPS,neutral,0.0865705088,2014-12-23 04:30:00-05:00,AAMC
+Top 4 Small-Cap Stocks In The Asset Management Industry With The Highest EPS,neutral,0.0865705088,2015-04-01 04:27:00-04:00,AAMC
+Top 4 Small-Cap Stocks In The Asset Management Industry With The Highest EPS,neutral,0.0865705088,2014-12-23 04:30:00-05:00,AAMC
+Top 4 Small-Cap Stocks In The Asset Management Industry With The Highest EPS,neutral,0.0865705088,2015-04-01 04:27:00-04:00,AAMC
+Altisource Gained 50% In 1 Day; These 10 Pictures Explain Why,positive,0.8696441054,2015-01-20 10:32:00-05:00,AAMC
+Altisource Asset Management Halted on Circuit Breaker,negative,-0.8200076818,2015-01-30 09:56:00-05:00,AAMC
+Altisource Asset Management Resumes Trading Down 30%,negative,-0.9528548121,2015-01-30 09:59:00-05:00,AAMC
+"Altisource Names George Ellison CEO, Ashish Pandey Executive Chairman",neutral,-0.00043332200000000004,2015-02-19 16:46:00-05:00,AAMC
+"8-K from Altisource Asset Mgmt Shows Chair Ashish Pandey to Step Down, George Ellison, Current CEO, as Replacement",neutral,-0.3587129116,2015-06-18 17:34:00-04:00,AAMC
+"Altisource Asset Management Reports Q3 EPS $(0.92), Rev. $58.523M",neutral,-0.0905324873,2015-11-09 08:33:00-05:00,AAMC
+Altisource Asset Mgmt Reports Q4 Est. Taxable Income $0.68/Share vs $0.18/Share in Same Qtr. Last Year,neutral,-0.9590655173,2016-02-29 07:42:00-05:00,AAMC
+Altisource Asset Management Reports Q1 EPS $(0.50) vs. Prior Year Quarter $2.50,negative,-1.1113680750000001,2016-05-09 07:35:00-04:00,AAMC
+"Altisource Asset Management Q1 EPS ($0.50), Revenue $4.82M",neutral,-0.0022565965,2016-05-09 07:39:00-04:00,AAMC
+"Altisource Asset Management Reports Q2 EPS $(0.23) vs. Prior Year Quarter $0.27, Rev. $5.56M vs. Prior Year Quarter $76.5M",neutral,-1.3272606189999991,2016-08-08 07:33:00-04:00,AAMC
+"Altisource Asset Management Reports Q3 EPS $(0.67) vs. Prior Year Quarter $(0.92), Rev. $5.1M",neutral,-0.829667791699999,2016-11-07 07:35:00-05:00,AAMC
+12 Biggest Mid-Day Losers For Tuesday,negative,-0.7937307954,2016-12-20 12:57:00-05:00,AAMC
+"Altisource Asset Mgmt Reports Q4 EPS $(1.09), Sales $5.2M",neutral,-0.2902064323,2017-03-01 07:41:00-05:00,AAMC
+"Altisource Asset Management Q2 FFO $0.12, Sales $4.64M",neutral,-0.0103446282,2017-08-08 07:33:00-04:00,AAMC
+"Altisource Asset Management Corporation Reports Q3 EPS $(1.38) vs $(0.67) In Prior Year Period, Sales $4.42M vs $4.85M in Prior Year Period",negative,-0.6211570501,2017-11-07 07:37:00-05:00,AAMC
+"Altisource Asset Mgmt. Reports Q4 EPS $(1.15) vs $(1.09) In Same Qtr. Last Year, Net Loss $1.8M, Sales $4.077M vs $5.204M YoY",negative,-1.5133149624,2018-03-01 07:46:00-05:00,AAMC
+Altisource Asset Management Q1 EPS $(2.75) vs $(0.89) In Prior Year Period,negative,-0.7178617716,2018-05-08 07:36:00-04:00,AAMC
+"Stocks Which Set New 52-Week Low Yesterday, October 9th",negative,-0.8636365533,2018-10-10 11:01:00-04:00,AAMC
+"Stocks Which Set New 52-Week Low Yesterday, October 29th",negative,-0.8672949076,2018-10-30 12:40:00-04:00,AAMC
+"Altisource Asset Management Q3 EPS $(0.78) Up From $(1.38) YoY, Sales $3.93M Down From $4.43M YoY",negative,-0.4530695081,2018-11-07 08:26:00-05:00,AAMC
+"Altisource Asset Management Q4 EPS $(2.69) Down From $(1.15) YoY, Sales $4.02M Down From $4.08M YoY",negative,-0.9709465504,2019-02-27 07:48:00-05:00,AAMC
+Peabody Declares Supplemental Cash Dividend Of $1.85/Share To Augment $1.5B Buyback,positive,0.6800160408,2019-02-27 07:49:00-05:00,AAMC
+72 Stocks Moving In Wednesday's Mid-Day Session,negative,-0.6505355835000001,2019-02-27 12:20:00-05:00,AAMC
+41 Stocks Moving In Monday's Mid-Day Session,negative,-0.7260228395,2019-03-25 12:51:00-04:00,AAMC
+52 Biggest Movers From Yesterday,neutral,0.0495898798,2019-03-26 05:04:00-04:00,AAMC
+Altisource Asset Management Q1 EPS $(0.56) Up From $(2.75) YoY,positive,0.8514383435,2019-05-08 07:36:00-04:00,AAMC
+64 Biggest Movers From Yesterday,neutral,0.0091756433,2019-05-30 05:08:00-04:00,AAMC
+Altisource Asset Management Q2 EPS $1.81 Up From $(0.69) YoY,positive,0.9125344753,2019-08-07 07:46:00-04:00,AAMC
+Altisource Asset Mgmt Q3 EPS $(2.25) Down From $(0.75) YoY,negative,-0.9710146189000001,2019-11-06 09:13:00-05:00,AAMC
+Altisource Asset Mgmt Q4 EPS $(1) Up From $(2.69) YoY,positive,0.8645101190000001,2020-02-28 07:38:00-05:00,AAMC
+108 Biggest Movers From Yesterday,neutral,0.1044180542,2020-04-30 05:30:00-04:00,AAMC
+Altisource Asset Mgmt Q1 EPS $2.350 Up From $0.560 YoY,positive,0.8591057062,2020-05-11 07:47:00-04:00,AAMC

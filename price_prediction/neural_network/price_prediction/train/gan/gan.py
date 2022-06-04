@@ -26,8 +26,7 @@ def make_generator_model(input_dim, output_dim, feature_size) -> tf.keras.models
 
 def make_discriminator_model():
     cnn_net = tf.keras.Sequential()
-    cnn_net.add(
-        Conv1D(32, input_shape=(4, 1), kernel_size=3, strides=2, padding='same', activation=LeakyReLU(alpha=0.01)))
+    cnn_net.add(Conv1D(32, input_shape=(4, 1), kernel_size=3, strides=2, padding='same', activation=LeakyReLU(alpha=0.01)))
     cnn_net.add(Conv1D(64, kernel_size=5, strides=2, padding='same', activation=LeakyReLU(alpha=0.01)))
     cnn_net.add(Conv1D(128, kernel_size=5, strides=2, padding='same', activation=LeakyReLU(alpha=0.01)))
     cnn_net.add(Flatten())

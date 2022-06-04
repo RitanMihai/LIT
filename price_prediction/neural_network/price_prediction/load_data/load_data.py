@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 import os
 from load_data.util import csv_util, stock_association
 
+
 class LoadData(object):
     def __init__(self, ticker=None):
         self.ticker = ticker
@@ -30,31 +31,50 @@ class LoadData(object):
         self.VIX = pd.DataFrame()
         self.USDIndex = pd.DataFrame()
 
-    def load(self):
-        print(" Load Ticker ")
-        self.load_ticker()
-        print(" Load Technical ")
-        self.load_technical()
-        print(" Add Similar Stocks ")
-        self.add_similar_stocks()
-        print(" Merge Technical ")
-        self.merge_ticker_technical()
-        print(" Merge News ")
-        self.merge_news()
+    # Default it generates train and test files
+    # Date format is YYYY-MM-DD
+    def load(self, isTrain=True, start_date=None, end_date=None):
+        is_interval = (start_date is not None) or (end_date is not None)
+        if (isTrain is False) and is_interval:
+            print("Is recommended to train with full data, not with segments")
 
-    def load_ticker(self):
+        print(" Load Ticker ")
+        self.load_ticker(start_date, end_date)
+        print(" Load Technical ")
+        self.load_technical(start_date, end_date)
+        print(" Add Similar Stocks ")
+        self.add_similar_stocks(start_date, end_date)
+        print(" Merge Technical ")
+
+        if is_interval:
+            self.__merge_thn()  # Do not check the files already generated
+        else:
+            self.merge_ticker_technical()
+
+        print(" Merge News ")
+        self.merge_news(isTrain)
+
+    def load_ticker(self, start_date=None, end_date=None):
         # Check if we already have data
-        try:
-            self.tickerData = pd.read_csv("load_data.py/ticker_data" + self.ticker + ".csv", parse_dates=['Date'])
-        except FileNotFoundError:
-            self.tickerData = yf.download(self.ticker)
+        if(start_date is None) or (end_date is None):
+            try:
+                self.tickerData = pd.read_csv("load_data.py/ticker_data" + self.ticker + ".csv", parse_dates=['Date'])
+            except FileNotFoundError:
+                self.tickerData = None
+                self.tickerData = yf.download(self.ticker)
+
+                # Drop Adj Close
+                csv_util.drop_columns(self.tickerData, "Adj Close")
+                self.tickerData.to_csv("load_data/ticker_data/" + self.ticker + ".csv")
+        else:
+            self.tickerData = yf.download(self.ticker, start=start_date, end=end_date)
             # Drop Adj Close
             csv_util.drop_columns(self.tickerData, "Adj Close")
             self.tickerData.to_csv("load_data/ticker_data/" + self.ticker + ".csv")
 
         return self.tickerData.to_json()
 
-    def load_technical(self):
+    def load_technical(self, start_date=None, end_date=None):
         # TODO: Check if we already have data
         try:
             for thn in range(len(self.technical_list)):
@@ -111,29 +131,32 @@ class LoadData(object):
         try:
             self.tickerData = pd.read_csv("load_data/ticker_technical/" + self.ticker + ".csv")
         except FileNotFoundError:
-            for thn in range(len(self.technical_list)):
-                current_thn = self.technical_list[thn]
-                technical_data = pd.read_csv('load_data/technical_data/' + current_thn + '.csv',
-                                             parse_dates=['Date'])
+            self.__merge_thn()
 
-                # Keep just the Date and the Close value
-                # 1 = Open, 2 = High, 3 = Low, 5 = Volume
-                technical_data.drop(technical_data.columns[[1, 2, 3, 5]], axis=1, inplace=True)
+    def __merge_thn(self):
+        for thn in range(len(self.technical_list)):
+            current_thn = self.technical_list[thn]
+            technical_data = pd.read_csv('load_data/technical_data/' + current_thn + '.csv',
+                                         parse_dates=['Date'])
 
-                # Rename Close with the current technical data, ex: Close -> NASDAQ
-                technical_data.rename(columns={'Close': current_thn}, inplace=True)
+            # Keep just the Date and the Close value
+            # 1 = Open, 2 = High, 3 = Low, 5 = Volume
+            technical_data.drop(technical_data.columns[[1, 2, 3, 5]], axis=1, inplace=True)
 
-                self.tickerData = pd.merge(self.tickerData, technical_data, on='Date')
+            # Rename Close with the current technical data, ex: Close -> NASDAQ
+            technical_data.rename(columns={'Close': current_thn}, inplace=True)
 
-            self.tickerData = self.get_technical_indicators(self.tickerData)
+            self.tickerData = pd.merge(self.tickerData, technical_data, on='Date')
 
-            # Drop the first 21 rows
-            # For doing the fourier
-            self.tickerData = self.tickerData.iloc[20:, :].reset_index(drop=True)
-            self.tickerData = pd.concat([self.tickerData, self.fourier(self.tickerData)], axis=1)
-            self.tickerData.to_csv("load_data/ticker_technical/" + self.ticker + ".csv", index=False)
+        self.tickerData = self.get_technical_indicators(self.tickerData)
 
-    def add_similar_stocks(self):
+        # Drop the first 21 rows
+        # For doing the fourier
+        self.tickerData = self.tickerData.iloc[20:, :].reset_index(drop=True)
+        self.tickerData = pd.concat([self.tickerData, self.fourier(self.tickerData)], axis=1)
+        self.tickerData.to_csv("load_data/ticker_technical/" + self.ticker + ".csv", index=False)
+
+    def add_similar_stocks(self, start_date=None, end_date=None):
         similar = stock_association.similar_stocks(self.ticker)
 
         for i in range(len(similar)):
@@ -146,7 +169,7 @@ class LoadData(object):
 
             self.tickerData = pd.merge(self.tickerData, current_stock, on='Date')
 
-    def merge_news(self):
+    def merge_news(self, isTrain=True):
         # TODO: I should check in final_data/ticker if there are files first
         news_dataset = pd.read_csv("load_data/news/" + self.ticker + ".csv", parse_dates=["Date"])
 
@@ -157,7 +180,8 @@ class LoadData(object):
 
         # Check NA and fill them
         self.tickerData.isnull().sum()
-        self.tickerData.iloc[:, 1:] = pd.concat([self.tickerData.iloc[:, 1:].ffill(), self.tickerData.iloc[:, 1:].bfill()]).groupby(
+        self.tickerData.iloc[:, 1:] = pd.concat(
+            [self.tickerData.iloc[:, 1:].ffill(), self.tickerData.iloc[:, 1:].bfill()]).groupby(
             level=0).mean()
 
         # Set the date to datetime data
@@ -194,8 +218,8 @@ class LoadData(object):
         except FileExistsError:
             print('New directory not created. Directory models/train_files/' + self.ticker + ' already exists')
 
-        dump(X_scaler, open('models/train_files/'+self.ticker+'/X_scaler.pkl', 'wb'))
-        dump(y_scaler, open('models/train_files/'+self.ticker+'/y_scaler.pkl', 'wb'))
+        dump(X_scaler, open('models/train_files/' + self.ticker + '/X_scaler.pkl', 'wb'))
+        dump(y_scaler, open('models/train_files/' + self.ticker + '/y_scaler.pkl', 'wb'))
 
         X, y, yc = self.__get_X_y(X_scale_dataset, y_scale_dataset, n_steps_in, n_steps_out)
 
@@ -205,29 +229,30 @@ class LoadData(object):
 
         try:
             # We must, first, create a folder where to save data
-            os.mkdir('load_data/final_data/'+self.ticker)
+            os.mkdir('load_data/final_data/' + self.ticker)
         except FileExistsError:
-            print('New directory not created. Directory load_data/final_data/'+self.ticker+' already exists')
+            print('New directory not created. Directory load_data/final_data/' + self.ticker + ' already exists')
 
-        np.save('load_data/final_data/'+self.ticker+'/X_test.npy', X_test)
-        np.save('load_data/final_data/'+self.ticker+'/y_test.npy',  y_test)
-        np.save('load_data/final_data/'+self.ticker+'/yc_test.npy', yc_test)
-        np.save('load_data/final_data/'+self.ticker+'/index_test.npy', self.tickerData.index)
+        np.save('load_data/final_data/' + self.ticker + '/X_test.npy', X_test)
+        np.save('load_data/final_data/' + self.ticker + '/y_test.npy', y_test)
+        np.save('load_data/final_data/' + self.ticker + '/yc_test.npy', yc_test)
+        np.save('load_data/final_data/' + self.ticker + '/index_test.npy', self.tickerData.index)
 
-        X_train = self.__extract_train_test(X)
-        y_train = self.__extract_train_test(y)
-        yc_train = self.__extract_train_test(yc)
+        if isTrain:
+            X_train = self.__extract_train_test(X)
+            y_train = self.__extract_train_test(y)
+            yc_train = self.__extract_train_test(yc)
 
-        train_predict_index = self.tickerData.iloc[n_steps_in: X_train.shape[0] + n_steps_in + n_steps_out - 1, :].index
-        try:
-            os.mkdir('models/train_files/' + self.ticker)
-        except FileExistsError:
-            print('New directory not created. Directory models/train_files/ '+self.ticker+' already exists')
+            train_predict_index = self.tickerData.iloc[n_steps_in: X_train.shape[0] + n_steps_in + n_steps_out - 1, :].index
+            try:
+                os.mkdir('models/train_files/' + self.ticker)
+            except FileExistsError:
+                print('New directory not created. Directory models/train_files/ ' + self.ticker + ' already exists')
 
-        np.save('models/train_files/' + self.ticker + '/X_train.npy', X_train)
-        np.save('models/train_files/' + self.ticker + '/y_train.npy', y_train)
-        np.save('models/train_files/' + self.ticker + '/yc_train.npy', yc_train)
-        np.save('models/train_files/' + self.ticker + '/index_train.npy', train_predict_index)
+            np.save('models/train_files/' + self.ticker + '/X_train.npy', X_train)
+            np.save('models/train_files/' + self.ticker + '/y_train.npy', y_train)
+            np.save('models/train_files/' + self.ticker + '/yc_train.npy', yc_train)
+            np.save('models/train_files/' + self.ticker + '/index_train.npy', train_predict_index)
 
     def update_ticker(self):
         pass
@@ -242,10 +267,11 @@ class LoadData(object):
         ticker_data['MA21'] = ticker_data.iloc[:, 4].rolling(window=21).mean()
 
         # Create MACD
-        ticker_data['MACD'] = ticker_data.iloc[:, 4].ewm(span=26).mean() - ticker_data.iloc[:, 1].ewm(span=12, adjust=False).mean()
+        ticker_data['MACD'] = ticker_data.iloc[:, 4].ewm(span=26).mean() - ticker_data.iloc[:, 1].ewm(span=12,
+                                                                                                      adjust=False).mean()
 
         # Create Bollinger Bands
-        ticker_data['20SD'] =       ticker_data.iloc[:, 4].rolling(20).std()
+        ticker_data['20SD'] = ticker_data.iloc[:, 4].rolling(20).std()
         ticker_data['upper_band'] = ticker_data['MA21'] + (ticker_data['20SD'] * 2)
         ticker_data['lower_band'] = ticker_data['MA21'] - (ticker_data['20SD'] * 2)
 
@@ -306,4 +332,3 @@ class LoadData(object):
         train_size = round(len(data) * 0.7)
         data_train = data[0:train_size]
         return data_train
-
