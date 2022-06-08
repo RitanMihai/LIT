@@ -5,6 +5,8 @@ import numpy as np
 from pickle import load
 import json
 from sklearn.metrics import mean_squared_error
+import datetime
+import time
 
 class Prediction(object):
     def __init__(self, ticker=None):
@@ -71,9 +73,17 @@ class Prediction(object):
 
     def get_data(self):
         test_predicted = self.get_test_plot()
-        prediction_stock_json = json.loads(test_predicted.to_json())
+        # Probably not the right way, but fckit
+        prediction_list = list()
+        for index, value in test_predicted.items():
+            # Convert TimeStamp into Unix
+            unix_time = time.mktime(index.timetuple()) * 1000  # Use 13 digits format
+            cur_prediction = {"date": unix_time, "value": value}
+            prediction_list.append(cur_prediction)
+
+        #prediction_stock_json = json.dumps(prediction_list)
 
         # Static change predicated_mean in ticker
         # prediction_stock_json = {'predicted_mean': prediction_stock_json["predicted_mean"]}
         # prediction_stock_json[self.ticker] = prediction_stock_json.pop('predicted_mean')
-        return prediction_stock_json
+        return prediction_list

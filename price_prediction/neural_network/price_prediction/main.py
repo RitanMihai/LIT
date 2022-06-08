@@ -1,27 +1,31 @@
-from flask import Flask, abort, jsonify
-from flask_cors import CORS
-import sys
-import optparse
-import time
-from flask_mongoengine import MongoEngine
-from flask import request, render_template
+from flask import Flask, abort, jsonify, Response
 
+from flask_mongoengine import MongoEngine
+import pymongo
+import json
+from flask import request
+import pprint
 from prediction import prediction_real_fake as prd
 from load_data import load_data as ld
 from train.train import Train
 
+from bson.objectid import ObjectId
+
 app = Flask(__name__)
 
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'prediction',
-    'host': 'localhost',
-    'username': 'admin',
-    'password': 'admin',
-    'port': 27017
-}
+try:
+    mongo = pymongo.MongoClient(
+        host="localhost",
+        username="admin",
+        password="admin",
+        port=27017,
+        serverSelectionTimeoutMS=1000
+    )
 
-db = MongoEngine()
-db.init_app(app)
+    db = mongo.predictions
+    mongo.server_info()
+except:
+    print("ERROR - Cannot connecto to the database")
 
 
 # ARGS: ticker
@@ -33,7 +37,8 @@ def get_prediction(ticker):
 
     prediction = None
     try:
-        load_data = ld.LoadData(ticker)
+        force_regenerating = True
+        load_data = ld.LoadData(ticker, force_regenerating)
         generate_train_data = False
         if (start_date is not None) or (end_date is not None):
             print("HERE?")
@@ -44,7 +49,17 @@ def get_prediction(ticker):
         prediction = prd.Prediction(ticker)
     except FileNotFoundError:
         return jsonify(message="Prediction for " + ticker + " not found. Try to POST " + ticker), 404
-    return prediction.get_data()
+
+    predictions = prediction.get_data()
+
+    # I should replace with insert_many()
+    for cur_prd in predictions:
+        # Insert into database trough reflection, non-reflective would look like db.ticker.insert_one,
+        # but this obviously do not work
+        # Might work with db[ticker].insert_one(cur_prd), but I do not want to risk now
+        dbResponse = getattr(db, ticker).insert_one(cur_prd)
+        pass
+    return jsonify("Done")
 
 
 @app.route('/prediction/<ticker>', methods=['POST'])
@@ -56,6 +71,15 @@ def set_prediction(ticker):
     train.train()
     return jsonify(message="Done")
 
+
+@app.route('/mongo/predictions/<symbol>', methods=['GET'])
+def get_stock_info(symbol):
+    predictions = list(db[symbol].find())
+
+    for prediction in predictions:
+        prediction["_id"] = str(prediction["_id"])
+
+    return Response(response=json.dumps(predictions), status=500, mimetype="application/json")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8090, debug=False, threaded=True)
