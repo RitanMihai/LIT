@@ -45,6 +45,12 @@ public class StockService {
         return result;
     }
 
+    public List<Stock> saveAll(List<Stock> stocks) {
+        log.debug("Request to save Stock : {}", stocks);
+        List<Stock> result = stockRepository.saveAll(stocks);
+        stockSearchRepository.saveAll(result);
+        return result;
+    }
     /**
      * Partially update a stock.
      *

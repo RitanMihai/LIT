@@ -6,12 +6,14 @@ import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,10 +65,27 @@ public class StockResource {
             .body(result);
     }
 
+    @PostMapping("/stocks/list")
+    public ResponseEntity<List<Stock>> createStocks(@RequestBody List<Stock> stocks) throws URISyntaxException {
+        log.debug("REST request to save Stock : {}", stocks);
+
+       stocks.forEach(stock -> {
+            if(stock.getId() != null)
+                throw new BadRequestAlertException("A new stock cannot already have an ID", ENTITY_NAME, "idexists");
+        });
+
+        List<Stock> result = stockService.saveAll(stocks);
+
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.toString()))
+            .build();
+    }
+
     /**
      * {@code PUT  /stocks/:id} : Updates an existing stock.
      *
-     * @param id the id of the stock to save.
+     * @param id    the id of the stock to save.
      * @param stock the stock to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated stock,
      * or with status {@code 400 (Bad Request)} if the stock is not valid,
@@ -98,7 +117,7 @@ public class StockResource {
     /**
      * {@code PATCH  /stocks/:id} : Partial updates given fields of an existing stock, field will ignore if it is null
      *
-     * @param id the id of the stock to save.
+     * @param id    the id of the stock to save.
      * @param stock the stock to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated stock,
      * or with status {@code 400 (Bad Request)} if the stock is not valid,
@@ -106,7 +125,7 @@ public class StockResource {
      * or with status {@code 500 (Internal Server Error)} if the stock couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/stocks/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/stocks/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<Stock> partialUpdateStock(@PathVariable(value = "id", required = false) final Long id, @RequestBody Stock stock)
         throws URISyntaxException {
         log.debug("REST request to partial update Stock partially : {}, {}", id, stock);

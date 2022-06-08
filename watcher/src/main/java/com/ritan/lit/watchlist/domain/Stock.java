@@ -55,6 +55,22 @@ public class Stock implements Serializable {
     @Column(name = "isin")
     private String isin;
 
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
     @Column(name = "is_delisted")
     private Boolean isDelisted;
 
@@ -67,6 +83,12 @@ public class Stock implements Serializable {
 
     @Column(name = "dividend_yield")
     private Double dividendYield;
+
+    @Column(name = "sector")
+    private String sector;
+
+    @Column(name="industry")
+    private String industry;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "stocks" }, allowSetters = true)
@@ -520,6 +542,8 @@ public class Stock implements Serializable {
             ", hasDividend='" + getHasDividend() + "'" +
             ", type='" + getType() + "'" +
             ", dividendYield=" + getDividendYield() +
+            ", sector='" + getSector() + "'" +
+            ", industry='" + getIndustry() + "'" +
             "}";
     }
 }

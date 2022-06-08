@@ -28,7 +28,9 @@ class StockSearchRepositoryInternalImpl implements StockSearchRepositoryInternal
 
     @Override
     public Stream<Stock> search(String query) {
+        System.out.println("QUERY " +  query);
         NativeSearchQuery nativeSearchQuery = new NativeSearchQuery(queryStringQuery(query));
+
         return elasticsearchTemplate.search(nativeSearchQuery, Stock.class).map(SearchHit::getContent).stream();
     }
 }
