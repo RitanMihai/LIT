@@ -1,3 +1,8 @@
 /intelliJ
 *.iml
 price_prediction/neural_network/.idea
+*.npy
+*.csv
+*.pkl
+*.pyc
+*.h5
