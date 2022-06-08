@@ -27,6 +27,8 @@ export interface IStock {
   stockExchange?: IStockExchange | null;
   company?: ICompany | null;
   currency?: ICurrency | null;
+  sector?: ICompany | null;
+  industry?: ICompany | null;
   priceHistories?: IPriceHistory[] | null;
   dividendHistories?: IDividendHistory[] | null;
   stockSplitHistories?: IStockSplitHistory[] | null;

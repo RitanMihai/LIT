@@ -15,6 +15,10 @@ const initialState: EntityState<IStock> = {
 };
 
 const apiUrl = 'services/watcher/api/stocks';
+
+// Change in backend to be services/watcher/api/stocks/list
+const apiListUrl = 'services/watcher/api/stocks-list';
+
 const apiSearchUrl = 'services/watcher/api/_search/stocks';
 
 // Actions
@@ -42,6 +46,20 @@ export const createEntity = createAsyncThunk(
   'stock/create_entity',
   async (entity: IStock, thunkAPI) => {
     const result = await axios.post<IStock>(apiUrl, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const createEntities = createAsyncThunk(
+  'stock/create_entities',
+  async (entities: Array<IStock>, thunkAPI) => {
+    console.log("===============================================")
+    console.log(entities);
+    console.log("===============================================")
+    const requestUrl = `${apiUrl}/list`;
+    const result = await axios.post<Array<IStock>>(requestUrl, entities);
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
