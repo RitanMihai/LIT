@@ -37,8 +37,8 @@ import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp';
+import { faToolbox } from '@fortawesome/free-solid-svg-icons/faToolBox';
 import { library } from '@fortawesome/fontawesome-svg-core';
-
 import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons/faPhotoFilm';
 
 export const loadIcons = () => {
@@ -46,6 +46,7 @@ export const loadIcons = () => {
     faArrowLeft,
     faAsterisk,
     faBan,
+    faToolbox,
     faBell,
     faBook,
     faCloud,

@@ -8,6 +8,7 @@ import Metrics from './metrics/metrics';
 import Configuration from './configuration/configuration';
 import Docs from './docs/docs';
 import Gateway from './gateway/gateway';
+import AdministratorTools from './tools/administrator-tools';
 
 const Routes = ({ match }) => (
   <div>
@@ -18,6 +19,7 @@ const Routes = ({ match }) => (
     <ErrorBoundaryRoute exact path={`${match.url}/configuration`} component={Configuration} />
     <ErrorBoundaryRoute exact path={`${match.url}/logs`} component={Logs} />
     <ErrorBoundaryRoute exact path={`${match.url}/docs`} component={Docs} />
+    <ErrorBoundaryRoute exact path={`${match.url}/administrator-tools`} component={AdministratorTools} />
   </div>
 );
 
