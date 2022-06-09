@@ -59,6 +59,9 @@ import transaction from 'app/entities/portfolio/transaction/transaction.reducer'
 import userFollowing from 'app/entities/social/user-following/user-following.reducer';
 // prettier-ignore
 import userReaction from 'app/entities/social/user-reaction/user-reaction.reducer';
+// prettier-ignore
+import prediction from 'app/entities/watcher/prediction/prediction.reducer'
+
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const rootReducer = {
@@ -96,6 +99,7 @@ const rootReducer = {
   transaction,
   userFollowing,
   userReaction,
+  prediction,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 };

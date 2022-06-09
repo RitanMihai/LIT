@@ -55,6 +55,12 @@ module.exports = async options =>
           secure: false,
           changeOrigin: options.tls,
         },
+        {
+          context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console', '/auth'],
+          target: `http${options.tls ? 's' : ''}://localhost:8090`,
+          secure: false,
+          changeOrigin: options.tls,
+        }
       ],
       https: options.tls,
       historyApiFallback: true,
