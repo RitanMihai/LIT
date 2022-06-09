@@ -4,6 +4,7 @@ from flask_mongoengine import MongoEngine
 import pymongo
 import json
 from flask import request
+from flask_cors import CORS
 import pprint
 from prediction import prediction_real_fake as prd
 from load_data import load_data as ld
@@ -12,6 +13,7 @@ from train.train import Train
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
+CORS(app, resources={r"*": {"origins": "*"}})
 
 try:
     mongo = pymongo.MongoClient(
@@ -79,7 +81,7 @@ def get_stock_info(symbol):
     for prediction in predictions:
         prediction["_id"] = str(prediction["_id"])
 
-    return Response(response=json.dumps(predictions), status=500, mimetype="application/json")
+    return Response(response=json.dumps(predictions), status=200, mimetype="application/json")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8090, debug=False, threaded=True)
