@@ -8,9 +8,9 @@ from load_data.util import csv_util, stock_association
 
 
 class LoadData(object):
-    def __init__(self, ticker=None):
+    def __init__(self, ticker=None, force_regenerating=False):
         self.ticker = ticker
-
+        self. force_regenerating = force_regenerating
         self.tickerData = None
         self.news = None  # TODO: Find a method to get targeted news
         # Indexes, Compositions, Commodities
@@ -46,7 +46,8 @@ class LoadData(object):
         self.add_similar_stocks(start_date, end_date)
         print(" Merge Technical ")
 
-        if is_interval:
+
+        if is_interval or self.force_regenerating:
             self.__merge_thn()  # Do not check the files already generated
         else:
             self.merge_ticker_technical()
