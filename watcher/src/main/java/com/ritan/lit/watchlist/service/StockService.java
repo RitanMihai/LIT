@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -157,5 +159,24 @@ public class StockService {
     public List<Stock> search(String query) {
         log.debug("Request to search Stocks for query {}", query);
         return StreamSupport.stream(stockSearchRepository.search(query).spliterator(), false).collect(Collectors.toList());
+    }
+
+    public List<Stock> findAllBySector(String sector) {
+        return stockRepository.findAllBySector(sector);
+    }
+
+    public List<Stock> findAllBySector(String sector, Integer page, Integer limit) {
+        Pageable slice = PageRequest.of(page,limit);
+        return stockRepository.findAllBySector(sector, slice);
+    }
+
+    public Long stockRowsNumberBySector(String sector){
+        return stockRepository.countBySector(sector);
+    }
+    /***
+     * The number of insertion in the database
+     */
+    public Long stockRowsNumber(){
+        return stockRepository.count();
     }
 }

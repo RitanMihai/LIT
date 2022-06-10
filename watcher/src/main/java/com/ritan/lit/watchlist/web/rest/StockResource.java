@@ -2,6 +2,7 @@ package com.ritan.lit.watchlist.web.rest;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
+import com.ritan.lit.watchlist.domain.PageableStock;
 import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.service.StockService;
@@ -82,6 +83,18 @@ public class StockResource {
             .build();
     }
 
+    @GetMapping("/stocks/sector/{sector}")
+    public ResponseEntity<?> getAllBySector(@PathVariable String sector, @RequestParam("page") Optional<Integer> page,
+                                      @RequestParam("limit") Optional<Integer> limit)
+    {
+        if(page.isPresent() && limit.isPresent()) {
+            PageableStock stocks = new PageableStock();
+            stocks.setStocks(stockService.findAllBySector(sector, page.get(), limit.get()));
+            stocks.setSize(stockService.stockRowsNumberBySector(sector));
+            return ResponseEntity.ok(stocks);
+        }
+        return ResponseEntity.ok(stockService.findAllBySector(sector));
+    }
     /**
      * {@code PUT  /stocks/:id} : Updates an existing stock.
      *
