@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,9 +99,11 @@ public class StockResource {
                     Optional<Object> number = Optional.ofNullable(objects[1]);
 
                     if (category.isPresent() && number.isPresent()) {
-                        stockGroupByType.setCategory(objects[0].toString());
-                        stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
-                        stockSectors.add(stockGroupByType);
+                        if (StringUtils.isNotBlank(category.get().toString())) {
+                            stockGroupByType.setCategory(objects[0].toString());
+                            stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
+                            stockSectors.add(stockGroupByType);
+                        }
                     }
                 });
                 return ResponseEntity.ok(stockSectors);
@@ -115,9 +118,11 @@ public class StockResource {
                     Optional<Object> number = Optional.ofNullable(objects[1]);
 
                     if (category.isPresent() && number.isPresent()) {
-                        stockGroupByType.setCategory(objects[0].toString());
-                        stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
-                        stockIndustry.add(stockGroupByType);
+                        if (StringUtils.isNotBlank(category.get().toString())) {
+                            stockGroupByType.setCategory(objects[0].toString());
+                            stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
+                            stockIndustry.add(stockGroupByType);
+                        }
                     }
                 });
                 return ResponseEntity.ok(stockIndustry);
