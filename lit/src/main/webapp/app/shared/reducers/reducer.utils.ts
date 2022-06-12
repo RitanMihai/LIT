@@ -78,6 +78,18 @@ export interface EntityState<T> {
   updateSuccess: boolean;
 }
 
+export interface EntityStateIndustrySector<T> extends EntityState<T> {
+  loading: boolean;
+  errorMessage: string | null;
+  entitiesIndustry: ReadonlyArray<T>;
+  entitiesSector: ReadonlyArray<T>;
+  entities: ReadonlyArray<T>;
+  entity: T;
+  links?: any;
+  updating: boolean;
+  totalItems?: number;
+  updateSuccess: boolean;
+}
 /**
  * A wrapper on top of createSlice from Redux Toolkit to extract
  * common reducers and matchers used by entities
@@ -93,6 +105,51 @@ export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntitySt
   initialState: EntityState<T>;
   reducers?: ValidateSliceCaseReducers<EntityState<T>, Reducers>;
   extraReducers?: (builder: ActionReducerMapBuilder<EntityState<T>>) => void;
+  skipRejectionHandling?: boolean;
+}) => {
+  return createSlice({
+    name,
+    initialState,
+    reducers: {
+      /**
+       * Reset the entity state to initial state
+       */
+      reset() {
+        return initialState;
+      },
+      ...reducers,
+    },
+    extraReducers(builder) {
+      extraReducers(builder);
+      /*
+       * Common rejection logic is handled here.
+       * If you want to add your own rejcetion logic, pass `skipRejectionHandling: true`
+       * while calling `createEntitySlice`
+       * */
+      if (!skipRejectionHandling) {
+        builder.addMatcher(isRejectedAction, (state, action) => {
+          state.loading = false;
+          state.updating = false;
+          state.updateSuccess = false;
+          state.errorMessage = action.error.message;
+        });
+      }
+    },
+  });
+};
+
+/* CUSTOM FOR Sector and Industry */
+export const createEntityIndustrySectorSlice = <T, Reducers extends SliceCaseReducers<EntityStateIndustrySector<T>>>({
+  name = '',
+  initialState,
+  reducers,
+  extraReducers,
+  skipRejectionHandling,
+}: {
+  name: string;
+  initialState: EntityStateIndustrySector<T>;
+  reducers?: ValidateSliceCaseReducers<EntityStateIndustrySector<T>, Reducers>;
+  extraReducers?: (builder: ActionReducerMapBuilder<EntityStateIndustrySector<T>>) => void;
   skipRejectionHandling?: boolean;
 }) => {
   return createSlice({

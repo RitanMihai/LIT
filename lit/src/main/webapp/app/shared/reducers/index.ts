@@ -61,7 +61,8 @@ import userFollowing from 'app/entities/social/user-following/user-following.red
 import userReaction from 'app/entities/social/user-reaction/user-reaction.reducer';
 // prettier-ignore
 import prediction from 'app/entities/watcher/prediction/prediction.reducer'
-
+// prettier-ignore
+import stockGroupTypes from 'app/entities/watcher/stock/stock-group-type.reducer'
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const rootReducer = {
@@ -94,6 +95,7 @@ const rootReducer = {
   stock,
   stockExchange,
   stockInfo,
+  stockGroupTypes,
   stockSplitHistory,
   tag,
   transaction,

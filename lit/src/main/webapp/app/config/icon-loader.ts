@@ -40,10 +40,12 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp';
 import { faToolbox } from '@fortawesome/free-solid-svg-icons/faToolBox';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons/faPhotoFilm';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons/faArrowUpRightFromSquare'
 
 export const loadIcons = () => {
   library.add(
     faArrowLeft,
+    faArrowUpRightFromSquare,
     faAsterisk,
     faBan,
     faToolbox,
