@@ -1,23 +1,23 @@
 package com.ritan.lit.watchlist.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.ritan.lit.watchlist.domain.PageableStock;
 import com.ritan.lit.watchlist.domain.Stock;
+import com.ritan.lit.watchlist.domain.StockGroupByType;
 import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -70,8 +70,8 @@ public class StockResource {
     public ResponseEntity<List<Stock>> createStocks(@RequestBody List<Stock> stocks) throws URISyntaxException {
         log.debug("REST request to save Stock : {}", stocks);
 
-       stocks.forEach(stock -> {
-            if(stock.getId() != null)
+        stocks.forEach(stock -> {
+            if (stock.getId() != null)
                 throw new BadRequestAlertException("A new stock cannot already have an ID", ENTITY_NAME, "idexists");
         });
 
@@ -83,11 +83,54 @@ public class StockResource {
             .build();
     }
 
+    @GetMapping("/stocks/types/{type}")
+    public ResponseEntity<?> countStocksBySector(@PathVariable Optional<String> type) {
+        if (!type.isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You should provide a type");
+
+        switch (type.get()) {
+            case "sector": {
+                List<Object[]> allStocksBySector = stockService.countStocksBySector();
+                List<StockGroupByType> stockSectors = new ArrayList<>();
+                allStocksBySector.forEach(objects -> {
+                    StockGroupByType stockGroupByType = new StockGroupByType();
+                    Optional<Object> category = Optional.ofNullable(objects[0]);
+                    Optional<Object> number = Optional.ofNullable(objects[1]);
+
+                    if (category.isPresent() && number.isPresent()) {
+                        stockGroupByType.setCategory(objects[0].toString());
+                        stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
+                        stockSectors.add(stockGroupByType);
+                    }
+                });
+                return ResponseEntity.ok(stockSectors);
+            }
+            case "industry": {
+                List<Object[]> allStocksByIndustry = stockService.countStocksByIndustry();
+                List<StockGroupByType> stockIndustry = new ArrayList<>();
+
+                allStocksByIndustry.forEach(objects -> {
+                    StockGroupByType stockGroupByType = new StockGroupByType();
+                    Optional<Object> category = Optional.ofNullable(objects[0]);
+                    Optional<Object> number = Optional.ofNullable(objects[1]);
+
+                    if (category.isPresent() && number.isPresent()) {
+                        stockGroupByType.setCategory(objects[0].toString());
+                        stockGroupByType.setNumber(Long.valueOf(objects[1].toString()));
+                        stockIndustry.add(stockGroupByType);
+                    }
+                });
+                return ResponseEntity.ok(stockIndustry);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Type not found");
+    }
+
     @GetMapping("/stocks/sector/{sector}")
     public ResponseEntity<?> getAllBySector(@PathVariable String sector, @RequestParam("page") Optional<Integer> page,
-                                      @RequestParam("limit") Optional<Integer> limit)
-    {
-        if(page.isPresent() && limit.isPresent()) {
+                                            @RequestParam("limit") Optional<Integer> limit) {
+        if (page.isPresent() && limit.isPresent()) {
             PageableStock stocks = new PageableStock();
             stocks.setStocks(stockService.findAllBySector(sector, page.get(), limit.get()));
             stocks.setSize(stockService.stockRowsNumberBySector(sector));
@@ -95,6 +138,7 @@ public class StockResource {
         }
         return ResponseEntity.ok(stockService.findAllBySector(sector));
     }
+
     /**
      * {@code PUT  /stocks/:id} : Updates an existing stock.
      *

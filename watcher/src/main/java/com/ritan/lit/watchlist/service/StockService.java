@@ -1,7 +1,5 @@
 package com.ritan.lit.watchlist.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.repository.search.StockSearchRepository;
@@ -178,5 +176,13 @@ public class StockService {
      */
     public Long stockRowsNumber(){
         return stockRepository.count();
+    }
+
+    public List<Object[]> countStocksBySector() {
+        return stockRepository.countStocksBySector();
+    }
+
+    public List<Object[]> countStocksByIndustry() {
+        return stockRepository.countStocksByIndustry();
     }
 }
