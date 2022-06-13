@@ -2,7 +2,7 @@ import { ApexOptions } from "apexcharts";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const BarSample = (props) => {
+const SingleLineChart = (props) => {
   const series = [{
     name: props.stock,
     data: props.series?.map((item) => item.value)
@@ -79,4 +79,4 @@ const BarSample = (props) => {
   )
 }
 
-export default BarSample;
+export default SingleLineChart;
