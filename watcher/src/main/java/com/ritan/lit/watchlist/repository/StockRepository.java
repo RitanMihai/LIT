@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data SQL repository for the Stock entity.
@@ -16,10 +17,14 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAllBySector(String sector);
     List<Stock> findAllBySector(String sector, Pageable pageable);
 
-    @Query(value = "SELECT s.sector, COUNT(s.sector) FROM Stock AS s GROUP BY s.sector")
+    Optional<Stock> findByTicker(String ticker);
+
+    /* I should use sort and pageable instead of raw sql */
+    @Query(value = "SELECT s.sector, COUNT(s.sector) FROM Stock AS s GROUP BY s.sector ORDER BY COUNT(s.sector) DESC")
     List<Object[]> countStocksBySector();
 
-    @Query(value = "SELECT s.industry, COUNT(s.industry) FROM Stock AS s GROUP BY s.industry")
+    /* I should use sort and pageable instead of raw sql */
+    @Query(value = "SELECT s.industry, COUNT(s.industry) FROM Stock AS s GROUP BY s.industry ORDER BY COUNT(s.sector) DESC")
     List<Object[]> countStocksByIndustry();
 
     /* Return rows based on sector */
