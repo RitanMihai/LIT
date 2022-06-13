@@ -1,17 +1,24 @@
 package com.ritan.lit.watchlist.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.ritan.lit.watchlist.domain.Currency;
 import com.ritan.lit.watchlist.domain.PriceHistory;
+import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.PriceHistoryRepository;
+import com.ritan.lit.watchlist.service.CurrencyService;
 import com.ritan.lit.watchlist.service.PriceHistoryService;
+import com.ritan.lit.watchlist.service.StockExchangeService;
+import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.StreamSupport;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +32,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
 
 /**
  * REST controller for managing {@link com.ritan.lit.watchlist.domain.PriceHistory}.
@@ -42,10 +51,14 @@ public class PriceHistoryResource {
 
     private final PriceHistoryService priceHistoryService;
 
+    private final StockService stockService;
+    private final StockExchangeService stockExchangeService;
     private final PriceHistoryRepository priceHistoryRepository;
 
-    public PriceHistoryResource(PriceHistoryService priceHistoryService, PriceHistoryRepository priceHistoryRepository) {
+    public PriceHistoryResource(PriceHistoryService priceHistoryService, StockService stockService, StockExchangeService stockExchangeService, PriceHistoryRepository priceHistoryRepository) {
         this.priceHistoryService = priceHistoryService;
+        this.stockService = stockService;
+        this.stockExchangeService = stockExchangeService;
         this.priceHistoryRepository = priceHistoryRepository;
     }
 
@@ -69,10 +82,82 @@ public class PriceHistoryResource {
             .body(result);
     }
 
+    @PostMapping("/price-histories/stock/{symbol}")
+    public ResponseEntity<?> setPriceHistory(@PathVariable String symbol,
+                                             @RequestParam Optional<String> start_date,
+                                             @RequestParam Optional<String> end_date,
+                                             @RequestParam Optional<String> period,
+                                             @RequestParam Optional<String> period_type) throws IOException {
+        // Unsure received string is upper case
+        symbol.toUpperCase(Locale.ROOT);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        yahoofinance.Stock stock = null;
+
+        Optional<Stock> pgStock = stockService.findByTicker(symbol);
+        if (!pgStock.isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock did not found in database");
+
+        if (start_date.isPresent() && end_date.isPresent()) {
+            Date startDate;
+            Object endDate = null;
+
+            try {
+                startDate = sdf.parse(start_date.get());
+                if (!end_date.get().equals("TODAY"))
+                    endDate = sdf.parse(end_date.get());
+            } catch (ParseException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Date format, " +
+                    "accepted format is dd-MM-yyyy");
+            }
+
+            Calendar from = Calendar.getInstance();
+            from.setTime(startDate);
+            Calendar to = Calendar.getInstance();
+
+            if (endDate instanceof Date)
+                to.setTime((Date) endDate);
+
+            try {
+                stock = YahooFinance.get(symbol, from, to, Interval.DAILY);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
+        } else if (period.isPresent() && period_type.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not implemented yet");
+        }
+
+        stock.getHistory().forEach(
+            historicalQuote -> {
+                PriceHistory priceHistory = new PriceHistory();
+                priceHistory.setStock(pgStock.get());
+
+                Calendar calendar = historicalQuote.getDate();
+                Date input = calendar.getTime();
+                LocalDate localDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                priceHistory.setDate(localDate);
+                priceHistory.setOpen(historicalQuote.getOpen().doubleValue());
+                priceHistory.setLow(historicalQuote.getLow().doubleValue());
+                priceHistory.setHigh(historicalQuote.getHigh().doubleValue());
+                priceHistory.setAdjClose(historicalQuote.getAdjClose().doubleValue());
+                priceHistory.setVolume(historicalQuote.getVolume().doubleValue());
+                priceHistory.setClose(historicalQuote.getClose().doubleValue());
+
+                //Stock stockUpdated = pgStock.get().addPriceHistory(priceHistory);
+
+                // Ignore elastic search
+                priceHistoryRepository.save(priceHistory);
+                //stockService.partialUpdate(stockUpdated);
+            }
+        );
+
+        return ResponseEntity.ok(stock);
+    }
+
     /**
      * {@code PUT  /price-histories/:id} : Updates an existing priceHistory.
      *
-     * @param id the id of the priceHistory to save.
+     * @param id           the id of the priceHistory to save.
      * @param priceHistory the priceHistory to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated priceHistory,
      * or with status {@code 400 (Bad Request)} if the priceHistory is not valid,
@@ -106,7 +191,7 @@ public class PriceHistoryResource {
     /**
      * {@code PATCH  /price-histories/:id} : Partial updates given fields of an existing priceHistory, field will ignore if it is null
      *
-     * @param id the id of the priceHistory to save.
+     * @param id           the id of the priceHistory to save.
      * @param priceHistory the priceHistory to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated priceHistory,
      * or with status {@code 400 (Bad Request)} if the priceHistory is not valid,
@@ -114,7 +199,7 @@ public class PriceHistoryResource {
      * or with status {@code 500 (Internal Server Error)} if the priceHistory couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/price-histories/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/price-histories/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<PriceHistory> partialUpdatePriceHistory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody PriceHistory priceHistory
@@ -186,7 +271,7 @@ public class PriceHistoryResource {
      * {@code SEARCH  /_search/price-histories?query=:query} : search for the priceHistory corresponding
      * to the query.
      *
-     * @param query the query of the priceHistory search.
+     * @param query    the query of the priceHistory search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */

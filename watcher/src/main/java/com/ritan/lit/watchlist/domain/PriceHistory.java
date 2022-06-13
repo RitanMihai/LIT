@@ -45,7 +45,7 @@ public class PriceHistory implements Serializable {
     @Column(name = "volume")
     private Double volume;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = {
             "stockExchange",

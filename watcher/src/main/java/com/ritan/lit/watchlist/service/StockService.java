@@ -136,6 +136,10 @@ public class StockService {
         return stockRepository.findById(id);
     }
 
+    public Optional<Stock> findOneByTicker(String ticker){
+        return stockRepository.findByTicker(ticker);
+    }
+
     /**
      * Delete the stock by id.
      *
@@ -184,5 +188,9 @@ public class StockService {
 
     public List<Object[]> countStocksByIndustry() {
         return stockRepository.countStocksByIndustry();
+    }
+
+    public Optional<Stock> findByTicker(String symbol) {
+        return stockRepository.findByTicker(symbol);
     }
 }
