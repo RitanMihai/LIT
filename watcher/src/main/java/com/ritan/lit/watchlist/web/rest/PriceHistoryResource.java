@@ -3,6 +3,7 @@ package com.ritan.lit.watchlist.web.rest;
 import com.ritan.lit.watchlist.domain.Currency;
 import com.ritan.lit.watchlist.domain.PriceHistory;
 import com.ritan.lit.watchlist.domain.Stock;
+import com.ritan.lit.watchlist.domain.util.DateDoublePair;
 import com.ritan.lit.watchlist.repository.PriceHistoryRepository;
 import com.ritan.lit.watchlist.service.CurrencyService;
 import com.ritan.lit.watchlist.service.PriceHistoryService;
@@ -18,12 +19,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,6 +157,27 @@ public class PriceHistoryResource {
         return ResponseEntity.ok(stock);
     }
 
+    /* TODO: change closePrice with Filter */
+    @GetMapping("/price-histories/symbol/{symbol}")
+    public ResponseEntity<?> getPriceHistoryBySymbol(@PathVariable String symbol,
+                                                     @RequestParam Optional<String> closePrice){
+        Optional<Stock> stock = stockService.findByTicker(symbol);
+        if (!stock.isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock did not found in database");
+
+        if(closePrice.isPresent()) {
+
+            List<DateDoublePair> allByStock = new ArrayList<>();
+            for (PriceHistory priceHistory : priceHistoryService.findAllByStock(stock.get())) {
+                LocalDate date = priceHistory.getDate();
+                Double close = priceHistory.getClose();
+                DateDoublePair dateDoublePair = new DateDoublePair(date, close);
+                allByStock.add(dateDoublePair);
+            }
+            return ResponseEntity.ok(allByStock);
+        }
+        return  ResponseEntity.ok(priceHistoryService.findAllByStock(stock.get()));
+    }
     /**
      * {@code PUT  /price-histories/:id} : Updates an existing priceHistory.
      *

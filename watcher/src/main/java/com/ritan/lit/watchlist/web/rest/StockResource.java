@@ -234,6 +234,12 @@ public class StockResource {
         return ResponseUtil.wrapOrNotFound(stock);
     }
 
+    @GetMapping("stocks/symbol/{symbol}")
+    public ResponseEntity<Stock> getStock(@PathVariable String symbol) {
+        Optional<Stock> stock = stockService.findByTicker(symbol);
+        return ResponseUtil.wrapOrNotFound(stock);
+    }
+
     /**
      * {@code DELETE  /stocks/:id} : delete the "id" stock.
      *

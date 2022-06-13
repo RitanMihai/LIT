@@ -3,9 +3,14 @@ package com.ritan.lit.watchlist.service;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import com.ritan.lit.watchlist.domain.PriceHistory;
+import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.PriceHistoryRepository;
 import com.ritan.lit.watchlist.repository.search.PriceHistorySearchRepository;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -134,5 +139,11 @@ public class PriceHistoryService {
     public Page<PriceHistory> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of PriceHistories for query {}", query);
         return priceHistorySearchRepository.search(query, pageable);
+    }
+
+    public List<PriceHistory> findAllByStock(Stock stock) {
+        List<PriceHistory> allByStock = priceHistoryRepository.findAllByStock(stock);
+        //allByStock.forEach(priceHistory -> priceHistory.setStock(null));
+        return allByStock;
     }
 }
