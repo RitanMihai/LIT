@@ -9,7 +9,7 @@ import { NavLink as Link } from 'react-router-dom';
 
 const paddingTop = '20px';
 
-const GradientCard = ({ title, content, color1, color2 }) => {
+const CategoryCard = ({ title, content, color1, color2, category }) => {
     const useStyles = makeStyles({
         card: {
             margin: "5px",
@@ -42,7 +42,7 @@ const GradientCard = ({ title, content, color1, color2 }) => {
                 </Typography>
             </CardContent>
             <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-                <NavLink tag={Link} to="/" className="text-center" style={{ paddingTop }}>
+                <NavLink tag={Link} to={`watcher/${category}/${title}`} className="text-center" style={{ paddingTop }}>
                     <FontAwesomeIcon icon='arrow-up-right-from-square' color='white' />
                 </NavLink>
             </Box>
@@ -50,4 +50,4 @@ const GradientCard = ({ title, content, color1, color2 }) => {
     );
 }
 
-export default GradientCard;
+export default CategoryCard;

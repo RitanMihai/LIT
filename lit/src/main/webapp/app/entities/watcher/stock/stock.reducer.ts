@@ -4,6 +4,8 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IStock, defaultValue } from 'app/shared/model/watcher/stock.model';
+import { start } from 'repl';
+import { endsWith } from 'lodash';
 
 const initialState: EntityState<IStock> = {
   loading: false,
@@ -15,10 +17,6 @@ const initialState: EntityState<IStock> = {
 };
 
 const apiUrl = 'services/watcher/api/stocks';
-
-// Change in backend to be services/watcher/api/stocks/list
-const apiListUrl = 'services/watcher/api/stocks-list';
-
 const apiSearchUrl = 'services/watcher/api/_search/stocks';
 
 // Actions
@@ -32,6 +30,21 @@ export const getEntities = createAsyncThunk('stock/fetch_entity_list', async ({ 
   const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`;
   return axios.get<IStock[]>(requestUrl);
 });
+
+export const getEntitiesBySector = createAsyncThunk(
+  'stock/entites_by_sector', async ({ query, page, size, sort }: IQueryParams) => {
+    const requestUrl = `${apiUrl}/sector/${query}?page=${page}&limit=${size}`;
+    return axios.get<IStock[]>(requestUrl);
+  });
+
+export const getEntityByTicker = createAsyncThunk(
+  'stock/ticker_fetch_entity',
+  async (ticker: string) => {
+    const requestUrl = `${apiUrl}/symbol/${ticker}`;
+    return axios.get<IStock>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
 
 export const getEntity = createAsyncThunk(
   'stock/fetch_entity',
@@ -55,9 +68,6 @@ export const createEntity = createAsyncThunk(
 export const createEntities = createAsyncThunk(
   'stock/create_entities',
   async (entities: Array<IStock>, thunkAPI) => {
-    console.log("===============================================")
-    console.log(entities);
-    console.log("===============================================")
     const requestUrl = `${apiUrl}/list`;
     const result = await axios.post<Array<IStock>>(requestUrl, entities);
     thunkAPI.dispatch(getEntities({}));
@@ -108,12 +118,16 @@ export const StockSlice = createEntitySlice({
         state.loading = false;
         state.entity = action.payload.data;
       })
+      .addCase(getEntityByTicker.fulfilled, (state, action) => {
+        state.loading = false;
+        state.entity = action.payload.data;
+      })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false;
         state.updateSuccess = true;
         state.entity = {};
       })
-      .addMatcher(isFulfilled(getEntities, searchEntities), (state, action) => {
+      .addMatcher(isFulfilled(getEntities, getEntitiesBySector, searchEntities), (state, action) => {
         const { data } = action.payload;
 
         return {
@@ -128,7 +142,7 @@ export const StockSlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = action.payload.data;
       })
-      .addMatcher(isPending(getEntities, getEntity, searchEntities), state => {
+      .addMatcher(isPending(getEntities, getEntitiesBySector, getEntity, getEntityByTicker, searchEntities), state => {
         state.errorMessage = null;
         state.updateSuccess = false;
         state.loading = true;

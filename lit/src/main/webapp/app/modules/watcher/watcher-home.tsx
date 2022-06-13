@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import GradientCard from './components/card/card';
+import CategoryCard from './components/card/card';
 import { getCountEntitesByTypes } from 'app/entities/watcher/stock/stock-group-type.reducer';
 import './watcher.scss'
 
@@ -118,21 +118,23 @@ export const WatcherHome = () => {
       <h4>By Sector</h4>
       <Carousel responsive={responsive} shouldResetAutoplay={false} >
         {stockGroupSector.map((data, index) => (
-          <GradientCard
+          <CategoryCard
             key={index}
             title={data.category}
             content={`${data.number} stocks`}
-            color1={'#FFC644'} color2={'#FFAD44'} />
+            color1={'#FFC644'} color2={'#FFAD44'}
+            category={"sectors"} />
         ))}
       </Carousel>
       <h4>By Industry</h4>
       <Carousel responsive={responsive} shouldResetAutoplay={false}>
         {stockGroupIndustry.map((data, index) => (
-          <GradientCard
+          <CategoryCard
             key={index}
             title={data.category}
             content={`${data.number} stocks`}
-            color1={'#44BEFF'} color2={'#449EFF'} />
+            color1={'#44BEFF'} color2={'#449EFF'}
+            category={"industries"} />
         ))}
       </Carousel>
     </div>

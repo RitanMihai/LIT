@@ -30,6 +30,14 @@ export const getEntities = createAsyncThunk('priceHistory/fetch_entity_list', as
   return axios.get<IPriceHistory[]>(requestUrl);
 });
 
+export const getEntitiesBySymbol = createAsyncThunk(
+  'priceHistory/fetch_entity_list_by_symbol',
+  async (symbol: string) => {
+    const requestUrl = `${apiUrl}/symbol/${symbol}?closePrice=true`;
+    return axios.get<IPriceHistory[]>(requestUrl);
+  }
+);
+
 export const getEntity = createAsyncThunk(
   'priceHistory/fetch_entity',
   async (id: string | number) => {
@@ -96,7 +104,7 @@ export const PriceHistorySlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = {};
       })
-      .addMatcher(isFulfilled(getEntities, searchEntities), (state, action) => {
+      .addMatcher(isFulfilled(getEntities, getEntitiesBySymbol, searchEntities), (state, action) => {
         const { data, headers } = action.payload;
 
         return {
@@ -112,7 +120,7 @@ export const PriceHistorySlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = action.payload.data;
       })
-      .addMatcher(isPending(getEntities, getEntity, searchEntities), state => {
+      .addMatcher(isPending(getEntities, getEntitiesBySymbol, getEntity, searchEntities), state => {
         state.errorMessage = null;
         state.updateSuccess = false;
         state.loading = true;
