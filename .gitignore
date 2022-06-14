@@ -6,3 +6,4 @@ price_prediction/neural_network/.idea
 *.pkl
 *.pyc
 *.h5
+*.png
