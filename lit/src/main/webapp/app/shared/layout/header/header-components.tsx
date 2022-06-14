@@ -24,27 +24,27 @@ export const Brand = () => (
 
 export const Home = () => (
   <NavItem>
-    <NavLink tag={Link} to="/" className="text-center" style = {{paddingTop}}>
-          <FontAwesomeIcon icon="home" size="2x"/>  
-          <Translate contentKey="global.menu.home">Home</Translate>
+    <NavLink tag={Link} to="/" className="text-center" style={{ paddingTop }}>
+      <FontAwesomeIcon icon="home" size="lg" />
+      <Translate contentKey="global.menu.home">Home</Translate>
     </NavLink>
   </NavItem>
 );
 
 export const Portfolio = () => (
   <NavItem>
-    <NavLink tag={Link} to="/portfolios" className="text-center" style = {{paddingTop}}>
-          <FontAwesomeIcon icon="wallet" size="2x" />
-          <Translate contentKey="global.menu.entities.portfolioPortfolio">Portfolio</Translate>
+    <NavLink tag={Link} to="/portfolios" className="text-center" style={{ paddingTop }}>
+      <FontAwesomeIcon icon="wallet" size="lg" />
+      <Translate contentKey="global.menu.entities.portfolioPortfolio">Portfolio</Translate>
     </NavLink>
   </NavItem>
 );
 
 export const Watcher = () => (
   <NavItem>
-    <NavLink tag={Link} to="/watcher" className="text-center" style = {{paddingTop}}>
-          <FontAwesomeIcon icon="compass" size="2x" />
-          Watcher
+    <NavLink tag={Link} to="/watcher" className="text-center" style={{ paddingTop }}>
+      <FontAwesomeIcon icon="compass" size="lg" />
+      Watcher
     </NavLink>
   </NavItem>
 );

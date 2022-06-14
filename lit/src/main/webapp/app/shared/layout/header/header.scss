@@ -21,6 +21,7 @@ Developement Ribbon
   z-index: 99999;
   pointer-events: none;
   opacity: 0.75;
+
   a {
     color: #fff;
     display: block;
@@ -38,44 +39,54 @@ Developement Ribbon
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
+  background-color: #2d3436;
   padding: 0.2em 1em;
   margin-left: 90px;
+
   .profile-image {
     margin: -10px 0px;
     height: 40px;
     width: 40px;
     border-radius: 50%;
   }
+
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
     background-color: #353d47;
   }
+
   .dropdown-toggle::after {
     margin-left: 0.15em;
   }
+
   ul.navbar-nav {
     padding: 0.5em;
+
     .nav-item {
       margin-left: 1.5rem;
     }
   }
+
   a.nav-link {
     font-weight: 400;
-    > span {
+
+    >span {
       margin-left: 5px;
     }
   }
+
   .jh-navbar-toggler {
     color: #ccc;
     font-size: 1.5em;
     padding: 10px;
+
     &:hover {
       color: #fff;
     }
   }
 }
+
 .navbar-brand {
   overflow: hidden;
 }
@@ -95,10 +106,12 @@ Navbar styles
   &:hover {
     text-decoration: none;
   }
+
   .brand-icon {
     height: 35px;
     width: auto;
     display: inline-block;
+
     img {
       height: 35px;
     }
@@ -108,6 +121,7 @@ Navbar styles
 .brand-title {
   font-size: 24px;
   color: $header-color;
+
   &:hover {
     color: $header-color-hover;
     text-decoration: none;

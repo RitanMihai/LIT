@@ -122,7 +122,7 @@ export const WatcherHome = () => {
             key={index}
             title={data.category}
             content={`${data.number} stocks`}
-            color1={'#FFC644'} color2={'#FFAD44'}
+            color1={'#a29bfe'} color2={'#8d87e0'}
             category={"sectors"} />
         ))}
       </Carousel>
