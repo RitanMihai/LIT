@@ -15,7 +15,7 @@ export interface IStock {
   name?: string | null;
   imageContentType?: string | null;
   image?: string | null;
-  marketCap?: string | null;
+  marketCap?: number | null;
   volume?: number | null;
   peRation?: number | null;
   ipoDate?: string | null;
