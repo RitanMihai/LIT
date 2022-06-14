@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAllBySector(String sector);
-    List<Stock> findAllBySector(String sector, Pageable pageable);
+    List<Stock> findAllBySectorAndMarketCapIsNotNull(String sector, Pageable pageable);
 
     Optional<Stock> findByTicker(String ticker);
 

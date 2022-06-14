@@ -7,12 +7,21 @@ import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,9 +29,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
+
+import javax.imageio.ImageIO;
 
 /**
  * REST controller for managing {@link com.ritan.lit.watchlist.domain.Stock}.
@@ -134,10 +148,11 @@ public class StockResource {
 
     @GetMapping("/stocks/sector/{sector}")
     public ResponseEntity<?> getAllBySector(@PathVariable String sector, @RequestParam("page") Optional<Integer> page,
-                                            @RequestParam("limit") Optional<Integer> limit) {
+                                            @RequestParam("limit") Optional<Integer> limit,
+                                            @RequestParam("sortBy") Optional<String> sortBy) {
         if (page.isPresent() && limit.isPresent()) {
             PageableStock stocks = new PageableStock();
-            stocks.setStocks(stockService.findAllBySector(sector, page.get(), limit.get()));
+            stocks.setStocks(stockService.findAllBySector(sector, page.get(), limit.get(), sortBy));
             stocks.setSize(stockService.stockRowsNumberBySector(sector));
             return ResponseEntity.ok(stocks);
         }
@@ -232,6 +247,57 @@ public class StockResource {
         log.debug("REST request to get Stock : {}", id);
         Optional<Stock> stock = stockService.findOne(id);
         return ResponseUtil.wrapOrNotFound(stock);
+    }
+
+    @PostMapping("/__stocks/update/market_cap")
+    public ResponseEntity<?> __updateStockMarketCap(@RequestBody List<String> symbols) {
+        for (String symbol : symbols) {
+            Optional<Stock> byTicker = stockService.findByTicker(symbol);
+
+            if(byTicker.isPresent())
+            {
+                Stock pgStock = byTicker.get();
+                yahoofinance.Stock stock = null;
+                try {
+                    stock = YahooFinance.get(symbol);
+                    if(!Objects.isNull(stock)) {
+                        if(!Objects.isNull(stock.getStats().getMarketCap())) {
+                            Long marketCapValue = stock.getStats().getMarketCap().longValue();
+                            pgStock.setMarketCap(marketCapValue);
+                            stockService.partialUpdate(pgStock);
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("EROARE PE STOCK " + symbol);
+                }
+            }
+
+        }
+        return ResponseEntity.ok("Done");
+    }
+
+    @PostMapping("/__stocks/update/images")
+    public ResponseEntity<?> __updateStockImages() throws IOException {
+        File[] files =
+            new File("D:\\Documents\\Projects\\Master_Degree_Project\\LIT\\watcher\\src\\main\\resources\\stock\\logos")
+            .listFiles();
+
+        for (File file : files) {
+            BufferedImage image = ImageIO.read(file);
+            String symbol = file.getName().substring(0, file.getName().lastIndexOf('.'));
+            Optional<Stock> byTicker = stockService.findByTicker(symbol);
+
+            if(byTicker.isPresent()){
+                Stock pgStock = byTicker.get();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(image, "png", baos);
+                byte[] bytes = baos.toByteArray();
+                pgStock.setImage(bytes);
+                pgStock.setImageContentType("image/png");
+                stockService.partialUpdate(pgStock);
+            }
+        }
+        return ResponseEntity.ok("Done");
     }
 
     @GetMapping("stocks/symbol/{symbol}")

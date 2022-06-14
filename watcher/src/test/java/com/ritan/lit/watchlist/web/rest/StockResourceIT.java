@@ -52,8 +52,8 @@ class StockResourceIT {
     private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
-    private static final String DEFAULT_MARKET_CAP = "AAAAAAAAAA";
-    private static final String UPDATED_MARKET_CAP = "BBBBBBBBBB";
+    private static final Long DEFAULT_MARKET_CAP = 0L;
+    private static final Long UPDATED_MARKET_CAP = 0L;
 
     private static final Integer DEFAULT_VOLUME = 1;
     private static final Integer UPDATED_VOLUME = 2;

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Formula;
 
 /**
  * A Stock.
@@ -41,7 +42,7 @@ public class Stock implements Serializable {
     private String imageContentType;
 
     @Column(name = "market_cap")
-    private String marketCap;
+    private Long marketCap;
 
     @Column(name = "volume")
     private Integer volume;
@@ -89,6 +90,17 @@ public class Stock implements Serializable {
 
     @Column(name="industry")
     private String industry;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Column(name="country")
+    private String country;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "stocks" }, allowSetters = true)
@@ -194,16 +206,16 @@ public class Stock implements Serializable {
         this.imageContentType = imageContentType;
     }
 
-    public String getMarketCap() {
+    public Long getMarketCap() {
         return this.marketCap;
     }
 
-    public Stock marketCap(String marketCap) {
+    public Stock marketCap(Long marketCap) {
         this.setMarketCap(marketCap);
         return this;
     }
 
-    public void setMarketCap(String marketCap) {
+    public void setMarketCap(Long marketCap) {
         this.marketCap = marketCap;
     }
 

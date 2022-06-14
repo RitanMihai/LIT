@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,7 +108,7 @@ public class StockService {
             })
             .map(stockRepository::save)
             .map(savedStock -> {
-                stockSearchRepository.save(savedStock);
+                //stockSearchRepository.save(savedStock);
 
                 return savedStock;
             });
@@ -167,9 +168,14 @@ public class StockService {
         return stockRepository.findAllBySector(sector);
     }
 
-    public List<Stock> findAllBySector(String sector, Integer page, Integer limit) {
-        Pageable slice = PageRequest.of(page,limit);
-        return stockRepository.findAllBySector(sector, slice);
+    public List<Stock> findAllBySector(String sector, Integer page, Integer limit, Optional<String> sortBy) {
+        Pageable slice = null;
+        if(sortBy.isPresent())
+            if(sortBy.get().equals("marketCap"))
+                slice = PageRequest.of(page,limit, Sort.by("marketCap").descending());
+        else
+            slice = PageRequest.of(page,limit);
+        return stockRepository.findAllBySectorAndMarketCapIsNotNull(sector, slice);
     }
 
     public Long stockRowsNumberBySector(String sector){
