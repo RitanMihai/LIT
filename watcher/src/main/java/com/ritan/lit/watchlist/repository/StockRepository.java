@@ -15,7 +15,10 @@ import java.util.Optional;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAllBySector(String sector);
+    List<Stock> findAllByIndustry(String industry);
+
     List<Stock> findAllBySectorAndMarketCapIsNotNull(String sector, Pageable pageable);
+    List<Stock> findAllByIndustryAndMarketCapIsNotNull(String industry, Pageable slice);
 
     Optional<Stock> findByTicker(String ticker);
 
@@ -29,6 +32,12 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     /* Return rows based on sector */
     Long countBySector(String sector);
+    Long countByIndustry(String industry);
+
     /* Return all rows */
     long count();
+
+
+
+
 }

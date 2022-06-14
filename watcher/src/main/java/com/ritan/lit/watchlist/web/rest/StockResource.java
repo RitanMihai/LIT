@@ -159,6 +159,19 @@ public class StockResource {
         return ResponseEntity.ok(stockService.findAllBySector(sector));
     }
 
+    @GetMapping("/stocks/industry/{industry}")
+    public ResponseEntity<?> getAllByIndustry(@PathVariable String industry, @RequestParam("page") Optional<Integer> page,
+                                            @RequestParam("limit") Optional<Integer> limit,
+                                            @RequestParam("sortBy") Optional<String> sortBy) {
+        if (page.isPresent() && limit.isPresent()) {
+            PageableStock stocks = new PageableStock();
+            stocks.setStocks(stockService.findAllByIndustry(industry, page.get(), limit.get(), sortBy));
+            stocks.setSize(stockService.stockRowsNumberByIndustry(industry));
+            return ResponseEntity.ok(stocks);
+        }
+        return ResponseEntity.ok(stockService.findAllByIndustry(industry));
+    }
+
     /**
      * {@code PUT  /stocks/:id} : Updates an existing stock.
      *

@@ -199,4 +199,21 @@ public class StockService {
     public Optional<Stock> findByTicker(String symbol) {
         return stockRepository.findByTicker(symbol);
     }
+
+    public List<Stock> findAllByIndustry(String industry) {
+        return stockRepository.findAllByIndustry(industry);
+    }
+    public List<Stock> findAllByIndustry(String industry, Integer page, Integer limit, Optional<String> sortBy) {
+        Pageable slice = null;
+        if(sortBy.isPresent())
+            if(sortBy.get().equals("marketCap"))
+                slice = PageRequest.of(page,limit, Sort.by("marketCap").descending());
+            else
+                slice = PageRequest.of(page,limit);
+        return stockRepository.findAllByIndustryAndMarketCapIsNotNull(industry, slice);
+    }
+
+    public Long stockRowsNumberByIndustry(String industry) {
+        return stockRepository.countByIndustry(industry);
+    }
 }
