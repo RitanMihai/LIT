@@ -33,7 +33,7 @@ export const getEntities = createAsyncThunk('stock/fetch_entity_list', async ({ 
 
 export const getEntitiesBySector = createAsyncThunk(
   'stock/entites_by_sector', async ({ query, page, size, sort }: IQueryParams) => {
-    const requestUrl = `${apiUrl}/sector/${query}?page=${page}&limit=${size}`;
+    const requestUrl = `${apiUrl}/sector/${query}?page=${page}&limit=${size}&sortBy=${sort}`;
     return axios.get<IStock[]>(requestUrl);
   });
 
