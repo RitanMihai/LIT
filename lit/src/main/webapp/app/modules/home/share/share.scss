@@ -1,6 +1,6 @@
 .share {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 5px;
   -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   background-color: white;
@@ -42,50 +42,50 @@
   justify-content: space-between;
 }
 
-.shareOptions{
-    display: flex;
-    margin-left: 20px;
+.shareOptions {
+  display: flex;
+  margin-left: 20px;
 }
 
-.shareOption{
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    cursor: pointer;
+.shareOption {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
 }
 
-.shareIcon{
-    font-size: 18px;
-    margin-right: 3px;
+.shareIcon {
+  font-size: 18px;
+  margin-right: 3px;
 }
 
-.shareOptionText{
-    font-size: 14px;
-    font-weight: 500;
+.shareOptionText {
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.shareButton{
-    border: none;
-    padding: 7px;
-    border-radius: 5px;
-    background-color: green;
-    font-weight: 500;
-    margin-right: 20px;
-    cursor: pointer;
-    color: white;
+.shareButton {
+  border: none;
+  padding: 7px;
+  border-radius: 5px;
+  background-color: green;
+  font-weight: 500;
+  margin-right: 20px;
+  cursor: pointer;
+  color: white;
 }
 
-.shareImgContainer{
+.shareImgContainer {
   padding: 0 20px 10px 20px;
   position: relative;
 }
 
-.shareImg{
+.shareImg {
   width: 100%;
   object-fit: cover;
 }
 
-.shareCancelImg{
+.shareCancelImg {
   position: absolute;
   top: 0;
   right: 20px;

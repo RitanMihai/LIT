@@ -20,9 +20,18 @@ import Share from 'app/modules/home/share/share';
 import RightBar from '../rightbar/rightbar';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { Avatar, AvatarGroup, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, Popper, Typography } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ReactionBarSelector, ReactionCounter, SlackSelector, PokemonSelector } from '@charkour/react-reactions';
+import FeedPost from './component/post';
+import "./feed.scss"
 
 export const Feed = (props: RouteComponentProps<{ url: string }>) => {
   const dispatch = useAppDispatch();
+
 
   const [search, setSearch] = useState('');
   const [paginationState, setPaginationState] = useState(
@@ -102,10 +111,12 @@ export const Feed = (props: RouteComponentProps<{ url: string }>) => {
     resetAll();
   };
 
+
+
   return (
     <div className="feed">
       <div >
-        <ErrorBoundaryRoute component = {Share} />
+        <ErrorBoundaryRoute component={Share} />
         <InfiniteScroll className="feedWrapper"
           dataLength={postList ? postList.length : 0}
           next={handleLoadMore}
@@ -114,49 +125,11 @@ export const Feed = (props: RouteComponentProps<{ url: string }>) => {
         >
           {postList && postList.length > 0 ? (
             <div >
-                {postList.map((post, i) => (
-                   <div key={`entity-${i}`} data-cy="entityPost" className="post">
-                <div className="postWrapper">
-                  <div className="postTop">
-                    <div className="postTopLeft">
-                      <img
-                        className="postProfileImg"
-                        src="https://picsum.photos/200"
-                        alt=""
-                      />
-                      <span className="postUsername">
-                        {post.socialUser ? post.socialUser.user : 'unknown user'}
-                      </span>
-                      <span className="postDate">{post.date}</span>
-                    </div>
-                    <div className="postTopRight">
-                        <FontAwesomeIcon icon="ellipsis-vertical" size="2x"/>
-                    </div>
-                  </div>
-                  <div className="postCenter">
-                    <span className="postText">{post.content}</span>
-                    {post.imageContentType ? (
-                      <a onClick={openFile(post.imageContentType, post.image)}>
-                        <img src={`data:${post.imageContentType};base64,${post.image}`}
-                          className="postImg" 
-                          alt=""/>
-                      </a>
-                    ) : null}
-                  </div>
-                  
-                  <div className="postBottom">
-                    <div className="postBottomLeft">
-                      <FontAwesomeIcon className="likeIcon" icon="thumbs-up" size="2x"/>
-                      <FontAwesomeIcon className="likeIcon" icon="heart" size="2x"/>
-                      <span className="postLikeCounter">{post.userReactions ? post.userReactions.length : "0" } people like it</span>
-                    </div>
-                    <div className="postBottomRight">
-                      <span className="postCommentText">{post.comments ? post.comments.length : "0" } comments</span>
-                    </div>
-                  </div>
+              {postList.map((post, i) => (
+                <div key={`entity-${i}`} data-cy="entityPost" className="post">
+                  <FeedPost post={post} />
                 </div>
-              </div>
-                          ))}
+              ))}
             </div>
           ) : (
             !loading && (

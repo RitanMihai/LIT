@@ -12,8 +12,9 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { Button, Col, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import dayjs, { Dayjs } from 'dayjs';
+import Box from '@mui/material/Box';
 
-const Share =(props: RouteComponentProps<{ id: string }>) => {
+const Share = (props: RouteComponentProps<{ id: string }>) => {
   /* Current user  */
   const account = useAppSelector(state => state.authentication.account);
 
@@ -30,7 +31,7 @@ const Share =(props: RouteComponentProps<{ id: string }>) => {
 
   const [isImageSelected, setIsImageSelected] = useState(false);
 
-  const imageHandler = () =>{
+  const imageHandler = () => {
     setIsImageSelected(!isImageSelected)
   }
 
@@ -67,75 +68,76 @@ const Share =(props: RouteComponentProps<{ id: string }>) => {
     values.date = dayjs(); // Calling dayjs() without parameters returns a fresh Day.js object with the current date and time.
     values.language = 'ENG';
     values.isPayedPromotion = false;
-    
+
 
     const entity = {
       ...postEntity,
       ...values,
       socialUser: socialUsers.find(it => it.user.toString() === account.login),
     };
-    
+
     dispatch(createEntity(entity));
 
   };
 
-  return(
-    <div className="share">
+  return (
+    <Box sx={{ boxShadow: 1, bgcolor: 'white', borderRadius: 1 }}>
       <div className="shareWrapper">
 
         <Form onSubmit={handleSubmit(saveEntity)}>
-          <FormGroup className="shareTop"> 
-            <img className="shareProfileImg" src="https://picsum.photos/200" alt="" />     
+          <FormGroup className="shareTop">
+            <img className="shareProfileImg" src="https://picsum.photos/200" alt="" />
 
             <ValidatedField
-                style={{border: "none"}}
-                register={register}
-                placeholder= {"What's in your mind " + account.login + " ?"}
-                id="post-content"
-                name="content"
-                data-cy="content"
-                type="textarea"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-           
-                className="shareInput"
-                />
+              style={{ border: "none" }}
+              register={register}
+              placeholder={"What's in your mind " + account.login + " ?"}
+              id="post-content"
+              name="content"
+              data-cy="content"
+              type="textarea"
+              validate={{
+                required: { value: true, message: translate('entity.validation.required') },
+              }}
+
+              className="shareInput"
+            />
           </FormGroup >
           {
-            isImageSelected ?  (
-          <FormGroup>
-            <ValidatedBlobField
-                setValue={setValue}
-                register={register}
-                style= {{display:"none"}} 
-                id="post-image"
-                name="image"
-                data-cy="image"
-                isImage
-                accept="image/*"
-                className="blobField"
-            />
-          </FormGroup>
-          ) : null 
+            isImageSelected ? (
+              <FormGroup>
+                <ValidatedBlobField
+                  setValue={setValue}
+                  register={register}
+                  style={{ display: "none" }}
+                  id="post-image"
+                  name="image"
+                  data-cy="image"
+                  isImage
+                  accept="image/*"
+                  className="blobField"
+                />
+              </FormGroup>
+            ) : null
           }
-          <hr className="shareHr"/>
-          
-          <FormGroup  className="shareBottom" onClick={imageHandler}>
-          <label htmlFor="post-image" className="shareOption">
-            <FontAwesomeIcon icon="photo-film" size="2x" color='tomato' className="shareIcon" />
-            <span className="shareOptionText">Photo or Video</span>
-          </label>
-       
-          <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} className="shareButton">
-            <FontAwesomeIcon icon="paper-plane" />
-            &nbsp; Publish
-          </Button>
+          <hr className="shareHr" />
+
+          <FormGroup className="shareBottom" onClick={imageHandler}>
+            <label htmlFor="post-image" className="shareOption">
+              <FontAwesomeIcon icon="photo-film" size="2x" color='tomato' className="shareIcon" />
+              <span className="shareOptionText">Photo or Video</span>
+            </label>
+
+            <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} className="shareButton">
+              <FontAwesomeIcon icon="paper-plane" />
+              &nbsp; Publish
+            </Button>
 
           </FormGroup >
         </Form>
       </div>
-    </div>
+    </Box>
+
   )
 }
 
