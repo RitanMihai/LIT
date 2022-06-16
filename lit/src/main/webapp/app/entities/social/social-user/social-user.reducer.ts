@@ -37,6 +37,14 @@ export const getEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError }
 );
+export const getEntityByUserIs = createAsyncThunk(
+  'socialUser/fetch_entity_by_user',
+  async (username: string) => {
+    const requestUrl = `${apiUrl}/username/${username}`;
+    return axios.get<ISocialUser>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
 
 export const createEntity = createAsyncThunk(
   'socialUser/create_entity',
@@ -90,6 +98,10 @@ export const SocialUserSlice = createEntitySlice({
         state.loading = false;
         state.entity = action.payload.data;
       })
+      .addCase(getEntityByUserIs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.entity = action.payload.data;
+      })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false;
         state.updateSuccess = true;
@@ -110,7 +122,7 @@ export const SocialUserSlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = action.payload.data;
       })
-      .addMatcher(isPending(getEntities, getEntity, searchEntities), state => {
+      .addMatcher(isPending(getEntities, getEntity, getEntityByUserIs, searchEntities), state => {
         state.errorMessage = null;
         state.updateSuccess = false;
         state.loading = true;
