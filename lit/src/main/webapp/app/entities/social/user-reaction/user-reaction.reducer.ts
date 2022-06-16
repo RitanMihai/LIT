@@ -32,10 +32,25 @@ export const getEntities = createAsyncThunk('userReaction/fetch_entity_list', as
   return axios.get<IUserReaction[]>(requestUrl);
 });
 
+export const getEntitiesBySocialUser = createAsyncThunk('userReaction/fetch_entity_list_by_social_user', async (user: string) => {
+  const requestUrl = `${apiUrl}/user/${user}`;
+  return axios.get<IUserReaction[]>(requestUrl);
+});
+
 export const getEntity = createAsyncThunk(
   'userReaction/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
+    return axios.get<IUserReaction>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const getEntityByPostIdAndSocialUser = createAsyncThunk(
+  'userReaction/fetch_entity_by_post_id_and_social_user',
+  async (entity: IUserReaction) => {
+    console.log("Entitate primita ", entity)
+    const requestUrl = `${apiUrl}/specific?postId=${entity.post.id}&user=${entity.socialUser}`;
     return axios.get<IUserReaction>(requestUrl);
   },
   { serializeError: serializeAxiosError }
@@ -85,6 +100,10 @@ export const UserReactionSlice = createEntitySlice({
         state.loading = false;
         state.entity = action.payload.data;
       })
+      .addCase(getEntityByPostIdAndSocialUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.entity = action.payload.data;
+      })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false;
         state.updateSuccess = true;
@@ -102,13 +121,22 @@ export const UserReactionSlice = createEntitySlice({
           totalItems: parseInt(headers['x-total-count'], 10),
         };
       })
+      .addMatcher(isFulfilled(getEntitiesBySocialUser), (state, action) => {
+        const { data } = action.payload;
+
+        return {
+          ...state,
+          loading: false,
+          entities: data,
+        };
+      })
       .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
         state.updating = false;
         state.loading = false;
         state.updateSuccess = true;
         state.entity = action.payload.data;
       })
-      .addMatcher(isPending(getEntities, getEntity, searchEntities), state => {
+      .addMatcher(isPending(getEntitiesBySocialUser, getEntities, getEntityByPostIdAndSocialUser, getEntity, searchEntities), state => {
         state.errorMessage = null;
         state.updateSuccess = false;
         state.loading = true;
