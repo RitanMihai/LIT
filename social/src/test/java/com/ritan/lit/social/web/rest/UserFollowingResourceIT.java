@@ -41,8 +41,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserFollowingResourceIT {
 
-    private static final Long DEFAULT_STOCK = 1L;
-    private static final Long UPDATED_STOCK = 2L;
+    private static final String DEFAULT_STOCK = "";
+    private static final String UPDATED_STOCK = "";
 
     private static final String ENTITY_API_URL = "/api/user-followings";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -155,7 +155,7 @@ class UserFollowingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userFollowing.getId().intValue())))
-            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.intValue())));
+            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -188,7 +188,7 @@ class UserFollowingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userFollowing.getId().intValue()))
-            .andExpect(jsonPath("$.stock").value(DEFAULT_STOCK.intValue()));
+            .andExpect(jsonPath("$.stock").value(DEFAULT_STOCK));
     }
 
     @Test
@@ -455,6 +455,6 @@ class UserFollowingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userFollowing.getId().intValue())))
-            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.intValue())));
+            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK)));
     }
 }

@@ -28,7 +28,7 @@ export const UserFollowingDetail = (props: RouteComponentProps<{ id: string }>) 
               <Translate contentKey="global.field.id">ID</Translate>
             </span>
           </dt>
-          <dd>{userFollowingEntity.id}</dd>
+          <dd>{userFollowingEntity.socialUsers}</dd>
           <dt>
             <span id="stock">
               <Translate contentKey="litApp.socialUserFollowing.stock">Stock</Translate>
@@ -41,11 +41,11 @@ export const UserFollowingDetail = (props: RouteComponentProps<{ id: string }>) 
           <dd>
             {userFollowingEntity.socialUsers
               ? userFollowingEntity.socialUsers.map((val, i) => (
-                  <span key={val.id}>
-                    <a>{val.id}</a>
-                    {userFollowingEntity.socialUsers && i === userFollowingEntity.socialUsers.length - 1 ? '' : ', '}
-                  </span>
-                ))
+                <span key={val.id}>
+                  <a>{val.id}</a>
+                  {userFollowingEntity.socialUsers && i === userFollowingEntity.socialUsers.length - 1 ? '' : ', '}
+                </span>
+              ))
               : null}
           </dd>
         </dl>

@@ -16,7 +16,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "userfollowing")
 public class UserFollowing implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,7 +25,7 @@ public class UserFollowing implements Serializable {
     private Long id;
 
     @Column(name = "stock")
-    private Long stock;
+    private String stock;
 
     @ManyToMany
     @JoinTable(
@@ -53,16 +52,16 @@ public class UserFollowing implements Serializable {
         this.id = id;
     }
 
-    public Long getStock() {
+    public String getStock() {
         return this.stock;
     }
 
-    public UserFollowing stock(Long stock) {
+    public UserFollowing stock(String stock) {
         this.setStock(stock);
         return this;
     }
 
-    public void setStock(Long stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 

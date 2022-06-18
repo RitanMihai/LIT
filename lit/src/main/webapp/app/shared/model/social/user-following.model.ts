@@ -2,7 +2,7 @@ import { ISocialUser } from 'app/shared/model/social/social-user.model';
 
 export interface IUserFollowing {
   id?: number;
-  stock?: number | null;
+  stock?: string | null;
   socialUsers?: ISocialUser[] | null;
 }
 

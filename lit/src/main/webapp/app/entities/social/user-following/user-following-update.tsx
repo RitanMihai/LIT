@@ -60,9 +60,9 @@ export const UserFollowingUpdate = (props: RouteComponentProps<{ id: string }>) 
     isNew
       ? {}
       : {
-          ...userFollowingEntity,
-          socialUsers: userFollowingEntity?.socialUsers?.map(e => e.id.toString()),
-        };
+        ...userFollowingEntity,
+        socialUsers: userFollowingEntity?.socialUsers?.map(e => e.id.toString()),
+      };
 
   return (
     <div>
@@ -107,10 +107,10 @@ export const UserFollowingUpdate = (props: RouteComponentProps<{ id: string }>) 
                 <option value="" key="0" />
                 {socialUsers
                   ? socialUsers.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.user}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/user-following" replace color="info">

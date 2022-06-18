@@ -109,11 +109,11 @@ export const UserFollowing = (props: RouteComponentProps<{ url: string }>) => {
                   <td>
                     {userFollowing.socialUsers
                       ? userFollowing.socialUsers.map((val, j) => (
-                          <span key={j}>
-                            <Link to={`social-user/${val.id}`}>{val.id}</Link>
-                            {j === userFollowing.socialUsers.length - 1 ? '' : ', '}
-                          </span>
-                        ))
+                        <span key={j}>
+                          <Link to={`social-user/${val.id}`}>{val.user}</Link>
+                          {j === userFollowing.socialUsers.length - 1 ? '' : ', '}
+                        </span>
+                      ))
                       : null}
                   </td>
                   <td className="text-end">
