@@ -4,8 +4,4 @@ export interface IPrediction {
   value?: number | null;
 }
 
-export const defaultValue: Readonly<IPrediction> = {
-  id:"0",
-  date:"02/02/2022",
-  value:2222,
-};
+export const defaultValue: Readonly<IPrediction> = {};

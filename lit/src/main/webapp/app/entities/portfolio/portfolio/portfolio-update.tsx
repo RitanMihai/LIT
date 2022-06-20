@@ -65,10 +65,10 @@ export const PortfolioUpdate = (props: RouteComponentProps<{ id: string }>) => {
     isNew
       ? {}
       : {
-          ...portfolioEntity,
-          portfolioUser: portfolioEntity?.portfolioUser?.id,
-          portfolioCurrency: portfolioEntity?.portfolioCurrency?.id,
-        };
+        ...portfolioEntity,
+        portfolioUser: portfolioEntity?.portfolioUser?.id,
+        portfolioCurrency: portfolioEntity?.portfolioCurrency?.id,
+      };
 
   return (
     <div>
@@ -144,10 +144,10 @@ export const PortfolioUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {portfolioUsers
                   ? portfolioUsers.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.user}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <ValidatedField
@@ -160,10 +160,10 @@ export const PortfolioUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {portfolioCurrencies
                   ? portfolioCurrencies.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/portfolio" replace color="info">

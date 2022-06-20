@@ -222,14 +222,14 @@ export const Portfolio = (props: RouteComponentProps<{ url: string }>) => {
                   <td>{portfolio.profitOrLoss}</td>
                   <td>
                     {portfolio.portfolioUser ? (
-                      <Link to={`portfolio-user/${portfolio.portfolioUser.id}`}>{portfolio.portfolioUser.id}</Link>
+                      <Link to={`portfolio-user/${portfolio.portfolioUser.id}`}>{portfolio.portfolioUser.user}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>
                     {portfolio.portfolioCurrency ? (
-                      <Link to={`portfolio-currency/${portfolio.portfolioCurrency.id}`}>{portfolio.portfolioCurrency.id}</Link>
+                      <Link to={`portfolio-currency/${portfolio.portfolioCurrency.id}`}>{portfolio.portfolioCurrency.name}</Link>
                     ) : (
                       ''
                     )}

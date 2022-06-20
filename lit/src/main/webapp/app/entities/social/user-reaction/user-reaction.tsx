@@ -212,10 +212,10 @@ export const UserReaction = (props: RouteComponentProps<{ url: string }>) => {
                     <td>
                       <Translate contentKey={`litApp.UserReactionType.${userReaction.type}`} />
                     </td>
-                    <td>{userReaction.post ? <Link to={`post/${userReaction.post.id}`}>{userReaction.post.id}</Link> : ''}</td>
+                    <td>{userReaction.post ? <Link to={`post/${userReaction.post.id}`}>{`${userReaction.post.id} ${userReaction.post.content}`}</Link> : ''}</td>
                     <td>
                       {userReaction.socialUser ? (
-                        <Link to={`social-user/${userReaction.socialUser.id}`}>{userReaction.socialUser.id}</Link>
+                        <Link to={`social-user/${userReaction.socialUser.id}`}>{userReaction.socialUser.user}</Link>
                       ) : (
                         ''
                       )}

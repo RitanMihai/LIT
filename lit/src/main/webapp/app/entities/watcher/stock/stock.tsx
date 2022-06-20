@@ -4,9 +4,8 @@ import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'rea
 import { openFile, byteSize, Translate, translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { searchEntities, getEntities } from './stock.reducer';
-import { IStock } from 'app/shared/model/watcher/stock.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { getEntitiesBySector, searchEntities } from './stock.reducer';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 export const Stock = (props: RouteComponentProps<{ url: string }>) => {
@@ -18,7 +17,7 @@ export const Stock = (props: RouteComponentProps<{ url: string }>) => {
   const loading = useAppSelector(state => state.stock.loading);
 
   useEffect(() => {
-    dispatch(getEntities({}));
+    dispatch(getEntitiesBySector({ query: 'Finance', page: 0, size: 10 }));
   }, []);
 
   const startSearching = e => {
@@ -30,13 +29,13 @@ export const Stock = (props: RouteComponentProps<{ url: string }>) => {
 
   const clear = () => {
     setSearch('');
-    dispatch(getEntities({}));
+    dispatch(getEntitiesBySector({ query: 'Finance', page: 0, size: 5 }));
   };
 
   const handleSearch = event => setSearch(event.target.value);
 
   const handleSyncList = () => {
-    dispatch(getEntities({}));
+    dispatch(getEntitiesBySector({ query: 'Finance', page: 0, size: 5 }));
   };
 
   const { match } = props;
@@ -133,6 +132,12 @@ export const Stock = (props: RouteComponentProps<{ url: string }>) => {
                 <th>
                   <Translate contentKey="litApp.watcherStock.currency">Currency</Translate>
                 </th>
+                <th>
+                  Sector
+                </th>
+                <th>
+                  Industry
+                </th>
                 <th />
               </tr>
             </thead>
@@ -177,6 +182,8 @@ export const Stock = (props: RouteComponentProps<{ url: string }>) => {
                   </td>
                   <td>{stock.company ? <Link to={`company/${stock.company.id}`}>{stock.company.id}</Link> : ''}</td>
                   <td>{stock.currency ? <Link to={`currency/${stock.currency.id}`}>{stock.currency.id}</Link> : ''}</td>
+                  <td>{stock.sector}</td>
+                  <td>{stock.industry}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${stock.id}`} color="info" size="sm" data-cy="entityDetailsButton">

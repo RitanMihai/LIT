@@ -28,7 +28,7 @@ export const UserFollowingDetail = (props: RouteComponentProps<{ id: string }>) 
               <Translate contentKey="global.field.id">ID</Translate>
             </span>
           </dt>
-          <dd>{userFollowingEntity.socialUsers}</dd>
+          <dd>{userFollowingEntity.id}</dd>
           <dt>
             <span id="stock">
               <Translate contentKey="litApp.socialUserFollowing.stock">Stock</Translate>

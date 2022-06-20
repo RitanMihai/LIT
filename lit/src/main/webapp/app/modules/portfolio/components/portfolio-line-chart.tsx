@@ -3,17 +3,31 @@ import { ApexOptions } from "apexcharts";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const SingleLineChart = (props) => {
+const PortfolioLineChart = (props) => {
+  let addedPortfolioValue = 0;
   const series = [{
-    name: props.stock,
-    data: props.series?.map((item) => item.value)
-  }];
+    name: "Invested",
+    data: props.seriesInvested?.map((item) => {
+      addedPortfolioValue = addedPortfolioValue + item.sum;
+      const dateTime = new Date(item.date);
+      const stockItem = { x: item.date, y: addedPortfolioValue }
+      return stockItem;
+    })
+  },
+  {
+    name: "Value",
+    data: props.seriesReal?.map((item) => {
+      const stockItem = { x: item.date, y: item.value }
+      return stockItem;
+    })
+  }
+  ];
 
   const options: ApexOptions = {
     chart: {
       type: "area",
       stacked: false,
-      height: 350,
+      width: '500px',
       zoom: {
         type: 'x',
         enabled: true,
@@ -23,17 +37,24 @@ const SingleLineChart = (props) => {
         autoSelected: 'zoom'
       },
       animations: {
-        enabled: false,
+        enabled: true,
       }
+    },
+    noData: {
+      text: "No orders were placed to be displayed",
+      align: "center",
+      verticalAlign: "middle",
+      style: { color: 'gray', fontSize: '60px' }
     },
     dataLabels: {
       enabled: false
     },
+
     markers: {
       size: 0,
     },
     title: {
-      text: 'Predicted stock price for ' + props.stock,
+      text: 'Portofolios value',
       align: 'left'
     },
     fill: {
@@ -57,11 +78,7 @@ const SingleLineChart = (props) => {
       },
     },
     xaxis: {
-      type: 'datetime',
-      categories: props.series?.map((item) => {
-        const dateTime = new Date(item.date);
-        return dateTime.toDateString();
-      })
+      type: 'datetime'
     },
     tooltip: {
       shared: false,
@@ -75,11 +92,11 @@ const SingleLineChart = (props) => {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent style={{ height: "300px" }}>
         <ReactApexChart options={options} series={series} type="area" height={'100%'} />
       </CardContent>
     </Card>
   )
 }
 
-export default SingleLineChart;
+export default PortfolioLineChart;

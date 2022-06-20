@@ -35,7 +35,7 @@ const CategoryCard = ({ title, content, color1, color2, category }) => {
         >
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div" color={'white'} fontWeight={"bold"}>
-                    <EllipsisText text={title} length={"45"} />
+                    <EllipsisText text={title} length={"41"} />
                 </Typography>
                 <Typography variant="h6" color={'white'}>
                     {content}

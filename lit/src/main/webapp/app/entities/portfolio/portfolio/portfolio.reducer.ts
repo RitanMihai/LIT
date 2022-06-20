@@ -4,6 +4,7 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IPortfolio, defaultValue } from 'app/shared/model/portfolio/portfolio.model';
+import { IPortfolioDetails } from 'app/shared/model/portfolio/portfolio-details.model';
 
 const initialState: EntityState<IPortfolio> = {
   loading: false,

@@ -38,10 +38,10 @@ export const WatchIndustries = (props: RouteComponentProps<{ industry: string }>
                                     {stock.imageContentType ? (
                                         <div>
                                             <Link to={`../${stock.ticker}`}>
-                                                <img className='icon' src={`data:${stock.imageContentType};base64,${stock.image}`} />
+                                                <img className='default-icon' src={`data:${stock.imageContentType};base64,${stock.image}`} />
                                             </Link>
                                         </div>
-                                    ) : <DefaultIcon />}
+                                    ) : <DefaultIcon letter={stock.ticker[0]} />}
 
                                     <div >
                                         <Link to={`../${stock.ticker}`}>{stock.ticker}</Link>

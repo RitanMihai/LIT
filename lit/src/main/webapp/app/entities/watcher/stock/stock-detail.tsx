@@ -117,15 +117,15 @@ export const StockDetail = (props: RouteComponentProps<{ id: string }>) => {
           <dt>
             <Translate contentKey="litApp.watcherStock.stockExchange">Stock Exchange</Translate>
           </dt>
-          <dd>{stockEntity.stockExchange ? stockEntity.stockExchange.id : ''}</dd>
+          <dd>{stockEntity.stockExchange ? stockEntity.stockExchange.name : ''}</dd>
           <dt>
             <Translate contentKey="litApp.watcherStock.company">Company</Translate>
           </dt>
-          <dd>{stockEntity.company ? stockEntity.company.id : ''}</dd>
+          <dd>{stockEntity.company ? stockEntity.company.name : ''}</dd>
           <dt>
             <Translate contentKey="litApp.watcherStock.currency">Currency</Translate>
           </dt>
-          <dd>{stockEntity.currency ? stockEntity.currency.id : ''}</dd>
+          <dd>{stockEntity.currency ? stockEntity.currency.name : ''}</dd>
         </dl>
         <Button tag={Link} to="/stock" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

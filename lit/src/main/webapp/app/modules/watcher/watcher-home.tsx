@@ -7,6 +7,7 @@ import "react-multi-carousel/lib/styles.css";
 import CategoryCard from './components/card/card';
 import { getCountEntitesByTypes } from 'app/entities/watcher/stock/stock-group-type.reducer';
 import './watcher.scss'
+import { Card, CardContent } from '@mui/material';
 
 export const WatcherHome = () => {
   const gradients = [
@@ -126,6 +127,7 @@ export const WatcherHome = () => {
             category={"sectors"} />
         ))}
       </Carousel>
+
       <h4>By Industry</h4>
       <Carousel responsive={responsive} shouldResetAutoplay={false}>
         {stockGroupIndustry.map((data, index) => (

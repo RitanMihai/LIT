@@ -71,18 +71,18 @@ export const OrderUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const defaultValues = () =>
     isNew
       ? {
-          subbmitedDate: displayDefaultDateTime(),
-          filledDate: displayDefaultDateTime(),
-        }
+        subbmitedDate: displayDefaultDateTime(),
+        filledDate: displayDefaultDateTime(),
+      }
       : {
-          type: 'BUY',
-          position: 'OPEN',
-          ...orderEntity,
-          subbmitedDate: convertDateTimeFromServer(orderEntity.subbmitedDate),
-          filledDate: convertDateTimeFromServer(orderEntity.filledDate),
-          stockInfo: orderEntity?.stockInfo?.id,
-          portfolio: orderEntity?.portfolio?.id,
-        };
+        type: 'BUY',
+        position: 'OPEN',
+        ...orderEntity,
+        subbmitedDate: convertDateTimeFromServer(orderEntity.subbmitedDate),
+        filledDate: convertDateTimeFromServer(orderEntity.filledDate),
+        stockInfo: orderEntity?.stockInfo?.id,
+        portfolio: orderEntity?.portfolio?.id,
+      };
 
   return (
     <div>
@@ -168,7 +168,10 @@ export const OrderUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 placeholder="YYYY-MM-DD HH:mm"
               />
               <ValidatedField label={translate('litApp.portfolioOrder.notes')} id="order-notes" name="notes" data-cy="notes" type="text" />
-              <ValidatedField label={translate('litApp.portfolioOrder.total')} id="order-total" name="total" data-cy="total" type="text" />
+              <ValidatedField label={translate('litApp.portfolioOrder.total')} id="order-total" name="total" data-cy="total" type="text" validate={{
+                required: { value: true, message: translate('entity.validation.required') },
+                validate: v => isNumber(v) || translate('entity.validation.number'),
+              }} />
               <ValidatedField label={translate('litApp.portfolioOrder.taxes')} id="order-taxes" name="taxes" data-cy="taxes" type="text" />
               <ValidatedField
                 label={translate('litApp.portfolioOrder.stopLoss')}
@@ -216,10 +219,10 @@ export const OrderUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {stockInfos
                   ? stockInfos.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.ticker}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <ValidatedField
@@ -232,10 +235,10 @@ export const OrderUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {portfolios
                   ? portfolios.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/order" replace color="info">

@@ -15,9 +15,13 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 import Post from './entities/social/post/post';
-import Portfolio from './modules/portfolio/portfolio';
+import PortfoliosManager from './modules/portfolio/portfolios-manager';
+
 import WatcherHome from './modules/watcher/watcher-home';
 import Watcher from './modules/watcher';
+import Portfolio from './modules/portfolio/portfolio';
+import NewPortfolio from './modules/portfolio/new-portfolio';
+import NewOrder from './modules/portfolio/new-order';
 
 const Account = Loadable({
   loader: () => import(/* webpackChunkName: "account" */ 'app/modules/account'),
@@ -42,7 +46,10 @@ const Routes = () => {
         <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
         <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
         <ErrorBoundaryRoute path="/" exact component={Home} />
-        <PrivateRoute path="/portfolios" component={Portfolio} hasAnyAuthorities={[AUTHORITIES.USER]} />
+        <PrivateRoute path="/portfolios-manager" component={PortfoliosManager} hasAnyAuthorities={[AUTHORITIES.USER]} />
+        <PrivateRoute path="/portfolios/new" component={NewPortfolio} hasAnyAuthorities={[AUTHORITIES.USER]} />
+        <PrivateRoute path="/portfolios/portfolio/:portfolio" component={Portfolio} hasAnyAuthorities={[AUTHORITIES.USER]} />
+        <PrivateRoute path="/portfolios/order/:portfolio/new-order" component={NewOrder} hasAnyAuthorities={[AUTHORITIES.USER]} />
         <PrivateRoute path="/watcher" component={Watcher} hasAnyAuthorities={[AUTHORITIES.USER]} />
         {/* <ErrorBoundaryRoute path="/" exact component={Post} /> */}
         <PrivateRoute path="/" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />

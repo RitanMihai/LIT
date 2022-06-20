@@ -47,6 +47,7 @@ export const UserReactionUpdate = (props: RouteComponentProps<{ id: string }>) =
   }, [updateSuccess]);
 
   const saveEntity = values => {
+    console.log("VALUES, ", values)
     const entity = {
       ...userReactionEntity,
       ...values,
@@ -65,11 +66,11 @@ export const UserReactionUpdate = (props: RouteComponentProps<{ id: string }>) =
     isNew
       ? {}
       : {
-          type: 'LIT',
-          ...userReactionEntity,
-          post: userReactionEntity?.post?.id,
-          socialUser: userReactionEntity?.socialUser?.id,
-        };
+        type: 'LIT',
+        ...userReactionEntity,
+        post: userReactionEntity?.post?.id,
+        socialUser: userReactionEntity?.socialUser?.id,
+      };
 
   return (
     <div>
@@ -119,10 +120,10 @@ export const UserReactionUpdate = (props: RouteComponentProps<{ id: string }>) =
                 <option value="" key="0" />
                 {posts
                   ? posts.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.id}  {otherEntity.content}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <ValidatedField
@@ -135,10 +136,10 @@ export const UserReactionUpdate = (props: RouteComponentProps<{ id: string }>) =
                 <option value="" key="0" />
                 {socialUsers
                   ? socialUsers.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.user}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/user-reaction" replace color="info">

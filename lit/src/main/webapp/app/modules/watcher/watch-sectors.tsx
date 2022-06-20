@@ -20,47 +20,48 @@ export const WatchSectors = (props: RouteComponentProps<{ sector: string }>) => 
     }, []);
 
     return (
-        <div>
-            <div>Watch</div>
-            {stockList && stockList.length > 0 ? (
-                <Table responsive>
-                    <thead>
-                        <tr>
-                            <th>
-                                Stock
-                            </th>
-                            <th>
-                                Market Cap
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {stockList.map((stock, i) => (
-                            <tr key={`entity-${i}`}>
-                                <td style={{ display: 'flex' }}>
-                                    {stock.imageContentType ? (
-                                        <div>
-                                            <Link to={`../${stock.ticker}`}>
-                                                <img className='icon' src={`data:${stock.imageContentType};base64,${stock.image}`} />
-                                            </Link>
-                                        </div>
-                                    ) : <DefaultIcon />}
-
-                                    <div >
-                                        <Link to={`../${stock.ticker}`}>{stock.ticker}</Link>
-                                        <div>{stock.name}</div>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    {stock.marketCap}
-                                </td>
+        <Card>
+            <CardContent>
+                {stockList && stockList.length > 0 ? (
+                    <Table responsive>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Stock
+                                </th>
+                                <th>
+                                    Market Cap
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            ) : null}
-        </div>
+                        </thead>
+                        <tbody>
+                            {stockList.map((stock, i) => (
+                                <tr key={`entity-${i}`}>
+                                    <td style={{ display: 'flex' }}>
+                                        {stock.imageContentType ? (
+                                            <div>
+                                                <Link to={`../${stock.ticker}`}>
+                                                    <img className="default-icon" src={`data:${stock.imageContentType};base64,${stock.image}`} />
+                                                </Link>
+                                            </div>
+                                        ) : <DefaultIcon letter={stock.ticker[0]} />}
+
+                                        <div >
+                                            <Link to={`../${stock.ticker}`}>{stock.ticker}</Link>
+                                            <div>{stock.name}</div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        {stock.marketCap}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                ) : null}
+            </CardContent>
+        </Card>
     );
 };
 

@@ -20,6 +20,7 @@ import FeedPost from './component/post';
 import { getEntitiesBySocialUser } from 'app/entities/social/user-reaction/user-reaction.reducer';
 import { getEntityByUserIs } from 'app/entities/social/social-user/social-user.reducer';
 import "./feed.scss"
+import { Box } from '@mui/material';
 
 export const Feed = (props: RouteComponentProps<{ url: string }>) => {
   const dispatch = useAppDispatch();
@@ -57,33 +58,31 @@ export const Feed = (props: RouteComponentProps<{ url: string }>) => {
 
 
   return (
-    <div className="feed">
-      <div >
-        <ErrorBoundaryRoute component={Share} />
-        <InfiniteScroll className="feedWrapper"
-          dataLength={postList ? postList.length : 0}
-          next={handleLoadMore}
-          hasMore={paginationState.activePage - 1 < links.next}
-          loader={<div className="loader">Loading ...</div>}
-        >
-          {postList && postList.length > 0 ? (
-            <div >
-              {postList.map((post, i) => (
-                <div key={`entity-${i}`} data-cy="entityPost" className="post">
-                  <FeedPost post={post} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            !loading && (
-              <div className="alert alert-warning">
-                <Translate contentKey="litApp.socialPost.home.notFound">No Posts found</Translate>
+    <Box>
+      <ErrorBoundaryRoute component={Share} />
+      <InfiniteScroll className="feedWrapper"
+        dataLength={postList ? postList.length : 0}
+        next={handleLoadMore}
+        hasMore={paginationState.activePage - 1 < links.next}
+        loader={<div className="loader">Loading ...</div>}
+      >
+        {postList && postList.length > 0 ? (
+          <div >
+            {postList.map((post, i) => (
+              <div key={`entity-${i}`} data-cy="entityPost" className="post">
+                <FeedPost post={post} />
               </div>
-            )
-          )}
-        </InfiniteScroll>
-      </div>
-    </div>
+            ))}
+          </div>
+        ) : (
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="litApp.socialPost.home.notFound">No Posts found</Translate>
+            </div>
+          )
+        )}
+      </InfiniteScroll>
+    </Box>
   );
 };
 

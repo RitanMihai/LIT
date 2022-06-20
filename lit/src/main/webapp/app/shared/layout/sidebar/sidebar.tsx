@@ -13,52 +13,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Home, Brand, Portfolio, Watcher } from '../../../shared/layout/header/header-components';
 
 export interface IHeaderProps {
-    isAuthenticated: boolean;
-    isAdmin: boolean;
-    ribbonEnv: string;
-    isInProduction: boolean;
-    isOpenAPIEnabled: boolean;
-    currentLocale: string;
-  }
-  
-const SideBar =(props: IHeaderProps) => {
-    const [menuOpen, setMenuOpen] = useState(false);
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  ribbonEnv: string;
+  isInProduction: boolean;
+  isOpenAPIEnabled: boolean;
+  currentLocale: string;
+}
 
-    const dispatch = useAppDispatch();
-  
-    const handleLocaleChange = event => {
-      const langKey = event.target.value;
-      Storage.session.set('locale', langKey);
-      dispatch(setLocale(langKey));
-    };
-  
-    const renderDevRibbon = () =>
-      props.isInProduction === false ? (
-        <div className="ribbon dev">
-          <a href="">
-            <Translate contentKey={`global.ribbon.${props.ribbonEnv}`} />
-          </a>
-        </div>
-      ) : null;
-  
-    const toggleMenu = () => setMenuOpen(!menuOpen);
-  
-    /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
+const SideBar = (props: IHeaderProps) => {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-return (
+  const dispatch = useAppDispatch();
+
+  const handleLocaleChange = event => {
+    const langKey = event.target.value;
+    Storage.session.set('locale', langKey);
+    dispatch(setLocale(langKey));
+  };
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
+
+  return (
     <div className='sidebar'>
-        <LoadingBar className="loading-bar" />
-        <Navbar data-cy="navbar" dark>
-            <Nav id="header-tabs" className="ms-auto" navbar>
-                <Brand/>
-                <Home/>
-                <Portfolio/>
-                <Watcher/>
-                
-            </Nav>
-        </Navbar>
+      <LoadingBar className="loading-bar" />
+      <Navbar data-cy="navbar" dark>
+        <Nav id="header-tabs" className="ms-auto" navbar>
+          <Brand />
+          <Home />
+          <Portfolio />
+          <Watcher />
+
+        </Nav>
+      </Navbar>
     </div>
-);
+  );
 }
 
 export default SideBar;

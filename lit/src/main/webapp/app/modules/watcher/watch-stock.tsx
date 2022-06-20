@@ -11,9 +11,12 @@ import MultiLineChart from './components/charts/multi-line-chart';
 
 export const WatchStock = (props: RouteComponentProps<{ name: string }>) => {
     const dispatch = useAppDispatch();
+    /* TODO:Sort data */
     const stockEntity = useAppSelector(state => state.stock.entity);
     const priceHistoryList = useAppSelector(state => state.priceHistory.entities);
     const predictionList = useAppSelector(state => state.prediction.entities);
+
+    const { match } = props;
 
     useEffect(() => {
         dispatch(getEntitiesBySymbol(props.match.params.name));
@@ -25,10 +28,19 @@ export const WatchStock = (props: RouteComponentProps<{ name: string }>) => {
     return (
         <div>
             <div>Watch {stockEntity.name}</div>
-            <MultiLineChart lenght={priceHistoryList.length}
-                stock={props.match.params.name}
-                seriesStock={priceHistoryList}
-                seriesPrediction={predictionList}></MultiLineChart>
+            {priceHistoryList.length === 0 ? (
+                <div> NO DATA </div>
+            ) : (
+                predictionList.length === 0 ? (
+                    <SingleLineChart
+                        series={priceHistoryList}
+                    />) : (
+                    <MultiLineChart lenght={priceHistoryList.length}
+                        stock={props.match.params.name}
+                        seriesStock={priceHistoryList}
+                        seriesPrediction={predictionList} />
+                ))
+            }
         </div>
     );
 };

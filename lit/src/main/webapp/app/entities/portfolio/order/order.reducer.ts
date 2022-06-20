@@ -4,6 +4,7 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IOrder, defaultValue } from 'app/shared/model/portfolio/order.model';
+import { useAppSelector } from 'app/config/store';
 
 const initialState: EntityState<IOrder> = {
   loading: false,
@@ -27,6 +28,17 @@ export const searchEntities = createAsyncThunk('order/search_entity', async ({ q
 
 export const getEntities = createAsyncThunk('order/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
+  return axios.get<IOrder[]>(requestUrl);
+});
+
+export const getEntitiesByUser = createAsyncThunk('order/fetch_entity_by_user_list', async ({ query, page, size, sort }: IQueryParams) => {
+  const requestUrl = `${apiUrl}/user/${query}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
+  return axios.get<IOrder[]>(requestUrl);
+});
+
+export const getEntitiesByUserAndPortfolio = createAsyncThunk('order/fetch_entity_by_user_list', async ({ query, page, size, sort }: IQueryParams) => {
+  const parameters = query.split(",")
+  const requestUrl = `${apiUrl}/user/${parameters[0]}/portfolio/${parameters[1]}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IOrder[]>(requestUrl);
 });
 
@@ -96,7 +108,7 @@ export const OrderSlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = {};
       })
-      .addMatcher(isFulfilled(getEntities, searchEntities), (state, action) => {
+      .addMatcher(isFulfilled(getEntities, getEntitiesByUser, searchEntities), (state, action) => {
         const { data, headers } = action.payload;
 
         return {
@@ -112,7 +124,7 @@ export const OrderSlice = createEntitySlice({
         state.updateSuccess = true;
         state.entity = action.payload.data;
       })
-      .addMatcher(isPending(getEntities, getEntity, searchEntities), state => {
+      .addMatcher(isPending(getEntities, getEntitiesByUser, getEntity, searchEntities), state => {
         state.errorMessage = null;
         state.updateSuccess = false;
         state.loading = true;

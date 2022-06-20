@@ -53,7 +53,10 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
   }, [updateSuccess]);
 
   const saveEntity = values => {
+    console.log(values);
+
     const entity = {
+
       ...stockEntity,
       ...values,
       stockExchange: stockExchanges.find(it => it.id.toString() === values.stockExchange.toString()),
@@ -62,6 +65,7 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
     };
 
     if (isNew) {
+      console.log("VALUES", values);
       dispatch(createEntity(entity));
     } else {
       dispatch(updateEntity(entity));
@@ -72,12 +76,12 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
     isNew
       ? {}
       : {
-          type: 'COMMON',
-          ...stockEntity,
-          stockExchange: stockEntity?.stockExchange?.id,
-          company: stockEntity?.company?.id,
-          currency: stockEntity?.currency?.id,
-        };
+        type: 'COMMON',
+        ...stockEntity,
+        stockExchange: stockEntity?.stockExchange?.id,
+        company: stockEntity?.company?.id,
+        currency: stockEntity?.currency?.id,
+      };
 
   return (
     <div>
@@ -189,10 +193,10 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {stockExchanges
                   ? stockExchanges.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <ValidatedField
@@ -205,10 +209,10 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {companies
                   ? companies.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <ValidatedField
@@ -221,10 +225,10 @@ export const StockUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <option value="" key="0" />
                 {currencies
                   ? currencies.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/stock" replace color="info">

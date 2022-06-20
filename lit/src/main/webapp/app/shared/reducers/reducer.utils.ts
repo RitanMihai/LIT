@@ -78,6 +78,18 @@ export interface EntityState<T> {
   updateSuccess: boolean;
 }
 
+export interface EntityDetailsTimeState<T> {
+  loading: boolean;
+  errorMessage: string | null;
+  entitiesInvested: ReadonlyArray<T>;
+  entitiesReal: ReadonlyArray<T>;
+  entity: T;
+  links?: any;
+  updating: boolean;
+  totalItems?: number;
+  updateSuccess: boolean;
+}
+
 export interface EntityStateIndustrySector<T> extends EntityState<T> {
   loading: boolean;
   errorMessage: string | null;
@@ -137,6 +149,51 @@ export const createEntitySlice = <T, Reducers extends SliceCaseReducers<EntitySt
     },
   });
 };
+
+export const createEntityDetailsTimeSlice = <T, Reducers extends SliceCaseReducers<EntityDetailsTimeState<T>>>({
+  name = '',
+  initialState,
+  reducers,
+  extraReducers,
+  skipRejectionHandling,
+}: {
+  name: string;
+  initialState: EntityDetailsTimeState<T>;
+  reducers?: ValidateSliceCaseReducers<EntityDetailsTimeState<T>, Reducers>;
+  extraReducers?: (builder: ActionReducerMapBuilder<EntityDetailsTimeState<T>>) => void;
+  skipRejectionHandling?: boolean;
+}) => {
+  return createSlice({
+    name,
+    initialState,
+    reducers: {
+      /**
+       * Reset the entity state to initial state
+       */
+      reset() {
+        return initialState;
+      },
+      ...reducers,
+    },
+    extraReducers(builder) {
+      extraReducers(builder);
+      /*
+       * Common rejection logic is handled here.
+       * If you want to add your own rejcetion logic, pass `skipRejectionHandling: true`
+       * while calling `createEntitySlice`
+       * */
+      if (!skipRejectionHandling) {
+        builder.addMatcher(isRejectedAction, (state, action) => {
+          state.loading = false;
+          state.updating = false;
+          state.updateSuccess = false;
+          state.errorMessage = action.error.message;
+        });
+      }
+    },
+  });
+};
+
 
 /* CUSTOM FOR Sector and Industry */
 export const createEntityIndustrySectorSlice = <T, Reducers extends SliceCaseReducers<EntityStateIndustrySector<T>>>({

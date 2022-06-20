@@ -16,7 +16,7 @@ export const Order = (props: RouteComponentProps<{ url: string }>) => {
 
   const [search, setSearch] = useState('');
   const [paginationState, setPaginationState] = useState(
-    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE, 'id'), props.location.search)
+    overridePaginationStateWithQueryParams(getSortState(props.location, 5, 'id'), props.location.search)
   );
 
   const orderList = useAppSelector(state => state.order.entities);
@@ -244,8 +244,8 @@ export const Order = (props: RouteComponentProps<{ url: string }>) => {
                   <td>{order.leverage}</td>
                   <td>{order.exchangeRate}</td>
                   <td>{order.isCFD ? 'true' : 'false'}</td>
-                  <td>{order.stockInfo ? <Link to={`stock-info/${order.stockInfo.id}`}>{order.stockInfo.id}</Link> : ''}</td>
-                  <td>{order.portfolio ? <Link to={`portfolio/${order.portfolio.id}`}>{order.portfolio.id}</Link> : ''}</td>
+                  <td>{order.stockInfo ? <Link to={`stock-info/${order.stockInfo.id}`}>{order.stockInfo.ticker}</Link> : ''}</td>
+                  <td>{order.portfolio ? <Link to={`portfolio/${order.portfolio.id}`}>{order.portfolio.name} </Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${order.id}`} color="info" size="sm" data-cy="entityDetailsButton">

@@ -10,30 +10,37 @@ import Feed from './feed/feed';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import RightBar from './rightbar/rightbar';
+import { Card, CardContent, Container, Grid } from '@mui/material';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
 
   return (
-      <Col>
-        {account?.login ? (
-          <div>
-              <div className='homeContainer'>
-                <ErrorBoundaryRoute  component={Feed} />
-                <ErrorBoundaryRoute component={RightBar} />
-              </div>
-          </div>
-        ) : (
-          <div>
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-              <Link to="/account/register" className="alert-link">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
-          </div>
-        )}
-      </Col>
+    <div>
+      {account?.login ? (
+        <Grid container spacing={2}>
+          <Grid item xs={2}>
+            <Card>
+              <CardContent>
+                Some analitic here
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={8}>
+            <ErrorBoundaryRoute component={Feed} />
+          </Grid>
+          <Grid item xs={2}>
+            <Card>
+              <CardContent>
+                Some analitic here
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      ) : (
+        null
+      )}
+    </div>
   );
 };
 

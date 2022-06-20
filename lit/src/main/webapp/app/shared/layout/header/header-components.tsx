@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const paddingTop = '20px';
 
 export const BrandIcon = props => (
-  <div {...props} className="brand-icon">
+  <div {...props} className="brand-icon" style={{ margin: '5px' }}>
     <img src="content/images/logo/fire.png" alt="Logo" />
   </div>
 );
@@ -33,7 +33,7 @@ export const Home = () => (
 
 export const Portfolio = () => (
   <NavItem>
-    <NavLink tag={Link} to="/portfolios" className="text-center" style={{ paddingTop }}>
+    <NavLink tag={Link} to="/portfolios-manager" className="text-center" style={{ paddingTop }}>
       <FontAwesomeIcon icon="wallet" size="lg" />
       <Translate contentKey="global.menu.entities.portfolioPortfolio">Portfolio</Translate>
     </NavLink>

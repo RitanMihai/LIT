@@ -28,7 +28,11 @@ import incomeHistory from 'app/entities/watcher/income-history/income-history.re
 // prettier-ignore
 import order from 'app/entities/portfolio/order/order.reducer';
 // prettier-ignore
+import orderDetails from 'app/entities/portfolio/order/order-details.reducer'
+// prettier-ignore
 import portfolio from 'app/entities/portfolio/portfolio/portfolio.reducer';
+// prettier-ignore
+import portfolioDetails from 'app/entities/portfolio/portfolio/portfolio-details.reducer'
 // prettier-ignore
 import portfolioCurrency from 'app/entities/portfolio/portfolio-currency/portfolio-currency.reducer';
 // prettier-ignore
@@ -84,7 +88,9 @@ const rootReducer = {
   dividendHistory,
   incomeHistory,
   order,
+  orderDetails,
   portfolio,
+  portfolioDetails,
   portfolioCurrency,
   portfolioUser,
   post,

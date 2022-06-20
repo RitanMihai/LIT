@@ -34,7 +34,7 @@ const MultiLineChart = (props) => {
                 autoSelected: 'zoom'
             },
             animations: {
-                enabled: (props.lenght > 4000) ? false : true,
+                enabled: false,
             }
         },
         dataLabels: {
