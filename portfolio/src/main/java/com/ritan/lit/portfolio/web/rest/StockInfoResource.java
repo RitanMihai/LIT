@@ -6,12 +6,14 @@ import com.ritan.lit.portfolio.domain.StockInfo;
 import com.ritan.lit.portfolio.repository.StockInfoRepository;
 import com.ritan.lit.portfolio.service.StockInfoService;
 import com.ritan.lit.portfolio.web.rest.errors.BadRequestAlertException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,10 +65,19 @@ public class StockInfoResource {
             .body(result);
     }
 
+    @PostMapping("/stock-infos/list")
+    public void createFromList(@RequestBody List<String> stockInfos) {
+        for (String stockInfo : stockInfos) {
+            StockInfo stockInfo1 = new StockInfo();
+            stockInfo1.setTicker(stockInfo);
+            stockInfoService.save(stockInfo1);
+        }
+    }
+
     /**
      * {@code PUT  /stock-infos/:id} : Updates an existing stockInfo.
      *
-     * @param id the id of the stockInfo to save.
+     * @param id        the id of the stockInfo to save.
      * @param stockInfo the stockInfo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated stockInfo,
      * or with status {@code 400 (Bad Request)} if the stockInfo is not valid,
@@ -100,7 +111,7 @@ public class StockInfoResource {
     /**
      * {@code PATCH  /stock-infos/:id} : Partial updates given fields of an existing stockInfo, field will ignore if it is null
      *
-     * @param id the id of the stockInfo to save.
+     * @param id        the id of the stockInfo to save.
      * @param stockInfo the stockInfo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated stockInfo,
      * or with status {@code 400 (Bad Request)} if the stockInfo is not valid,
@@ -108,7 +119,7 @@ public class StockInfoResource {
      * or with status {@code 500 (Internal Server Error)} if the stockInfo couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/stock-infos/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/stock-infos/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<StockInfo> partialUpdateStockInfo(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody StockInfo stockInfo

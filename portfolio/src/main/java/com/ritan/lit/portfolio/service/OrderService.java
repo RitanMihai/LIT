@@ -3,8 +3,11 @@ package com.ritan.lit.portfolio.service;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import com.ritan.lit.portfolio.domain.Order;
+import com.ritan.lit.portfolio.domain.util.PortfolioOrderGroup;
 import com.ritan.lit.portfolio.repository.OrderRepository;
 import com.ritan.lit.portfolio.repository.search.OrderSearchRepository;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +27,11 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final OrderSearchRepository orderSearchRepository;
+    //private final OrderSearchRepository orderSearchRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderSearchRepository orderSearchRepository) {
+    public OrderService(OrderRepository orderRepository/*, OrderSearchRepository orderSearchRepository*/) {
         this.orderRepository = orderRepository;
-        this.orderSearchRepository = orderSearchRepository;
+        //this.orderSearchRepository = orderSearchRepository;
     }
 
     /**
@@ -40,7 +43,7 @@ public class OrderService {
     public Order save(Order order) {
         log.debug("Request to save Order : {}", order);
         Order result = orderRepository.save(order);
-        orderSearchRepository.save(result);
+        //orderSearchRepository.save(result);
         return result;
     }
 
@@ -101,12 +104,12 @@ public class OrderService {
 
                 return existingOrder;
             })
-            .map(orderRepository::save)
+            .map(orderRepository::save);/*
             .map(savedOrder -> {
                 orderSearchRepository.save(savedOrder);
 
                 return savedOrder;
-            });
+            });*/
     }
 
     /**
@@ -119,6 +122,20 @@ public class OrderService {
     public Page<Order> findAll(Pageable pageable) {
         log.debug("Request to get all Orders");
         return orderRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Order> findAllByUser(Pageable pageable, String user) {
+        log.debug("Request to get all Orders");
+        return orderRepository.findAllByPortfolioUser(pageable, user);
+    }
+
+    public Page<Order> findAllByUserAndPortfolio(Pageable pageable, String user, String portfolio) {
+        return orderRepository.findAllByPortfolioPortfolioUserAndPortfolio(pageable, user, portfolio);
+    }
+
+    public Page<Object[]> findAllOrderDetailsByUser(Pageable pageable, String user) {
+        return orderRepository.findAllByPortfolioPortfolioUser(pageable, user);
     }
 
     /**
@@ -141,7 +158,11 @@ public class OrderService {
     public void delete(Long id) {
         log.debug("Request to delete Order : {}", id);
         orderRepository.deleteById(id);
-        orderSearchRepository.deleteById(id);
+        //orderSearchRepository.deleteById(id);
+    }
+
+    public Optional<List<Object[]>> getAllPortfoliosWithDetails(String user, String portfolioName){
+        return orderRepository.getAllPortfoliosWithDetails(user, portfolioName);
     }
 
     /**
@@ -151,9 +172,10 @@ public class OrderService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
+ /*   @Transactional(readOnly = true)
     public Page<Order> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Orders for query {}", query);
         return orderSearchRepository.search(query, pageable);
-    }
+    }*/
+
 }

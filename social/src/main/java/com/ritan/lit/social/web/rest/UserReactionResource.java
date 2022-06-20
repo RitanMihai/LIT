@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
+import org.checkerframework.common.reflection.qual.GetClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,7 +74,7 @@ public class UserReactionResource {
     /**
      * {@code PUT  /user-reactions/:id} : Updates an existing userReaction.
      *
-     * @param id the id of the userReaction to save.
+     * @param id           the id of the userReaction to save.
      * @param userReaction the userReaction to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userReaction,
      * or with status {@code 400 (Bad Request)} if the userReaction is not valid,
@@ -106,7 +108,7 @@ public class UserReactionResource {
     /**
      * {@code PATCH  /user-reactions/:id} : Partial updates given fields of an existing userReaction, field will ignore if it is null
      *
-     * @param id the id of the userReaction to save.
+     * @param id           the id of the userReaction to save.
      * @param userReaction the userReaction to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userReaction,
      * or with status {@code 400 (Bad Request)} if the userReaction is not valid,
@@ -114,7 +116,7 @@ public class UserReactionResource {
      * or with status {@code 500 (Internal Server Error)} if the userReaction couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/user-reactions/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-reactions/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<UserReaction> partialUpdateUserReaction(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody UserReaction userReaction
@@ -166,6 +168,20 @@ public class UserReactionResource {
         return ResponseUtil.wrapOrNotFound(userReaction);
     }
 
+    @GetMapping("/user-reactions/user/{username}")
+    public ResponseEntity<List<UserReaction>> getUserReactions(@PathVariable String username) {
+        Optional<List<UserReaction>> userReactions = userReactionService.findAllByUsername(username);
+        return ResponseUtil.wrapOrNotFound(userReactions);
+    }
+
+    @GetMapping("/user-reactions/specific")
+    public ResponseEntity<?> getUserReactionByPostAndSocialUser(
+        @RequestParam("postId") Long postId,
+        @RequestParam("user") String user) {
+        Optional<UserReaction> userReaction = userReactionService.findByPostAndUser(postId, user);
+        return ResponseUtil.wrapOrNotFound(userReaction);
+    }
+
     /**
      * {@code DELETE  /user-reactions/:id} : delete the "id" userReaction.
      *
@@ -180,24 +196,5 @@ public class UserReactionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    /**
-     * {@code SEARCH  /_search/user-reactions?query=:query} : search for the userReaction corresponding
-     * to the query.
-     *
-     * @param query the query of the userReaction search.
-     * @param pageable the pagination information.
-     * @return the result of the search.
-     */
-    @GetMapping("/_search/user-reactions")
-    public ResponseEntity<List<UserReaction>> searchUserReactions(
-        @RequestParam String query,
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to search for a page of UserReactions for query {}", query);
-        Page<UserReaction> page = userReactionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

@@ -7,6 +7,7 @@ import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.repository.PriceHistoryRepository;
 import com.ritan.lit.watchlist.repository.search.PriceHistorySearchRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -142,7 +143,13 @@ public class PriceHistoryService {
     }
 
     public List<PriceHistory> findAllByStock(Stock stock) {
-        List<PriceHistory> allByStock = priceHistoryRepository.findAllByStock(stock);
+        List<PriceHistory> allByStock = priceHistoryRepository.findAllByStockOrderByDate(stock);
+        //allByStock.forEach(priceHistory -> priceHistory.setStock(null));
+        return allByStock;
+    }
+
+    public List<PriceHistory> findAllByStockAndDate(Stock stock, LocalDate date) {
+        List<PriceHistory> allByStock = priceHistoryRepository.findAllByStockAndDateAfterOrderByDate(stock, date);
         //allByStock.forEach(priceHistory -> priceHistory.setStock(null));
         return allByStock;
     }

@@ -1,24 +1,23 @@
 package com.ritan.lit.portfolio.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.ritan.lit.portfolio.domain.Portfolio;
+import com.ritan.lit.portfolio.domain.util.PortfolioData;
+import com.ritan.lit.portfolio.domain.util.PortfolioOrderGroup;
 import com.ritan.lit.portfolio.repository.PortfolioRepository;
+import com.ritan.lit.portfolio.service.OrderService;
 import com.ritan.lit.portfolio.service.PortfolioService;
 import com.ritan.lit.portfolio.web.rest.errors.BadRequestAlertException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.StreamSupport;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,11 +40,12 @@ public class PortfolioResource {
     private String applicationName;
 
     private final PortfolioService portfolioService;
-
+    private final OrderService orderService;
     private final PortfolioRepository portfolioRepository;
 
-    public PortfolioResource(PortfolioService portfolioService, PortfolioRepository portfolioRepository) {
+    public PortfolioResource(PortfolioService portfolioService, OrderService orderService, PortfolioRepository portfolioRepository) {
         this.portfolioService = portfolioService;
+        this.orderService = orderService;
         this.portfolioRepository = portfolioRepository;
     }
 
@@ -72,7 +72,7 @@ public class PortfolioResource {
     /**
      * {@code PUT  /portfolios/:id} : Updates an existing portfolio.
      *
-     * @param id the id of the portfolio to save.
+     * @param id        the id of the portfolio to save.
      * @param portfolio the portfolio to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated portfolio,
      * or with status {@code 400 (Bad Request)} if the portfolio is not valid,
@@ -106,7 +106,7 @@ public class PortfolioResource {
     /**
      * {@code PATCH  /portfolios/:id} : Partial updates given fields of an existing portfolio, field will ignore if it is null
      *
-     * @param id the id of the portfolio to save.
+     * @param id        the id of the portfolio to save.
      * @param portfolio the portfolio to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated portfolio,
      * or with status {@code 400 (Bad Request)} if the portfolio is not valid,
@@ -114,7 +114,7 @@ public class PortfolioResource {
      * or with status {@code 500 (Internal Server Error)} if the portfolio couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/portfolios/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/portfolios/{id}", consumes = {"application/json", "application/merge-patch+json"})
     public ResponseEntity<Portfolio> partialUpdatePortfolio(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Portfolio portfolio
@@ -153,6 +153,40 @@ public class PortfolioResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/portfolios/details/{user}")
+    public ResponseEntity<?> getAllPortfoliosDetailsByUser(@PathVariable String user) {
+        Optional<List<Portfolio>> allByUser = portfolioService.findAllByUser(user);
+
+        List<PortfolioData> portfoliosData = new ArrayList<>();
+
+        if (allByUser.isPresent()) {
+            /* Iterate all portfolios */
+            for (Portfolio portfolio : allByUser.get()) {
+                PortfolioData portfolioData = new PortfolioData();
+                portfolioData.setName(portfolio.getName());
+
+                Optional<List<Object[]>> allPortfoliosWithDetails = orderService.getAllPortfoliosWithDetails(user, portfolio.getName());
+                PortfolioOrderGroup portfolioOrderGroup = new PortfolioOrderGroup();
+                if(allPortfoliosWithDetails.isPresent()){
+                    portfolioOrderGroup.setNumberOfStocks(allPortfoliosWithDetails.get().size());
+
+                    Double totalValuePortfolio = 0D;
+                    for (Object[] orderGroup : allPortfoliosWithDetails.get()) {
+                        totalValuePortfolio = Double.valueOf(orderGroup[1].toString()) + totalValuePortfolio;
+                    }
+                    portfolioData.setInvested(totalValuePortfolio);
+                    portfolioData.setStockNumber(allPortfoliosWithDetails.get().size());
+                }
+
+                portfoliosData.add(portfolioData);
+            }
+
+            portfoliosData.sort(PortfolioData::compareTo);
+        }
+
+        return ResponseEntity.ok(portfoliosData);
+    }
+
     /**
      * {@code GET  /portfolios/:id} : get the "id" portfolio.
      *
@@ -164,6 +198,13 @@ public class PortfolioResource {
         log.debug("REST request to get Portfolio : {}", id);
         Optional<Portfolio> portfolio = portfolioService.findOne(id);
         return ResponseUtil.wrapOrNotFound(portfolio);
+    }
+
+    @GetMapping("/portfolios/user/{user}")
+    public ResponseEntity<List<Portfolio>> getPortfoliosByUSer(@PathVariable String user) {
+        Optional<List<Portfolio>> portfolios = portfolioService.findAllByUser(user);
+
+        return ResponseUtil.wrapOrNotFound(portfolios);
     }
 
     /**
@@ -186,7 +227,7 @@ public class PortfolioResource {
      * {@code SEARCH  /_search/portfolios?query=:query} : search for the portfolio corresponding
      * to the query.
      *
-     * @param query the query of the portfolio search.
+     * @param query    the query of the portfolio search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */

@@ -5,6 +5,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 import com.ritan.lit.social.domain.UserReaction;
 import com.ritan.lit.social.repository.UserReactionRepository;
 import com.ritan.lit.social.repository.search.UserReactionSearchRepository;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +26,9 @@ public class UserReactionService {
 
     private final UserReactionRepository userReactionRepository;
 
-    private final UserReactionSearchRepository userReactionSearchRepository;
 
-    public UserReactionService(UserReactionRepository userReactionRepository, UserReactionSearchRepository userReactionSearchRepository) {
+    public UserReactionService(UserReactionRepository userReactionRepository) {
         this.userReactionRepository = userReactionRepository;
-        this.userReactionSearchRepository = userReactionSearchRepository;
     }
 
     /**
@@ -40,7 +40,6 @@ public class UserReactionService {
     public UserReaction save(UserReaction userReaction) {
         log.debug("Request to save UserReaction : {}", userReaction);
         UserReaction result = userReactionRepository.save(userReaction);
-        userReactionSearchRepository.save(result);
         return result;
     }
 
@@ -62,12 +61,7 @@ public class UserReactionService {
 
                 return existingUserReaction;
             })
-            .map(userReactionRepository::save)
-            .map(savedUserReaction -> {
-                userReactionSearchRepository.save(savedUserReaction);
-
-                return savedUserReaction;
-            });
+            .map(userReactionRepository::save);
     }
 
     /**
@@ -102,9 +96,15 @@ public class UserReactionService {
     public void delete(Long id) {
         log.debug("Request to delete UserReaction : {}", id);
         userReactionRepository.deleteById(id);
-        userReactionSearchRepository.deleteById(id);
     }
 
+    public Optional<UserReaction> findByPostAndUser(Long postId, String user) {
+        return userReactionRepository.findByPostIdAndSocialUserUser(postId, user);
+    }
+
+    public Optional<List<UserReaction>> findAllByUsername(String username) {
+        return userReactionRepository.findAllBySocialUserUser(username);
+    }
     /**
      * Search for the userReaction corresponding to the query.
      *
@@ -112,9 +112,4 @@ public class UserReactionService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public Page<UserReaction> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of UserReactions for query {}", query);
-        return userReactionSearchRepository.search(query, pageable);
-    }
 }

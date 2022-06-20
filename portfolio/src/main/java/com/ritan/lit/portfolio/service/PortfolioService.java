@@ -5,6 +5,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 import com.ritan.lit.portfolio.domain.Portfolio;
 import com.ritan.lit.portfolio.repository.PortfolioRepository;
 import com.ritan.lit.portfolio.repository.search.PortfolioSearchRepository;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,5 +133,9 @@ public class PortfolioService {
     public Page<Portfolio> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Portfolios for query {}", query);
         return portfolioSearchRepository.search(query, pageable);
+    }
+
+    public Optional<List<Portfolio>> findAllByUser(String user) {
+        return portfolioRepository.getAllByPortfolioUserUser(user);
     }
 }

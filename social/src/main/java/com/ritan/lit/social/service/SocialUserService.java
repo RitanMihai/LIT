@@ -116,4 +116,8 @@ public class SocialUserService {
         log.debug("Request to search SocialUsers for query {}", query);
         return StreamSupport.stream(socialUserSearchRepository.search(query).spliterator(), false).collect(Collectors.toList());
     }
+
+    public SocialUser findOneByUser(String user) {
+        return socialUserRepository.findByUserIs(user);
+    }
 }

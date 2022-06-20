@@ -1,26 +1,31 @@
 package com.ritan.lit.portfolio.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import com.ritan.lit.portfolio.domain.Order;
+import com.ritan.lit.portfolio.domain.StockInfo;
+import com.ritan.lit.portfolio.domain.services.DateDoublePair;
+import com.ritan.lit.portfolio.domain.util.UserOrders;
 import com.ritan.lit.portfolio.repository.OrderRepository;
+import com.ritan.lit.portfolio.security.jwt.TokenProvider;
 import com.ritan.lit.portfolio.service.OrderService;
 import com.ritan.lit.portfolio.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.StreamSupport;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import com.ritan.lit.portfolio.web.rest.serviceClient.WatcherClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,10 +50,12 @@ public class OrderResource {
     private final OrderService orderService;
 
     private final OrderRepository orderRepository;
+    private final TokenProvider tokenProvider;
 
-    public OrderResource(OrderService orderService, OrderRepository orderRepository) {
+    public OrderResource(OrderService orderService, OrderRepository orderRepository, TokenProvider tokenProvider) {
         this.orderService = orderService;
         this.orderRepository = orderRepository;
+        this.tokenProvider = tokenProvider;
     }
 
     /**
@@ -71,6 +78,42 @@ public class OrderResource {
             .body(result);
     }
 
+    @GetMapping("/orders-details/user/{user}/pl")
+    public ResponseEntity<?> getAllOrdersByUserPL (
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @PathVariable String user) throws ExecutionException, InterruptedException {
+
+        WatcherClient watcherClient = new WatcherClient(this.tokenProvider);
+        Page<Order> page = orderService.findAllByUser(pageable, user);
+
+        Map<LocalDate, Double> overallProfitLose = new HashMap<>();
+
+        for (Order order : page) {
+            StockInfo stockInfo = order.getStockInfo();
+            Instant filledDate = order.getFilledDate();
+            Double nrOfShare = order.getQuantity();
+            DateDoublePair[] history = watcherClient.getHistory(stockInfo.getTicker(), filledDate);
+
+            for (DateDoublePair dateDoublePair : history) {
+                LocalDate date = dateDoublePair.getDate();
+                Double value = dateDoublePair.getValue() * nrOfShare;
+
+                if(overallProfitLose.containsKey(date)) {
+                    Double addedValue = overallProfitLose.get(date) + value;
+                    overallProfitLose.put(date, addedValue);
+                } else overallProfitLose.put(date,value);
+            }
+        }
+
+        /* */
+        List<DateDoublePair> collect = overallProfitLose.entrySet()
+            .stream()
+            .map(e -> new DateDoublePair(e.getKey(), e.getValue()))
+            .sorted()
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(collect);
+    }
     /**
      * {@code PUT  /orders/:id} : Updates an existing order.
      *
@@ -153,6 +196,46 @@ public class OrderResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/orders/user/{user}")
+    public ResponseEntity<List<Order>> getAllOrdersByUser(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @PathVariable String user) {
+        log.debug("REST request to get a page of Orders");
+        Page<Order> page = orderService.findAllByUser(pageable, user);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/orders/user/{user}/portfolio/{portfolio}")
+    public ResponseEntity<List<Order>> getAllOrdersByUserAndPortfolio(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @PathVariable String user,
+        @PathVariable String portfolio) {
+        log.debug("REST request to get a page of Orders");
+        Page<Order> page = orderService.findAllByUserAndPortfolio(pageable, user, portfolio);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/orders-details/user/{user}")
+    public ResponseEntity<List<UserOrders>> getAllOrdersDetailsByUser(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @PathVariable String user) {
+        log.debug("REST request to get a page of Orders");
+        Page<Object[]> page = orderService.findAllOrderDetailsByUser(pageable, user);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        List<UserOrders> userOrdersList = new ArrayList<>();
+        for (Object[] objects : page) {
+            UserOrders userOrders = new UserOrders();
+            userOrders.setDate((Instant) objects[0]);
+            userOrders.setSum((Double) objects[1]);
+            userOrdersList.add(userOrders);
+        }
+
+        return ResponseEntity.ok().headers(headers).body(userOrdersList);
+    }
+
     /**
      * {@code GET  /orders/:id} : get the "id" order.
      *
@@ -190,7 +273,7 @@ public class OrderResource {
      * @param pageable the pagination information.
      * @return the result of the search.
      */
-    @GetMapping("/_search/orders")
+/*    @GetMapping("/_search/orders")
     public ResponseEntity<List<Order>> searchOrders(
         @RequestParam String query,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
@@ -199,5 +282,5 @@ public class OrderResource {
         Page<Order> page = orderService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    }*/
 }

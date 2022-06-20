@@ -146,6 +146,11 @@ public class SocialUserResource {
         return socialUserService.findAll();
     }
 
+    @GetMapping("/social-users/username/{user}")
+    public SocialUser getSocialUserByUser(@PathVariable String user) {
+        return socialUserService.findOneByUser(user);
+    }
+
     /**
      * {@code GET  /social-users/:id} : get the "id" socialUser.
      *

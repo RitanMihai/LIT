@@ -5,6 +5,7 @@ import com.ritan.lit.watchlist.domain.Stock;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -13,5 +14,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface PriceHistoryRepository extends JpaRepository<PriceHistory, Long> {
-    List<PriceHistory> findAllByStock(Stock stock);
+    List<PriceHistory> findAllByStockOrderByDate(Stock stock);
+    List<PriceHistory> findAllByStockAndDateAfterOrderByDate(Stock stock, LocalDate date);
 }

@@ -103,7 +103,9 @@ public class StockService {
                 if (stock.getDividendYield() != null) {
                     existingStock.setDividendYield(stock.getDividendYield());
                 }
-
+                if (stock.getCountry() != null) {
+                    existingStock.setCountry(stock.getCountry());
+                }
                 return existingStock;
             })
             .map(stockRepository::save)

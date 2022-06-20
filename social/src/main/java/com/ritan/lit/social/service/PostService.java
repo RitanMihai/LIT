@@ -44,7 +44,6 @@ public class PostService {
     public Post save(Post post) {
         log.debug("Request to save Post : {}", post);
         Post result = postRepository.save(post);
-        postSearchRepository.save(result);
         return result;
     }
 
@@ -81,12 +80,7 @@ public class PostService {
 
                 return existingPost;
             })
-            .map(postRepository::save)
-            .map(savedPost -> {
-                postSearchRepository.save(savedPost);
-
-                return savedPost;
-            });
+            .map(postRepository::save);
     }
 
     /**
@@ -128,7 +122,6 @@ public class PostService {
     public void delete(Long id) {
         log.debug("Request to delete Post : {}", id);
         postRepository.deleteById(id);
-        postSearchRepository.deleteById(id);
     }
 
     /**

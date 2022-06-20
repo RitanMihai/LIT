@@ -3,6 +3,7 @@ package com.ritan.lit.watchlist.web.rest;
 import com.ritan.lit.watchlist.domain.PageableStock;
 import com.ritan.lit.watchlist.domain.Stock;
 import com.ritan.lit.watchlist.domain.StockGroupByType;
+import com.ritan.lit.watchlist.domain.util.StockCountryIPO;
 import com.ritan.lit.watchlist.repository.StockRepository;
 import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
@@ -16,6 +17,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -283,6 +286,28 @@ public class StockResource {
                 } catch (IOException e) {
                     System.out.println("EROARE PE STOCK " + symbol);
                 }
+            }
+
+        }
+        return ResponseEntity.ok("Done");
+    }
+
+    @PostMapping("/__stocks/update/country_ipoyear")
+    public ResponseEntity<?> __updateStockCountryIPO(@RequestBody List<StockCountryIPO> stocksCountryIPO) {
+        for (StockCountryIPO stockCountryIPO : stocksCountryIPO) {
+            Optional<Stock> byTicker = stockService.findByTicker(stockCountryIPO.getTicker());
+
+            if(byTicker.isPresent())
+            {
+                Stock pgStock = byTicker.get();
+                if(!stockCountryIPO.getCountry().isEmpty())
+                    pgStock.setCountry(stockCountryIPO.getCountry());
+                if(!Objects.isNull(stockCountryIPO.getIpo_date())){
+                    Integer ipo_date = stockCountryIPO.getIpo_date();
+                    LocalDate date = LocalDate.of(ipo_date, Month.DECEMBER, 30);
+                    pgStock.setIpoDate(date);
+                }
+                stockService.partialUpdate(pgStock);
             }
 
         }

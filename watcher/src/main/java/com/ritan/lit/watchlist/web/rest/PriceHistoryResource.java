@@ -12,12 +12,14 @@ import com.ritan.lit.watchlist.service.StockService;
 import com.ritan.lit.watchlist.web.rest.errors.BadRequestAlertException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.Interval;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * REST controller for managing {@link com.ritan.lit.watchlist.domain.PriceHistory}.
@@ -87,85 +90,140 @@ public class PriceHistoryResource {
 
     @PostMapping("/price-histories/stock/{symbol}")
     public ResponseEntity<?> setPriceHistory(@PathVariable String symbol,
+                                             @RequestBody List<String> symbols,
                                              @RequestParam Optional<String> start_date,
                                              @RequestParam Optional<String> end_date,
                                              @RequestParam Optional<String> period,
                                              @RequestParam Optional<String> period_type) throws IOException {
         // Unsure received string is upper case
-        symbol.toUpperCase(Locale.ROOT);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        yahoofinance.Stock stock = null;
+        for (String stockSymbol : symbols) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            yahoofinance.Stock stock = null;
+            boolean validDateInterval = true;
+            Optional<Stock> pgStock = stockService.findByTicker(stockSymbol);
+            if (pgStock.isPresent()) {
+                LocalDate startDate = pgStock.get().getIpoDate();
+                if (start_date.isPresent() && end_date.isPresent() && !Objects.isNull(startDate)) {
+                    Object endDate = null;
 
-        Optional<Stock> pgStock = stockService.findByTicker(symbol);
-        if (!pgStock.isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock did not found in database");
+                    try {
+                        if (!end_date.get().equals("TODAY"))
+                            endDate = sdf.parse(end_date.get());
+                    } catch (ParseException e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Date format, " +
+                            "accepted format is dd-MM-yyyy");
+                    }
 
-        if (start_date.isPresent() && end_date.isPresent()) {
-            Date startDate;
-            Object endDate = null;
 
-            try {
-                startDate = sdf.parse(start_date.get());
-                if (!end_date.get().equals("TODAY"))
-                    endDate = sdf.parse(end_date.get());
-            } catch (ParseException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Date format, " +
-                    "accepted format is dd-MM-yyyy");
+                    Calendar from = Calendar.getInstance();
+                    from.set(startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth());
+                    Calendar to = Calendar.getInstance();
+
+                    if (endDate instanceof Date)
+                        to.setTime((Date) endDate);
+
+                    try {
+                        stock = YahooFinance.get(stockSymbol, from, to, Interval.DAILY);
+                    } catch (IOException e) {
+                        validDateInterval = false;
+                    }
+
+                } else if (period.isPresent() && period_type.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not implemented yet");
+                }
+
+                if (!Objects.isNull(startDate) && !Objects.isNull(stock) && validDateInterval)
+                    stock.getHistory().forEach(
+                        historicalQuote -> {
+                            Calendar date = historicalQuote.getDate();
+                            BigDecimal open = historicalQuote.getOpen();
+                            BigDecimal low = historicalQuote.getLow();
+                            BigDecimal high = historicalQuote.getHigh();
+                            BigDecimal adjClose = historicalQuote.getAdjClose();
+                            Long volume = historicalQuote.getVolume();
+                            BigDecimal close = historicalQuote.getClose();
+
+                            if (!Objects.isNull(date)
+                                && !Objects.isNull(open)
+                                && !Objects.isNull(low)
+                                && !Objects.isNull(high)
+                                && !Objects.isNull(adjClose)
+                                && !Objects.isNull(volume)
+                                && !Objects.isNull(close)) {
+                                PriceHistory priceHistory = new PriceHistory();
+                                priceHistory.setStock(pgStock.get());
+
+                                Calendar calendar = date;
+                                Date input = calendar.getTime();
+                                LocalDate localDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                                priceHistory.setDate(localDate);
+                                priceHistory.setOpen(open.doubleValue());
+                                priceHistory.setLow(low.doubleValue());
+                                priceHistory.setHigh(high.doubleValue());
+                                priceHistory.setAdjClose(adjClose.doubleValue());
+                                priceHistory.setVolume(volume.doubleValue());
+                                priceHistory.setClose(close.doubleValue());
+
+                                //Stock stockUpdated = pgStock.get().addPriceHistory(priceHistory);
+
+                                // Ignore elastic search
+                                priceHistoryRepository.save(priceHistory);
+                                //stockService.partialUpdate(stockUpdated);
+                            }
+                        }
+                    );
             }
-
-            Calendar from = Calendar.getInstance();
-            from.setTime(startDate);
-            Calendar to = Calendar.getInstance();
-
-            if (endDate instanceof Date)
-                to.setTime((Date) endDate);
-
-            try {
-                stock = YahooFinance.get(symbol, from, to, Interval.DAILY);
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-            }
-        } else if (period.isPresent() && period_type.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not implemented yet");
         }
-
-        stock.getHistory().forEach(
-            historicalQuote -> {
-                PriceHistory priceHistory = new PriceHistory();
-                priceHistory.setStock(pgStock.get());
-
-                Calendar calendar = historicalQuote.getDate();
-                Date input = calendar.getTime();
-                LocalDate localDate = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                priceHistory.setDate(localDate);
-                priceHistory.setOpen(historicalQuote.getOpen().doubleValue());
-                priceHistory.setLow(historicalQuote.getLow().doubleValue());
-                priceHistory.setHigh(historicalQuote.getHigh().doubleValue());
-                priceHistory.setAdjClose(historicalQuote.getAdjClose().doubleValue());
-                priceHistory.setVolume(historicalQuote.getVolume().doubleValue());
-                priceHistory.setClose(historicalQuote.getClose().doubleValue());
-
-                //Stock stockUpdated = pgStock.get().addPriceHistory(priceHistory);
-
-                // Ignore elastic search
-                priceHistoryRepository.save(priceHistory);
-                //stockService.partialUpdate(stockUpdated);
-            }
-        );
-
-        return ResponseEntity.ok(stock);
+        return ResponseEntity.ok("Done");
     }
 
     /* TODO: change closePrice with Filter */
     @GetMapping("/price-histories/symbol/{symbol}")
     public ResponseEntity<?> getPriceHistoryBySymbol(@PathVariable String symbol,
-                                                     @RequestParam Optional<String> closePrice){
+                                                     @RequestParam Optional<String> closePrice,
+                                                     @RequestParam Optional<String> start_date) {
         Optional<Stock> stock = stockService.findByTicker(symbol);
         if (!stock.isPresent())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock did not found in database");
 
-        if(closePrice.isPresent()) {
+        if (closePrice.isPresent() && !start_date.isPresent()) {
+
+            List<DateDoublePair> allByStock = new ArrayList<>();
+            for (PriceHistory priceHistory : priceHistoryService.findAllByStock(stock.get())) {
+                LocalDate date = priceHistory.getDate();
+                Double close = priceHistory.getClose();
+                DateDoublePair dateDoublePair = new DateDoublePair(date, close);
+                allByStock.add(dateDoublePair);
+            }
+            return ResponseEntity.ok(allByStock);
+        } else if (start_date.isPresent()) {
+
+            List<DateDoublePair> allByStock = new ArrayList<>();
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+
+            LocalDate localDate = LocalDate.parse(start_date.get());
+
+            for (PriceHistory priceHistory : priceHistoryService.findAllByStockAndDate(stock.get(), localDate)) {
+                LocalDate date = priceHistory.getDate();
+                Double close = priceHistory.getClose();
+                DateDoublePair dateDoublePair = new DateDoublePair(date, close);
+                allByStock.add(dateDoublePair);
+            }
+            return ResponseEntity.ok(allByStock);
+        }
+        return ResponseEntity.ok(priceHistoryService.findAllByStock(stock.get()));
+    }
+
+    @GetMapping("/price-histories/calc/symbol/{symbol}")
+    public ResponseEntity<?> getPriceHistoryCalcBySymbol(@PathVariable String symbol,
+                                                     @RequestParam Optional<String> closePrice,
+                                                         @RequestParam Optional<String> start_date) {
+        Optional<Stock> stock = stockService.findByTicker(symbol);
+        if (!stock.isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock did not found in database");
+
+        if (closePrice.isPresent()) {
 
             List<DateDoublePair> allByStock = new ArrayList<>();
             for (PriceHistory priceHistory : priceHistoryService.findAllByStock(stock.get())) {
@@ -176,7 +234,7 @@ public class PriceHistoryResource {
             }
             return ResponseEntity.ok(allByStock);
         }
-        return  ResponseEntity.ok(priceHistoryService.findAllByStock(stock.get()));
+        return ResponseEntity.ok(priceHistoryService.findAllByStock(stock.get()));
     }
     /**
      * {@code PUT  /price-histories/:id} : Updates an existing priceHistory.
