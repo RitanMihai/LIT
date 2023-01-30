@@ -12,7 +12,7 @@ LIT is a management and research platform designed to function like a social net
 ## Portfolio page
 ![portfolio_page_empty](documentation/app_ss/portfolio_page_empty.png)
 ![portfolio_page_1](documentation/app_ss/portfolio_page_1.png)
-![portfolio_page_2](documentation/app_ss/portfolio_page_2)
+![portfolio_page_2](documentation/app_ss/portfolio_page_2.png)
 ## Watcher page
 ![watcher_page](documentation/app_ss/watcher_page_empty.png)
 ![watcher_page_stock_technology_sector](documentation/app_ss/watcher_page_technology_sector.png)
